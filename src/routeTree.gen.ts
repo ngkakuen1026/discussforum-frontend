@@ -9,9 +9,63 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as UserFollowingRouteImport } from './routes/userFollowing'
+import { Route as SettingRouteImport } from './routes/setting'
+import { Route as PublicProfileRouteImport } from './routes/publicProfile'
+import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PostDraftsRouteImport } from './routes/postDrafts'
+import { Route as PinRouteImport } from './routes/pin'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as BrowseHistoryRouteImport } from './routes/browseHistory'
+import { Route as AddPostRouteImport } from './routes/addPost'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 
+const UserFollowingRoute = UserFollowingRouteImport.update({
+  id: '/userFollowing',
+  path: '/userFollowing',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingRoute = SettingRouteImport.update({
+  id: '/setting',
+  path: '/setting',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PublicProfileRoute = PublicProfileRouteImport.update({
+  id: '/publicProfile',
+  path: '/publicProfile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfileRoute = ProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PostDraftsRoute = PostDraftsRouteImport.update({
+  id: '/postDrafts',
+  path: '/postDrafts',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PinRoute = PinRouteImport.update({
+  id: '/pin',
+  path: '/pin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BrowseHistoryRoute = BrowseHistoryRouteImport.update({
+  id: '/browseHistory',
+  path: '/browseHistory',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AddPostRoute = AddPostRouteImport.update({
+  id: '/addPost',
+  path: '/addPost',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -26,31 +80,164 @@ const IndexRoute = IndexRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/addPost': typeof AddPostRoute
+  '/browseHistory': typeof BrowseHistoryRoute
+  '/faq': typeof FaqRoute
+  '/pin': typeof PinRoute
+  '/postDrafts': typeof PostDraftsRoute
+  '/profile': typeof ProfileRoute
+  '/publicProfile': typeof PublicProfileRoute
+  '/setting': typeof SettingRoute
+  '/userFollowing': typeof UserFollowingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/addPost': typeof AddPostRoute
+  '/browseHistory': typeof BrowseHistoryRoute
+  '/faq': typeof FaqRoute
+  '/pin': typeof PinRoute
+  '/postDrafts': typeof PostDraftsRoute
+  '/profile': typeof ProfileRoute
+  '/publicProfile': typeof PublicProfileRoute
+  '/setting': typeof SettingRoute
+  '/userFollowing': typeof UserFollowingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/addPost': typeof AddPostRoute
+  '/browseHistory': typeof BrowseHistoryRoute
+  '/faq': typeof FaqRoute
+  '/pin': typeof PinRoute
+  '/postDrafts': typeof PostDraftsRoute
+  '/profile': typeof ProfileRoute
+  '/publicProfile': typeof PublicProfileRoute
+  '/setting': typeof SettingRoute
+  '/userFollowing': typeof UserFollowingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/addPost'
+    | '/browseHistory'
+    | '/faq'
+    | '/pin'
+    | '/postDrafts'
+    | '/profile'
+    | '/publicProfile'
+    | '/setting'
+    | '/userFollowing'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/addPost'
+    | '/browseHistory'
+    | '/faq'
+    | '/pin'
+    | '/postDrafts'
+    | '/profile'
+    | '/publicProfile'
+    | '/setting'
+    | '/userFollowing'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/addPost'
+    | '/browseHistory'
+    | '/faq'
+    | '/pin'
+    | '/postDrafts'
+    | '/profile'
+    | '/publicProfile'
+    | '/setting'
+    | '/userFollowing'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AddPostRoute: typeof AddPostRoute
+  BrowseHistoryRoute: typeof BrowseHistoryRoute
+  FaqRoute: typeof FaqRoute
+  PinRoute: typeof PinRoute
+  PostDraftsRoute: typeof PostDraftsRoute
+  ProfileRoute: typeof ProfileRoute
+  PublicProfileRoute: typeof PublicProfileRoute
+  SettingRoute: typeof SettingRoute
+  UserFollowingRoute: typeof UserFollowingRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/userFollowing': {
+      id: '/userFollowing'
+      path: '/userFollowing'
+      fullPath: '/userFollowing'
+      preLoaderRoute: typeof UserFollowingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/setting': {
+      id: '/setting'
+      path: '/setting'
+      fullPath: '/setting'
+      preLoaderRoute: typeof SettingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/publicProfile': {
+      id: '/publicProfile'
+      path: '/publicProfile'
+      fullPath: '/publicProfile'
+      preLoaderRoute: typeof PublicProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/profile': {
+      id: '/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/postDrafts': {
+      id: '/postDrafts'
+      path: '/postDrafts'
+      fullPath: '/postDrafts'
+      preLoaderRoute: typeof PostDraftsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pin': {
+      id: '/pin'
+      path: '/pin'
+      fullPath: '/pin'
+      preLoaderRoute: typeof PinRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/browseHistory': {
+      id: '/browseHistory'
+      path: '/browseHistory'
+      fullPath: '/browseHistory'
+      preLoaderRoute: typeof BrowseHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/addPost': {
+      id: '/addPost'
+      path: '/addPost'
+      fullPath: '/addPost'
+      preLoaderRoute: typeof AddPostRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -71,6 +258,15 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AddPostRoute: AddPostRoute,
+  BrowseHistoryRoute: BrowseHistoryRoute,
+  FaqRoute: FaqRoute,
+  PinRoute: PinRoute,
+  PostDraftsRoute: PostDraftsRoute,
+  ProfileRoute: ProfileRoute,
+  PublicProfileRoute: PublicProfileRoute,
+  SettingRoute: SettingRoute,
+  UserFollowingRoute: UserFollowingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
