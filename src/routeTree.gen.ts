@@ -15,11 +15,14 @@ import { Route as PublicProfileRouteImport } from './routes/publicProfile'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PostDraftsRouteImport } from './routes/postDrafts'
 import { Route as PinRouteImport } from './routes/pin'
+import { Route as NotificationsRouteImport } from './routes/notifications'
+import { Route as NotiRouteImport } from './routes/noti'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BrowseHistoryRouteImport } from './routes/browseHistory'
 import { Route as AddPostRouteImport } from './routes/addPost'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 
 const UserFollowingRoute = UserFollowingRouteImport.update({
   id: '/userFollowing',
@@ -51,6 +54,16 @@ const PinRoute = PinRouteImport.update({
   path: '/pin',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NotificationsRoute = NotificationsRouteImport.update({
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotiRoute = NotiRouteImport.update({
+  id: '/noti',
+  path: '/noti',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const FaqRoute = FaqRouteImport.update({
   id: '/faq',
   path: '/faq',
@@ -76,6 +89,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
+  id: '/settings/notifications',
+  path: '/settings/notifications',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -83,12 +101,15 @@ export interface FileRoutesByFullPath {
   '/addPost': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/noti': typeof NotiRoute
+  '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
   '/postDrafts': typeof PostDraftsRoute
   '/profile': typeof ProfileRoute
   '/publicProfile': typeof PublicProfileRoute
   '/setting': typeof SettingRoute
   '/userFollowing': typeof UserFollowingRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -96,12 +117,15 @@ export interface FileRoutesByTo {
   '/addPost': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/noti': typeof NotiRoute
+  '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
   '/postDrafts': typeof PostDraftsRoute
   '/profile': typeof ProfileRoute
   '/publicProfile': typeof PublicProfileRoute
   '/setting': typeof SettingRoute
   '/userFollowing': typeof UserFollowingRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -110,12 +134,15 @@ export interface FileRoutesById {
   '/addPost': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/noti': typeof NotiRoute
+  '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
   '/postDrafts': typeof PostDraftsRoute
   '/profile': typeof ProfileRoute
   '/publicProfile': typeof PublicProfileRoute
   '/setting': typeof SettingRoute
   '/userFollowing': typeof UserFollowingRoute
+  '/settings/notifications': typeof SettingsNotificationsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -125,12 +152,15 @@ export interface FileRouteTypes {
     | '/addPost'
     | '/browseHistory'
     | '/faq'
+    | '/noti'
+    | '/notifications'
     | '/pin'
     | '/postDrafts'
     | '/profile'
     | '/publicProfile'
     | '/setting'
     | '/userFollowing'
+    | '/settings/notifications'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -138,12 +168,15 @@ export interface FileRouteTypes {
     | '/addPost'
     | '/browseHistory'
     | '/faq'
+    | '/noti'
+    | '/notifications'
     | '/pin'
     | '/postDrafts'
     | '/profile'
     | '/publicProfile'
     | '/setting'
     | '/userFollowing'
+    | '/settings/notifications'
   id:
     | '__root__'
     | '/'
@@ -151,12 +184,15 @@ export interface FileRouteTypes {
     | '/addPost'
     | '/browseHistory'
     | '/faq'
+    | '/noti'
+    | '/notifications'
     | '/pin'
     | '/postDrafts'
     | '/profile'
     | '/publicProfile'
     | '/setting'
     | '/userFollowing'
+    | '/settings/notifications'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -165,12 +201,15 @@ export interface RootRouteChildren {
   AddPostRoute: typeof AddPostRoute
   BrowseHistoryRoute: typeof BrowseHistoryRoute
   FaqRoute: typeof FaqRoute
+  NotiRoute: typeof NotiRoute
+  NotificationsRoute: typeof NotificationsRoute
   PinRoute: typeof PinRoute
   PostDraftsRoute: typeof PostDraftsRoute
   ProfileRoute: typeof ProfileRoute
   PublicProfileRoute: typeof PublicProfileRoute
   SettingRoute: typeof SettingRoute
   UserFollowingRoute: typeof UserFollowingRoute
+  SettingsNotificationsRoute: typeof SettingsNotificationsRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -217,6 +256,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PinRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/notifications': {
+      id: '/notifications'
+      path: '/notifications'
+      fullPath: '/notifications'
+      preLoaderRoute: typeof NotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/noti': {
+      id: '/noti'
+      path: '/noti'
+      fullPath: '/noti'
+      preLoaderRoute: typeof NotiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/faq': {
       id: '/faq'
       path: '/faq'
@@ -252,6 +305,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/notifications': {
+      id: '/settings/notifications'
+      path: '/settings/notifications'
+      fullPath: '/settings/notifications'
+      preLoaderRoute: typeof SettingsNotificationsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -261,12 +321,15 @@ const rootRouteChildren: RootRouteChildren = {
   AddPostRoute: AddPostRoute,
   BrowseHistoryRoute: BrowseHistoryRoute,
   FaqRoute: FaqRoute,
+  NotiRoute: NotiRoute,
+  NotificationsRoute: NotificationsRoute,
   PinRoute: PinRoute,
   PostDraftsRoute: PostDraftsRoute,
   ProfileRoute: ProfileRoute,
   PublicProfileRoute: PublicProfileRoute,
   SettingRoute: SettingRoute,
   UserFollowingRoute: UserFollowingRoute,
+  SettingsNotificationsRoute: SettingsNotificationsRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,6 +1,6 @@
 const SearchBar = () => {
   return (
-    <form className="max-w-md mx-auto">
+    <form className="max-w-md mx-auto w-full">
       <label
         htmlFor="default-search"
         className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"

@@ -1,62 +1,105 @@
-import { Link } from "@tanstack/react-router";
-import Dropdown from "./Dropdown";
-import SearchBar from "./SearchBar";
-import {
-  Bell,
-  CirclePlus,
-  Languages,
-  LayoutGrid,
-  Moon,
-  Sun,
-} from "lucide-react";
-import { useState } from "react";
+import SearchBar from "./TopNavbar/SearchBar";
+import SideNavBar from "./SideNavBar";
+import { useEffect, useRef, useState } from "react";
+import NavTitle from "./TopNavbar/NavTitle";
+import NavIcons from "./TopNavbar/NavIcons";
 
 const TopNavbar = () => {
-  // For later theme switch
   const [isOn, setIsOn] = useState(false);
+  const [isSideNavOpen, setIsSideNavOpen] = useState(false);
+
   const handleToggle = () => {
     setIsOn(!isOn);
   };
 
+  const handleSideNavToggle = () => {
+    setIsSideNavOpen(!isSideNavOpen);
+  };
+
+  const [showNotiMenu, setShowNotiMenu] = useState(false);
+  const notiMenuRef = useRef<HTMLDivElement>(null);
+
+  const [showTranslationMenu, setShowTranslationMenu] = useState(false);
+  const translationMenuRef = useRef<HTMLDivElement>(null);
+
+  const [, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        notiMenuRef.current &&
+        !notiMenuRef.current.contains(e.target as Node) &&
+        translationMenuRef.current &&
+        !translationMenuRef.current.contains(e.target as Node) &&
+        userMenuRef.current &&
+        !userMenuRef.current.contains(e.target as Node)
+      ) {
+        setShowNotiMenu(false);
+        setShowTranslationMenu(false);
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [notiMenuRef, translationMenuRef, userMenuRef]);
+
+  const toggleNotiMenu = () => {
+    setShowNotiMenu((prev) => {
+      const newState = !prev;
+      if (newState) {
+        setShowTranslationMenu(false);
+        setShowUserMenu(false);
+      }
+      return newState;
+    });
+  };
+
+  const toggleTranslationMenu = () => {
+    setShowTranslationMenu((prev) => {
+      const newState = !prev;
+      if (newState) {
+        setShowNotiMenu(false);
+        setShowUserMenu(false);
+      }
+      return newState;
+    });
+  };
+
+  const toggleUserMenu = () => {
+    setShowUserMenu((prev) => {
+      const newState = !prev;
+      if (newState) {
+        setShowNotiMenu(false);
+        setShowTranslationMenu(false);
+      }
+      return newState;
+    });
+  };
+
   return (
     <div className="px-8 py-2 flex gap-4 items-center justify-evenly bg-[#0E1113]">
-      <div className="flex gap-4">
-        <Link to="/" className="flex items-center text-2xl">
-          <img src="src\assets\icon.svg" className="w-20 h-20" />
-          <span className="text-orange-600 dark:text-white">ChatterNest</span>
-        </Link>
-      </div>
-      <div className="w-full">
-        <SearchBar />
-      </div>
-      <div className="flex gap-4 items-center justify-around">
-        <button title="Category List">
-          <LayoutGrid className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
-        </button>
-
-        <button title="Add New Post">
-          <Link to="/addPost">
-            <CirclePlus className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
-          </Link>
-        </button>
-        <button title="Notifications">
-          <Bell className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
-        </button>
-        <button
-          onClick={handleToggle}
-          title={isOn ? "Switch to light mode" : "Switch to dark mode"}
-        >
-          {isOn ? (
-            <Sun className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
-          ) : (
-            <Moon className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
-          )}
-        </button>
-        <button title="Translations">
-          <Languages className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
-        </button>
-        <Dropdown />
-      </div>
+      <NavTitle />
+      <SearchBar />
+      <NavIcons
+        handleSideNavToggle={handleSideNavToggle}
+        handleToggle={handleToggle}
+        isOn={isOn}
+        notiMenuRef={notiMenuRef}
+        translationMenuRef={translationMenuRef}
+        userMenuRef={userMenuRef}
+        toggleNotiMenu={toggleNotiMenu}
+        toggleTranslationMenu={toggleTranslationMenu}
+        toggleUserMenu={toggleUserMenu}
+        showNotiMenu={showNotiMenu}
+        showTranslationMenu={showTranslationMenu}
+        setShowNotiMenu={setShowNotiMenu}
+        setShowTranslationMenu={setShowTranslationMenu}
+      />
+      {isSideNavOpen && <SideNavBar onClose={handleSideNavToggle} />}
     </div>
   );
 };
