@@ -84,8 +84,8 @@ const NotiMenu = ({
                     <div
                       className={`grow ${item.read ? "text-white" : "text-gray-500"}`}
                     >
-                      <p className="text-lg">{item.message}</p>
-                      <span>{item.created_at.toLocaleString("en-US")}</span>
+                      <p className="">{item.message}</p>
+                      <span className="text-sm">{item.created_at.toLocaleString("en-US")}</span>
                     </div>
                     <X size={16} className="hover:opacity-50 cursor-pointer" />
                   </li>

@@ -18,8 +18,8 @@ const TranslationMenu = ({
 }: TranslationMenuProps) => {
   const languageOptions = [
     { code: "US", name: "English", flag: US },
-    { code: "CN", name: "Traditional Chinese", flag: HK },
-    { code: "CN", name: "Simplified Chinese", flag: CN },
+    { code: "ZH-HK", name: "Traditional Chinese", flag: HK },
+    { code: "ZH-CN", name: "Simplified Chinese", flag: CN },
     { code: "JP", name: "Japanese", flag: JP },
     { code: "KR", name: "Korean", flag: KR },
   ];
@@ -39,7 +39,7 @@ const TranslationMenu = ({
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="absolute right-0 mt-8 w-80 bg-[#181C1F] rounded-md shadow-lg z-50 divide-y divide-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
+          className="absolute right-0 mt-8 w-96 bg-[#181C1F] rounded-md shadow-lg z-50 divide-y divide-gray-500 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75"
         >
           <div className="p-4">
             <div className="flex items-center justify-between gap-2">
