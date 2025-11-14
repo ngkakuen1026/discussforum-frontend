@@ -1,9 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/browseHistory')({
+export const Route = createFileRoute('/browse-history')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  return <div>Hello "/browseHistory"!</div>
+  return <div>Hello "/browse-history"!</div>
 }
