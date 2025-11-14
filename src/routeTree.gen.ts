@@ -24,6 +24,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BrowseHistoryRouteImport } from './routes/browseHistory'
+import { Route as BrowseHistoryRouteImport } from './routes/browse-history'
 import { Route as AddPostRouteImport } from './routes/add-post'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -104,6 +105,11 @@ const BrowseHistoryRoute = BrowseHistoryRouteImport.update({
   path: '/browseHistory',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BrowseHistoryRoute = BrowseHistoryRouteImport.update({
+  id: '/browse-history',
+  path: '/browse-history',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AddPostRoute = AddPostRouteImport.update({
   id: '/add-post',
   path: '/add-post',
@@ -129,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
+  '/browse-history': typeof BrowseHistoryRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
+  '/browse-history': typeof BrowseHistoryRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -172,6 +180,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
+  '/browse-history': typeof BrowseHistoryRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -195,6 +204,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/add-post'
+    | '/browse-history'
     | '/browseHistory'
     | '/faq'
     | '/forgot-password'
@@ -216,6 +226,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/add-post'
+    | '/browse-history'
     | '/browseHistory'
     | '/faq'
     | '/forgot-password'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/add-post'
+    | '/browse-history'
     | '/browseHistory'
     | '/faq'
     | '/forgot-password'
@@ -259,6 +271,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AddPostRoute: typeof AddPostRoute
+  BrowseHistoryRoute: typeof BrowseHistoryRoute
   BrowseHistoryRoute: typeof BrowseHistoryRoute
   FaqRoute: typeof FaqRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
@@ -384,6 +397,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseHistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/browse-history': {
+      id: '/browse-history'
+      path: '/browse-history'
+      fullPath: '/browse-history'
+      preLoaderRoute: typeof BrowseHistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/add-post': {
       id: '/add-post'
       path: '/add-post'
@@ -419,6 +439,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AddPostRoute: AddPostRoute,
+  BrowseHistoryRoute: BrowseHistoryRoute,
   BrowseHistoryRoute: BrowseHistoryRoute,
   FaqRoute: FaqRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
