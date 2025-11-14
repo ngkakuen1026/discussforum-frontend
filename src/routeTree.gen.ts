@@ -9,14 +9,14 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UserFollowingRouteImport } from './routes/userFollowing'
+import { Route as UserFollowingRouteImport } from './routes/user-following'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SettingRouteImport } from './routes/setting'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PublicProfileRouteImport } from './routes/public-profile'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as PostDraftsRouteImport } from './routes/postDrafts'
+import { Route as PostDraftsRouteImport } from './routes/post-drafts'
 import { Route as PinRouteImport } from './routes/pin'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as NotiRouteImport } from './routes/noti'
@@ -24,14 +24,14 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BrowseHistoryRouteImport } from './routes/browseHistory'
-import { Route as AddPostRouteImport } from './routes/addPost'
+import { Route as AddPostRouteImport } from './routes/add-post'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 
 const UserFollowingRoute = UserFollowingRouteImport.update({
-  id: '/userFollowing',
-  path: '/userFollowing',
+  id: '/user-following',
+  path: '/user-following',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TermsRoute = TermsRouteImport.update({
@@ -65,8 +65,8 @@ const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const PostDraftsRoute = PostDraftsRouteImport.update({
-  id: '/postDrafts',
-  path: '/postDrafts',
+  id: '/post-drafts',
+  path: '/post-drafts',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PinRoute = PinRouteImport.update({
@@ -105,8 +105,8 @@ const BrowseHistoryRoute = BrowseHistoryRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const AddPostRoute = AddPostRouteImport.update({
-  id: '/addPost',
-  path: '/addPost',
+  id: '/add-post',
+  path: '/add-post',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -128,7 +128,7 @@ const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/addPost': typeof AddPostRoute
+  '/add-post': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -136,20 +136,20 @@ export interface FileRoutesByFullPath {
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
-  '/postDrafts': typeof PostDraftsRoute
+  '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
   '/public-profile': typeof PublicProfileRoute
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
-  '/userFollowing': typeof UserFollowingRoute
+  '/user-following': typeof UserFollowingRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/addPost': typeof AddPostRoute
+  '/add-post': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -157,21 +157,21 @@ export interface FileRoutesByTo {
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
-  '/postDrafts': typeof PostDraftsRoute
+  '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
   '/public-profile': typeof PublicProfileRoute
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
-  '/userFollowing': typeof UserFollowingRoute
+  '/user-following': typeof UserFollowingRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/addPost': typeof AddPostRoute
+  '/add-post': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -179,14 +179,14 @@ export interface FileRoutesById {
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
-  '/postDrafts': typeof PostDraftsRoute
+  '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
   '/public-profile': typeof PublicProfileRoute
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
-  '/userFollowing': typeof UserFollowingRoute
+  '/user-following': typeof UserFollowingRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
 }
 export interface FileRouteTypes {
@@ -194,7 +194,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/addPost'
+    | '/add-post'
     | '/browseHistory'
     | '/faq'
     | '/forgot-password'
@@ -202,20 +202,20 @@ export interface FileRouteTypes {
     | '/noti'
     | '/notifications'
     | '/pin'
-    | '/postDrafts'
+    | '/post-drafts'
     | '/privacy-policy'
     | '/profile'
     | '/public-profile'
     | '/register'
     | '/setting'
     | '/terms'
-    | '/userFollowing'
+    | '/user-following'
     | '/settings/notifications'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/about'
-    | '/addPost'
+    | '/add-post'
     | '/browseHistory'
     | '/faq'
     | '/forgot-password'
@@ -223,20 +223,20 @@ export interface FileRouteTypes {
     | '/noti'
     | '/notifications'
     | '/pin'
-    | '/postDrafts'
+    | '/post-drafts'
     | '/privacy-policy'
     | '/profile'
     | '/public-profile'
     | '/register'
     | '/setting'
     | '/terms'
-    | '/userFollowing'
+    | '/user-following'
     | '/settings/notifications'
   id:
     | '__root__'
     | '/'
     | '/about'
-    | '/addPost'
+    | '/add-post'
     | '/browseHistory'
     | '/faq'
     | '/forgot-password'
@@ -244,14 +244,14 @@ export interface FileRouteTypes {
     | '/noti'
     | '/notifications'
     | '/pin'
-    | '/postDrafts'
+    | '/post-drafts'
     | '/privacy-policy'
     | '/profile'
     | '/public-profile'
     | '/register'
     | '/setting'
     | '/terms'
-    | '/userFollowing'
+    | '/user-following'
     | '/settings/notifications'
   fileRoutesById: FileRoutesById
 }
@@ -279,10 +279,10 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/userFollowing': {
-      id: '/userFollowing'
-      path: '/userFollowing'
-      fullPath: '/userFollowing'
+    '/user-following': {
+      id: '/user-following'
+      path: '/user-following'
+      fullPath: '/user-following'
       preLoaderRoute: typeof UserFollowingRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -328,10 +328,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/postDrafts': {
-      id: '/postDrafts'
-      path: '/postDrafts'
-      fullPath: '/postDrafts'
+    '/post-drafts': {
+      id: '/post-drafts'
+      path: '/post-drafts'
+      fullPath: '/post-drafts'
       preLoaderRoute: typeof PostDraftsRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -384,10 +384,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseHistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/addPost': {
-      id: '/addPost'
-      path: '/addPost'
-      fullPath: '/addPost'
+    '/add-post': {
+      id: '/add-post'
+      path: '/add-post'
+      fullPath: '/add-post'
       preLoaderRoute: typeof AddPostRouteImport
       parentRoute: typeof rootRouteImport
     }

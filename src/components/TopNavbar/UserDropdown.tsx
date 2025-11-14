@@ -135,7 +135,7 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link to="/postDrafts">
+                      <Link to="/post-drafts">
                         <button
                           className={`${
                             active ? "opacity-75 cursor-pointer" : "text-white"
@@ -154,7 +154,7 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link to="/userFollowing">
+                      <Link to="/">
                         <button
                           className={`${
                             active ? "opacity-75 cursor-pointer" : "text-white"

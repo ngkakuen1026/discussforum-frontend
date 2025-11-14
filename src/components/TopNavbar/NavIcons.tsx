@@ -52,7 +52,7 @@ const NavIcons = ({
       {isLoggedIn ? (
         <>
           <button title="Add New Post">
-            <Link to="/addPost">
+            <Link to="/add-post">
               <CirclePlus className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
             </Link>
           </button>
