@@ -3,8 +3,10 @@ import SideNavBar from "./SideNavBar";
 import { useEffect, useRef, useState } from "react";
 import NavTitle from "./TopNavbar/NavTitle";
 import NavIcons from "./TopNavbar/NavIcons";
+import { useAuth } from "../context/AuthContext";
 
 const TopNavbar = () => {
+  const { isLoggedIn, logout, user } = useAuth();
   const [isOn, setIsOn] = useState(false);
   const [isSideNavOpen, setIsSideNavOpen] = useState(false);
 
@@ -18,10 +20,8 @@ const TopNavbar = () => {
 
   const [showNotiMenu, setShowNotiMenu] = useState(false);
   const notiMenuRef = useRef<HTMLDivElement>(null);
-
   const [showTranslationMenu, setShowTranslationMenu] = useState(false);
   const translationMenuRef = useRef<HTMLDivElement>(null);
-
   const [, setShowUserMenu] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
 
@@ -98,7 +98,11 @@ const TopNavbar = () => {
         showTranslationMenu={showTranslationMenu}
         setShowNotiMenu={setShowNotiMenu}
         setShowTranslationMenu={setShowTranslationMenu}
+        isLoggedIn={isLoggedIn}
+        user={user}
+        logout={logout}
       />
+
       {isSideNavOpen && <SideNavBar onClose={handleSideNavToggle} />}
     </div>
   );

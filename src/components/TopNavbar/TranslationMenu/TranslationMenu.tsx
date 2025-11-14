@@ -29,7 +29,7 @@ const TranslationMenu = ({
       <button
         onClick={toggleTranslationMenu}
         className="flex items-center justify-center focus:outline-none relative cursor-pointer hover:opacity-75"
-        title="Translate"
+        title="Language Translation"
       >
         <LanguagesIcon className="text-white w-7 h-7" />
       </button>

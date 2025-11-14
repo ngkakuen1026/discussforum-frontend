@@ -9,6 +9,8 @@ interface SideNavBarProps {
 const SideNavBar = ({ onClose }: SideNavBarProps) => {
   const sideNavRef = useRef<HTMLDivElement>(null);
 
+  
+
   const categories = [
     {
       id: 1,

@@ -10,13 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UserFollowingRouteImport } from './routes/userFollowing'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SettingRouteImport } from './routes/setting'
-import { Route as PublicProfileRouteImport } from './routes/publicProfile'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as PublicProfileRouteImport } from './routes/public-profile'
 import { Route as ProfileRouteImport } from './routes/profile'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PostDraftsRouteImport } from './routes/postDrafts'
 import { Route as PinRouteImport } from './routes/pin'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as NotiRouteImport } from './routes/noti'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BrowseHistoryRouteImport } from './routes/browseHistory'
 import { Route as AddPostRouteImport } from './routes/addPost'
@@ -29,19 +34,34 @@ const UserFollowingRoute = UserFollowingRouteImport.update({
   path: '/userFollowing',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SettingRoute = SettingRouteImport.update({
   id: '/setting',
   path: '/setting',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PublicProfileRoute = PublicProfileRouteImport.update({
-  id: '/publicProfile',
-  path: '/publicProfile',
+  id: '/public-profile',
+  path: '/public-profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfileRoute = ProfileRouteImport.update({
   id: '/profile',
   path: '/profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PostDraftsRoute = PostDraftsRouteImport.update({
@@ -62,6 +82,16 @@ const NotificationsRoute = NotificationsRouteImport.update({
 const NotiRoute = NotiRouteImport.update({
   id: '/noti',
   path: '/noti',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -101,13 +131,18 @@ export interface FileRoutesByFullPath {
   '/addPost': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
   '/postDrafts': typeof PostDraftsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
-  '/publicProfile': typeof PublicProfileRoute
+  '/public-profile': typeof PublicProfileRoute
+  '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
+  '/terms': typeof TermsRoute
   '/userFollowing': typeof UserFollowingRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
 }
@@ -117,13 +152,18 @@ export interface FileRoutesByTo {
   '/addPost': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
   '/postDrafts': typeof PostDraftsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
-  '/publicProfile': typeof PublicProfileRoute
+  '/public-profile': typeof PublicProfileRoute
+  '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
+  '/terms': typeof TermsRoute
   '/userFollowing': typeof UserFollowingRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
 }
@@ -134,13 +174,18 @@ export interface FileRoutesById {
   '/addPost': typeof AddPostRoute
   '/browseHistory': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
   '/pin': typeof PinRoute
   '/postDrafts': typeof PostDraftsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
-  '/publicProfile': typeof PublicProfileRoute
+  '/public-profile': typeof PublicProfileRoute
+  '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
+  '/terms': typeof TermsRoute
   '/userFollowing': typeof UserFollowingRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
 }
@@ -152,13 +197,18 @@ export interface FileRouteTypes {
     | '/addPost'
     | '/browseHistory'
     | '/faq'
+    | '/forgot-password'
+    | '/login'
     | '/noti'
     | '/notifications'
     | '/pin'
     | '/postDrafts'
+    | '/privacy-policy'
     | '/profile'
-    | '/publicProfile'
+    | '/public-profile'
+    | '/register'
     | '/setting'
+    | '/terms'
     | '/userFollowing'
     | '/settings/notifications'
   fileRoutesByTo: FileRoutesByTo
@@ -168,13 +218,18 @@ export interface FileRouteTypes {
     | '/addPost'
     | '/browseHistory'
     | '/faq'
+    | '/forgot-password'
+    | '/login'
     | '/noti'
     | '/notifications'
     | '/pin'
     | '/postDrafts'
+    | '/privacy-policy'
     | '/profile'
-    | '/publicProfile'
+    | '/public-profile'
+    | '/register'
     | '/setting'
+    | '/terms'
     | '/userFollowing'
     | '/settings/notifications'
   id:
@@ -184,13 +239,18 @@ export interface FileRouteTypes {
     | '/addPost'
     | '/browseHistory'
     | '/faq'
+    | '/forgot-password'
+    | '/login'
     | '/noti'
     | '/notifications'
     | '/pin'
     | '/postDrafts'
+    | '/privacy-policy'
     | '/profile'
-    | '/publicProfile'
+    | '/public-profile'
+    | '/register'
     | '/setting'
+    | '/terms'
     | '/userFollowing'
     | '/settings/notifications'
   fileRoutesById: FileRoutesById
@@ -201,13 +261,18 @@ export interface RootRouteChildren {
   AddPostRoute: typeof AddPostRoute
   BrowseHistoryRoute: typeof BrowseHistoryRoute
   FaqRoute: typeof FaqRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  LoginRoute: typeof LoginRoute
   NotiRoute: typeof NotiRoute
   NotificationsRoute: typeof NotificationsRoute
   PinRoute: typeof PinRoute
   PostDraftsRoute: typeof PostDraftsRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProfileRoute: typeof ProfileRoute
   PublicProfileRoute: typeof PublicProfileRoute
+  RegisterRoute: typeof RegisterRoute
   SettingRoute: typeof SettingRoute
+  TermsRoute: typeof TermsRoute
   UserFollowingRoute: typeof UserFollowingRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
 }
@@ -221,6 +286,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UserFollowingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/setting': {
       id: '/setting'
       path: '/setting'
@@ -228,10 +300,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/publicProfile': {
-      id: '/publicProfile'
-      path: '/publicProfile'
-      fullPath: '/publicProfile'
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/public-profile': {
+      id: '/public-profile'
+      path: '/public-profile'
+      fullPath: '/public-profile'
       preLoaderRoute: typeof PublicProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
@@ -240,6 +319,13 @@ declare module '@tanstack/react-router' {
       path: '/profile'
       fullPath: '/profile'
       preLoaderRoute: typeof ProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/postDrafts': {
@@ -268,6 +354,20 @@ declare module '@tanstack/react-router' {
       path: '/noti'
       fullPath: '/noti'
       preLoaderRoute: typeof NotiRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -321,13 +421,18 @@ const rootRouteChildren: RootRouteChildren = {
   AddPostRoute: AddPostRoute,
   BrowseHistoryRoute: BrowseHistoryRoute,
   FaqRoute: FaqRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  LoginRoute: LoginRoute,
   NotiRoute: NotiRoute,
   NotificationsRoute: NotificationsRoute,
   PinRoute: PinRoute,
   PostDraftsRoute: PostDraftsRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProfileRoute: ProfileRoute,
   PublicProfileRoute: PublicProfileRoute,
+  RegisterRoute: RegisterRoute,
   SettingRoute: SettingRoute,
+  TermsRoute: TermsRoute,
   UserFollowingRoute: UserFollowingRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
 }
