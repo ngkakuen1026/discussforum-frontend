@@ -45,9 +45,9 @@ const NavIcons = ({
 }: NavIconProps) => {
   return (
     <div className="flex gap-4 items-center justify-around">
-      <button title="Category List" onClick={handleSideNavToggle}>
+      {/* <button title="Category List" onClick={handleSideNavToggle}>
         <LayoutGrid className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
-      </button>
+      </button> */}
 
       {isLoggedIn ? (
         <>

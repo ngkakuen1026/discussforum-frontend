@@ -76,9 +76,8 @@ export default function UserDropdown({
                         >
                           <img
                             src={
-                              user!.profile_image
-                                ? user!.profile_image
-                                : "../src/assets/Images/default_user_icon.png"
+                              user!.profile_image ||
+                              "../src/assets/Images/default_user_icon.png"
                             }
                             alt="user-icon"
                             className="w-12 h-12 mr-2 rounded-full object-cover border-2"
@@ -154,7 +153,7 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link to="/">
+                      <Link to="/user-following">
                         <button
                           className={`${
                             active ? "opacity-75 cursor-pointer" : "text-white"
@@ -173,7 +172,7 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link to="/browseHistory">
+                      <Link to="/browse-history">
                         <button
                           className={`${
                             active ? "opacity-75 cursor-pointer" : "text-white"

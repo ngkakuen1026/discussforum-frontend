@@ -49,7 +49,7 @@ const SideNavBar = ({ onClose }: SideNavBarProps) => {
     (parent) => {
       const children = allCategories
         .filter((cat) => cat.parent_id === parent.id)
-        .map((cat) => cat.name);
+        .map((cat) => ({ id: cat.id, name: cat.name }));
 
       return {
         id: parent.id,
@@ -134,7 +134,7 @@ const SideNavBar = ({ onClose }: SideNavBarProps) => {
                       key={`${parent.id}-${index}`}
                       className="p-2.5 cursor-pointer rounded-xl text-left text-sm text-white hover:bg-cyan-700 hover:text-gray-300 transition-all"
                     >
-                      {child}
+                      {child.name}
                     </div>
                   ))}
                 </div>

@@ -81,7 +81,7 @@ const TopNavbar = () => {
   };
 
   return (
-    <div className="px-8 py-2 flex gap-4 items-center justify-evenly bg-[#0E1113]">
+    <div className="px-8 py-2 flex gap-4 items-center justify-evenly bg-[#0E1113] border-b border-gray-700">
       <NavTitle />
       <SearchBar />
       <NavIcons
