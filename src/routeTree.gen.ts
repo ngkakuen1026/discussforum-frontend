@@ -16,7 +16,7 @@ import { Route as RegisterRouteImport } from './routes/register'
 import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PostDraftsRouteImport } from './routes/post-drafts'
-import { Route as PinRouteImport } from './routes/pin'
+import { Route as PinsRouteImport } from './routes/pins'
 import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as NotiRouteImport } from './routes/noti'
 import { Route as LoginRouteImport } from './routes/login'
@@ -65,9 +65,9 @@ const PostDraftsRoute = PostDraftsRouteImport.update({
   path: '/post-drafts',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PinRoute = PinRouteImport.update({
-  id: '/pin',
-  path: '/pin',
+const PinsRoute = PinsRouteImport.update({
+  id: '/pins',
+  path: '/pins',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NotificationsRoute = NotificationsRouteImport.update({
@@ -141,7 +141,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
-  '/pin': typeof PinRoute
+  '/pins': typeof PinsRoute
   '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
@@ -163,7 +163,7 @@ export interface FileRoutesByTo {
   '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
-  '/pin': typeof PinRoute
+  '/pins': typeof PinsRoute
   '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
@@ -186,7 +186,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
   '/notifications': typeof NotificationsRoute
-  '/pin': typeof PinRoute
+  '/pins': typeof PinsRoute
   '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/profile': typeof ProfileRoute
@@ -210,7 +210,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/noti'
     | '/notifications'
-    | '/pin'
+    | '/pins'
     | '/post-drafts'
     | '/privacy-policy'
     | '/profile'
@@ -232,7 +232,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/noti'
     | '/notifications'
-    | '/pin'
+    | '/pins'
     | '/post-drafts'
     | '/privacy-policy'
     | '/profile'
@@ -254,7 +254,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/noti'
     | '/notifications'
-    | '/pin'
+    | '/pins'
     | '/post-drafts'
     | '/privacy-policy'
     | '/profile'
@@ -277,7 +277,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   NotiRoute: typeof NotiRoute
   NotificationsRoute: typeof NotificationsRoute
-  PinRoute: typeof PinRoute
+  PinsRoute: typeof PinsRoute
   PostDraftsRoute: typeof PostDraftsRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProfileRoute: typeof ProfileRoute
@@ -341,11 +341,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostDraftsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/pin': {
-      id: '/pin'
-      path: '/pin'
-      fullPath: '/pin'
-      preLoaderRoute: typeof PinRouteImport
+    '/pins': {
+      id: '/pins'
+      path: '/pins'
+      fullPath: '/pins'
+      preLoaderRoute: typeof PinsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/notifications': {
@@ -445,7 +445,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   NotiRoute: NotiRoute,
   NotificationsRoute: NotificationsRoute,
-  PinRoute: PinRoute,
+  PinsRoute: PinsRoute,
   PostDraftsRoute: PostDraftsRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProfileRoute: ProfileRoute,

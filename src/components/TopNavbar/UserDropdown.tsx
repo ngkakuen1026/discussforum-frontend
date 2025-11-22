@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Fragment, type RefObject } from "react";
 import type { UserType } from "../../types/userTypes";
+import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
 
 interface UserDropdownProps {
   userMenuRef: RefObject<HTMLDivElement | null>;
@@ -44,11 +45,7 @@ export default function UserDropdown({
           >
             <Menu.Button className="cursor-pointer inline-flex w-full justify-center rounded-md px-4 py-2 font-medium text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75">
               <img
-                src={
-                  user!.profile_image
-                    ? user!.profile_image
-                    : "../src/assets/Images/default_user_icon.png"
-                }
+                src={getUserAvatar(user!)}
                 alt="user-icon"
                 className="w-12 h-12 rounded-full object-cover border-white border-2"
               />
@@ -75,16 +72,15 @@ export default function UserDropdown({
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <img
-                            src={
-                              user!.profile_image ||
-                              "../src/assets/Images/default_user_icon.png"
-                            }
+                            src={getUserAvatar(user!)}
                             alt="user-icon"
                             className="w-12 h-12 mr-2 rounded-full object-cover border-2"
                           />
                           <div className="grid text-left">
                             <span>Edit Profile</span>
-                            <span className="text-gray-300">
+                            <span
+                              className={`font-bold ${getUsernameColor(user!)}`}
+                            >
                               {user!.username}
                             </span>
                           </div>
@@ -99,7 +95,7 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link to="/">
+                      <Link to="/" search={{ categoryId: 0 }} replace={true}>
                         <button
                           className={`${
                             active ? "opacity-75 cursor-pointer" : "text-white"
@@ -115,7 +111,10 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link to="/public-profile">
+                      <Link
+                        to="/public-profile/user/$userId"
+                        params={{ userId: user!.id.toString() }}
+                      >
                         <button
                           className={`${
                             active ? "opacity-75 cursor-pointer" : "text-white"
@@ -191,7 +190,7 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link to="/pin">
+                      <Link to="/pins">
                         <button
                           className={`${
                             active ? "opacity-75 cursor-pointer" : "text-white"
@@ -201,7 +200,7 @@ export default function UserDropdown({
                             className="mr-2 h-5 w-5 hover:text-red"
                             aria-hidden="true"
                           />
-                          Pin
+                          Pinned Posts
                         </button>
                       </Link>
                     )}

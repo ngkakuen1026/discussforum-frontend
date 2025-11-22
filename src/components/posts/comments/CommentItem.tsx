@@ -13,6 +13,7 @@ import type { VoteType } from "../../../types/voteType";
 import { useNavigate } from "@tanstack/react-router";
 import { isAxiosError } from "axios";
 import { toast } from "sonner";
+import { getUserAvatar, getUsernameColor } from "../../../utils/userUtils";
 
 interface CommentItemProps {
   comment: CommentWithRepliesType;
@@ -24,13 +25,16 @@ const CommentItem = ({ comment, depth, floorNumber }: CommentItemProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { data: votes = [] } = useQuery({
+  const { data: voteData } = useQuery({
     queryKey: ["comment-votes", comment.id],
     queryFn: async () => {
       const res = await authAxios.get(`${commentsAPI.url}/votes/${comment.id}`);
-      return res.data.votes;
+      return res.data;
     },
   });
+
+  const votes = voteData?.votes || [];
+  const userVote = voteData?.user_vote;
 
   const upvote = useMutation({
     mutationFn: () =>
@@ -42,8 +46,9 @@ const CommentItem = ({ comment, depth, floorNumber }: CommentItemProps) => {
     onError: (error) => {
       if (isAxiosError(error)) {
         const status = error.response?.status;
-        if (status === 403) {
-          toast.error("You have already voted on this comment.");
+        switch (status) {
+          case 403:
+            toast.error("You have already voted on this comment.");
         }
       }
     },
@@ -68,21 +73,10 @@ const CommentItem = ({ comment, depth, floorNumber }: CommentItemProps) => {
     },
   });
 
-  const upvotes = votes.find((v: VoteType) => v.vote_type === 1)?.count || 0;
-  const downvotes = votes.find((v: VoteType) => v.vote_type === -1)?.count || 0;
-
-  const getUsernameColor = () => {
-    if (comment.commenter_is_admin) return "text-yellow-300";
-    switch (comment.commenter_gender) {
-      case "Male":
-        return "text-blue-400";
-      case "Female":
-        return "text-pink-400";
-      case "Prefer Not to Say":
-      default:
-        return "text-gray-300";
-    }
-  };
+  const commentUpvotes =
+    votes.find((v: VoteType) => v.vote_type === 1)?.count || 0;
+  const commentDownvotes =
+    votes.find((v: VoteType) => v.vote_type === -1)?.count || 0;
 
   return (
     <div
@@ -93,16 +87,13 @@ const CommentItem = ({ comment, depth, floorNumber }: CommentItemProps) => {
         <div className="w-3/12">
           <div className="flex flex-col items-center py-6">
             <img
-              src={
-                comment.commenter_profile_image ||
-                "../src/assets/Images/default_user_icon.png"
-              }
+              src={getUserAvatar(comment)}
               alt={comment.commenter_username}
               className="w-36 h-36 rounded-full object-cover border-4 border-gray-700 shadow-lg"
             />
             <div className="mt-6 text-left w-full pl-8">
               <p
-                className={`font-bold text-xl ${getUsernameColor()} flex items-center gap-2`}
+                className={`font-bold text-xl ${getUsernameColor(comment)} flex items-center gap-2`}
                 title="View User Profile"
               >
                 <span
@@ -177,15 +168,34 @@ const CommentItem = ({ comment, depth, floorNumber }: CommentItemProps) => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => upvote.mutate()}
-                className="flex items-center gap-2 px-3 py-2 text-green-400 rounded-full hover:bg-green-900/50 transition font-medium"
+                disabled={upvote.isPending || downvote.isPending}
+                className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all font-medium min-w-20 justify-center ${
+                  userVote === 1
+                    ? "bg-green-900/80 text-green-400 ring-2 ring-green-500 shadow-lg shadow-green-500/20 cursor-not-allowed"
+                    : "text-green-400 hover:bg-green-900/40"
+                } ${userVote === -1 ? "cursor-not-allowed" : ""}`}
               >
-                <ThumbsUp size={18} /> {upvotes}
+                <ThumbsUp
+                  size={18}
+                  className={`transition-all ${userVote === 1 ? "fill-green-400" : "fill-none"}`}
+                />
+                <span className="tabular-nums">{commentUpvotes}</span>
               </button>
+
               <button
                 onClick={() => downvote.mutate()}
-                className="flex items-center gap-2 px-3 py-2  text-red-400 rounded-full hover:bg-red-900/50 transition font-medium"
+                disabled={upvote.isPending || downvote.isPending}
+                className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all font-medium min-w-20 justify-center ${
+                  userVote === -1
+                    ? "bg-red-900/80 text-red-400 ring-2 ring-red-500 shadow-lg shadow-red-500/20 cursor-not-allowed"
+                    : "text-red-400 hover:bg-red-900/40"
+                } ${userVote === 1 ? "cursor-not-allowed" : ""}`}
               >
-                <ThumbsDown size={18} /> {downvotes}
+                <ThumbsDown
+                  size={18}
+                  className={`transition-all ${userVote === -1 ? "fill-red-400" : "fill-none"}`}
+                />
+                <span className="tabular-nums">{commentDownvotes}</span>
               </button>
             </div>
           </div>

@@ -9,6 +9,7 @@ import type { categoryType } from "../../types/categoryTypes";
 import { formatDate } from "../../utils/dateUtils";
 import type { VoteType } from "../../types/voteType";
 import { useState } from "react";
+import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
 
 interface PostListProps {
   categoryId: number | null;
@@ -88,20 +89,6 @@ const PostList = ({ categoryId }: PostListProps) => {
         const upvotes = votes.find((v) => v.vote_type === 1)?.count || "0";
         const downvotes = votes.find((v) => v.vote_type === -1)?.count || "0";
         const categoryName = categoryMap[post.category_id] || "Uncategorized";
-
-        const getUsernameColor = () => {
-          if (post.author_is_admin) return "text-yellow-400";
-          switch (post.author_gender) {
-            case "Male":
-              return "text-blue-400";
-            case "Female":
-              return "text-pink-400";
-            case "Prefer Not to Say":
-            default:
-              return "text-gray-300";
-          }
-        };
-
         return (
           <div
             key={post.id}
@@ -110,17 +97,14 @@ const PostList = ({ categoryId }: PostListProps) => {
             <div className="flex-1 flex flex-col justify-between min-h-32">
               <div className="flex items-center gap-3">
                 <img
-                  src={
-                    post.author_profile_image ||
-                    "../src/assets/Images/default_user_icon.png"
-                  }
+                  src={getUserAvatar(post)}
                   alt="author"
                   className="w-12 h-12 rounded-full object-cover shrink-0"
                 />
 
                 <div>
                   <p
-                    className={`font-bold ${getUsernameColor()} flex items-center gap-2`}
+                    className={`font-bold ${getUsernameColor(post)} flex items-center gap-2`}
                   >
                     {post.author_username}
                     {post.author_is_admin && (
@@ -168,13 +152,17 @@ const PostList = ({ categoryId }: PostListProps) => {
             </div>
 
             <div className="flex justify-start md:justify-end items-start">
-              <span
-                className="text-sm bg-gray-700 text-cyan-400 border border-cyan-400/30 px-3 py-1.5 rounded-full hover:bg-gray-500 transition whitespace-nowrap cursor-pointer"
+              <button
                 onClick={() => handleCategoryClick(post.category_id)}
-                title={`Visit ${categoryName} `}
+                className="relative group"
               >
-                {categoryName}
-              </span>
+                <span className="text-sm bg-gray-700 text-cyan-400 border border-cyan-400/30 px-3 py-1.5 rounded-full hover:bg-gray-500 transition whitespace-nowrap cursor-pointer">
+                  {categoryName}
+                </span>
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-10">
+                  Visit {categoryName}
+                </span>
+              </button>
             </div>
           </div>
         );

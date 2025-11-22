@@ -42,7 +42,7 @@ function RouteComponent() {
     onSuccess: async (data) => {
       console.log("Login successful:", data);
       await checkAuth();
-      navigate({ to: "/" });
+      navigate({ to: "/", search: { categoryId: 0 }, replace: true });
     },
     onError: (error: unknown) => {
       let message = "Login failed. Please try again";
@@ -235,8 +235,13 @@ function RouteComponent() {
                 </p>
                 <hr className="border-t border-gray-400" />
                 <p className="text-center text-gray-500 text-sm mt-10 ">
-                  Or{" "}
-                  <Link to="/" className="text-white hover:underline">
+                  Or
+                  <Link
+                    to="/"
+                    search={{ categoryId: 0 }}
+                    replace={true}
+                    className="text-white hover:underline"
+                  >
                     continue
                   </Link>{" "}
                   as visitor
