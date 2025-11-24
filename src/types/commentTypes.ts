@@ -5,14 +5,20 @@ export interface CommentType {
   content: string;
   created_at: string;
   parent_comment_id: number | null;
+
   commenter_id: number;
   commenter_username: string;
-  commenter_profile_image: string;
+  commenter_profile_image: string | null;
   commenter_is_admin: boolean;
   commenter_registration_date: string;
-  commenter_gender: "Male" | "Female" | "Prefer Not to Say";
+  commenter_gender: "Male" | "Female" | "Prefer Not to Say" | null;
+
+  floor_number: string;
+  parent_floor_number: string | null;
+  parent_comment_content: string | null;
+  parent_commenter_username: string | null;
+  parent_commenter_is_admin: boolean;
+  parent_commenter_gender: "Male" | "Female" | "Prefer Not to Say" | null;
 }
 
-export interface CommentWithRepliesType extends CommentType {
-  replies: CommentWithRepliesType[];
-}
+export type CommentWithRepliesType = CommentType;

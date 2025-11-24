@@ -235,7 +235,7 @@ function RouteComponent() {
                 </p>
                 <hr className="border-t border-gray-400" />
                 <p className="text-center text-gray-500 text-sm mt-10 ">
-                  Or
+                  Or{" "}
                   <Link
                     to="/"
                     search={{ categoryId: 0 }}

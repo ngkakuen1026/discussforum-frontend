@@ -18,9 +18,14 @@ import type { VoteType } from "../../types/voteType";
 import { toast } from "sonner";
 import { isAxiosError } from "axios";
 import type { BookmarkType } from "../../types/bookmarkTypes";
-import { getUsernameColor } from "../../utils/userUtils";
+import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
+import { useState } from "react";
+import CommentPopup from "./CommentPopup";
+import { useAuthAction } from "../../utils/authUtils";
+import ReportPopup from "./ReportPopup";
 
 const PostDetail = () => {
+  const { withAuth } = useAuthAction();
   const { postId } = useParams({ from: "/posts/$postId" });
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -142,6 +147,9 @@ const PostDetail = () => {
     }
   };
 
+  const [showCommentPopup, setShowCommentPopup] = useState(false);
+  const [showReportPopup, setShowReportPopup] = useState(false);
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center h-96">
@@ -169,34 +177,35 @@ const PostDetail = () => {
   }
 
   return (
-    <div className="container mx-auto pt-6">
-      <div className="flex flex-row gap-12">
-        <div className="w-3/12">
+    <div className="container mx-auto pt-6 px-1">
+      <div className="grid grid-cols-12 gap-8">
+        <div className="col-span-3">
           <div className="flex flex-col items-center py-6">
             <img
-              src={
-                post.author_profile_image ||
-                "../src/assets/Images/default_user_icon.png"
-              }
+              src={getUserAvatar(post)}
               alt={post.author_username}
               className="w-36 h-36 rounded-full object-cover border-4 border-gray-700 shadow-lg"
             />
             <div className="mt-6 text-left w-full pl-8">
               <p
                 className={`font-bold text-xl ${getUsernameColor(post)} flex items-center gap-2`}
-                title="View User Profile"
               >
-                <span
+                <button
                   onClick={() =>
                     navigate({
                       to: "/public-profile/user/$userId",
                       params: { userId: post.author_id.toString() },
                     })
                   }
-                  className="cursor-pointer hover:opacity-80 transition"
+                  className="relative group cursor-pointer"
                 >
-                  {post.author_username}
-                </span>
+                  <span className="hover:opacity-80 transition">
+                    {post.author_username}
+                  </span>
+                  <span className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
+                    View {post.author_username}'s profile
+                  </span>
+                </button>
                 {post.author_is_admin && (
                   <span className="text-xs bg-yellow-600 px-3 py-1 rounded-lg font-medium">
                     Admin
@@ -211,13 +220,13 @@ const PostDetail = () => {
           </div>
         </div>
 
-        {/* Post Content */}
-        <div className="w-9/12 flex flex-col justify-between">
-          {/* Post Title and Icon Button Group */}
-          <div className="flex">
+        <div className="col-span-9 flex flex-col">
+          <div className="flex items-start justify-between mb-6">
             <div>
-              <h1 className="text-2xl text-gray-200 font-bold">{post.title}</h1>
-              <p className="text-sm text-gray-400">
+              <h1 className="text-2xl font-bold text-gray-200 leading-tight">
+                {post.title}
+              </h1>
+              <p className="text-sm text-gray-400 mt-1">
                 #1 Posted on: {formatDate(post.created_at)} (
                 {formatDistanceToNow(new Date(post.created_at), {
                   addSuffix: true,
@@ -226,110 +235,128 @@ const PostDetail = () => {
               </p>
             </div>
 
-            <div className="ml-auto flex gap-2 items-center">
+            <div className="flex gap-2 text-gray-400">
               <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleBookmark();
-                }}
+                onClick={withAuth(toggleBookmark)}
                 disabled={
                   bookmarkMutation.isPending ||
                   unbookmarkMutation.isPending ||
                   bookmarksLoading
                 }
-                className="relative group transition-all"
+                className="relative group cursor-pointer"
               >
                 {isBookmarked ? (
                   <Pin
                     size={18}
-                    className="fill-yellow-500 text-yellow-500 drop-shadow-md transition-all cursor-pointer"
+                    className="fill-yellow-500 text-yellow-500 drop-shadow-md"
                   />
                 ) : (
                   <Pin
                     size={18}
-                    className="text-gray-400 hover:text-yellow-500 hover:fill-yellow-500/30 transition-all cursor-pointer"
+                    className="hover:text-yellow-500 hover:fill-yellow-500/30 transition"
                   />
                 )}
-                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-10">
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
                   {isBookmarked
-                    ? "Bookmarked ✓ (click to remove)"
+                    ? "Bookmarked (click to remove)"
                     : "Click to bookmark"}
                 </span>
               </button>
-              <button className="relative group transition-all">
+              <button
+                onClick={withAuth(() => setShowCommentPopup(true))}
+                className="relative group cursor-pointer"
+              >
                 <MessageCircle
                   size={18}
-                  className="text-gray-400 hover:text-gray-500 transition cursor-pointer"
+                  className="hover:text-cyan-500 transition"
                 />
-                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-10">
-                  Reply to Post
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
+                  Add a comment
                 </span>
               </button>
-              <button className="relative group transition-all">
-                <Share2
-                  size={18}
-                  className="text-gray-400 hover:text-white transition cursor-pointer"
-                />
-                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-10">
+              <button className="relative group cursor-pointer">
+                <Share2 size={18} className="hover:text-white transition" />
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
                   Share Post
                 </span>
               </button>
-              <button className="relative group transition-all">
-                <Flag
-                  size={18}
-                  className="text-gray-400 hover:text-red-500 transition cursor-pointer"
-                />
-                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-10">
+              <button
+                onClick={withAuth(() => setShowReportPopup(true))}
+                className="relative group cursor-pointer"
+              >
+                <Flag size={18} className="hover:text-red-500 transition" />
+                <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
                   Report Content
                 </span>
               </button>
             </div>
           </div>
 
-          <div className="mt-4 min-h-64">
-            <p className="whitespace-pre-wrap text-white">{post.content}</p>
+          <div className="flex-1 mb-8">
+            <p className="whitespace-pre-wrap break-all text-white text-base leading-relaxed">
+              {post.content}
+            </p>
           </div>
 
-          <div className="">
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => upvote.mutate()}
-                disabled={upvote.isPending || downvote.isPending}
-                className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all font-medium min-w-20 justify-center ${
-                  userVote === 1
-                    ? "bg-green-900/80 text-green-400 ring-2 ring-green-500 shadow-lg shadow-green-500/20 cursor-not-allowed"
-                    : "text-green-400 hover:bg-green-900/40"
-                } ${userVote === -1 ? "cursor-not-allowed" : ""}`}
-              >
-                <ThumbsUp
-                  size={18}
-                  className={`transition-all ${userVote === 1 ? "fill-green-400" : "fill-none"}`}
-                />
-                <span className="tabular-nums">{postUpvotes}</span>
-              </button>
+          <div className="flex items-center gap-3 mt-auto">
+            <button
+              onClick={withAuth(() => upvote.mutate())}
+              disabled={upvote.isPending || downvote.isPending}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all font-medium ${
+                userVote === 1
+                  ? "bg-green-900/80 text-green-400 ring-2 ring-green-500 shadow-lg shadow-green-500/20 cursor-not-allowed"
+                  : "text-green-400 hover:bg-green-900/40"
+              } ${userVote === -1 ? "cursor-not-allowed opacity-70" : ""}`}
+            >
+              <ThumbsUp
+                size={18}
+                className={userVote === 1 ? "fill-green-400" : ""}
+              />
+              <span className="tabular-nums">{postUpvotes}</span>
+            </button>
 
-              <button
-                onClick={() => downvote.mutate()}
-                disabled={upvote.isPending || downvote.isPending}
-                className={`flex items-center gap-2 px-3 py-2 rounded-full transition-all font-medium min-w-20 justify-center ${
-                  userVote === -1
-                    ? "bg-red-900/80 text-red-400 ring-2 ring-red-500 shadow-lg shadow-red-500/20 cursor-not-allowed"
-                    : "text-red-400 hover:bg-red-900/40"
-                } ${userVote === 1 ? "cursor-not-allowed" : ""}`}
-              >
-                <ThumbsDown
-                  size={18}
-                  className={`transition-all ${userVote === -1 ? "fill-red-400" : "fill-none"}`}
-                />
-                <span className="tabular-nums">{postDownvotes}</span>
-              </button>
-            </div>
+            <button
+              onClick={withAuth(() => downvote.mutate())}
+              disabled={upvote.isPending || downvote.isPending}
+              className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all font-medium ${
+                userVote === -1
+                  ? "bg-red-900/80 text-red-400 ring-2 ring-red-500 shadow-lg shadow-red-500/20 cursor-not-allowed"
+                  : "text-red-400 hover:bg-red-900/40"
+              } ${userVote === 1 ? "cursor-not-allowed opacity-70" : ""}`}
+            >
+              <ThumbsDown
+                size={18}
+                className={userVote === -1 ? "fill-red-400" : ""}
+              />
+              <span className="tabular-nums">{postDownvotes}</span>
+            </button>
           </div>
         </div>
       </div>
 
-      {/* Comments Section */}
-      <CommentsSection postId={postId} />
+      <div className="mt-12 pt-8">
+        <CommentsSection postId={postId} />
+      </div>
+
+      {/* Comment Popup */}
+      {showCommentPopup && (
+        <CommentPopup
+          postId={postId}
+          onClose={() => setShowCommentPopup(false)}
+        />
+      )}
+
+      {/* Report Popup */}
+      {showReportPopup && (
+        <ReportPopup
+          contentId={post.id}
+          contentType={"post"}
+          onClose={() => setShowReportPopup(false)}
+          onSuccess={() => {
+            toast.info("Thank you. Our team will review this report.");
+          }}
+        />
+      )}
     </div>
   );
 };

@@ -1,13 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
-import CommentTree from "./CommentTree";
 import { commentsAPI } from "../../../services/http-api";
 import authAxios from "../../../services/authAxios";
+import CommentList from "./CommentList";
+import { useState } from "react";
+import CommentPopup from "../CommentPopup";
 
 interface CommentsSectionProps {
   postId: string | number;
 }
 
 const CommentsSection = ({ postId }: CommentsSectionProps) => {
+  const [showCommentPopup, setShowCommentPopup] = useState(false);
+
   const {
     data: comments = [],
     isLoading,
@@ -41,10 +45,19 @@ const CommentsSection = ({ postId }: CommentsSectionProps) => {
       {comments.length === 0 ? (
         <div className="text-center py-20 text-gray-500">
           <p className="text-xl">No comments yet.</p>
-          <p className="text-sm mt-2">Be the first to share your thoughts!</p>
+          <p className="text-sm mt-2 cursor-pointer hover:underline" onClick={() => setShowCommentPopup(true)}>
+            Be the first to share your thoughts!
+          </p>
         </div>
       ) : (
-        <CommentTree comments={comments} />
+        <CommentList comments={comments} />
+      )}
+
+      {showCommentPopup && (
+        <CommentPopup
+          postId={postId}
+          onClose={() => setShowCommentPopup(false)}
+        />
       )}
     </section>
   );

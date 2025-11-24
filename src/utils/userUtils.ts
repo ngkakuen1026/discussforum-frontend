@@ -1,14 +1,15 @@
-// src/utils/userUtils.ts
 export type AuthorLike = {
   // Admin
   is_admin?: boolean | null;
   author_is_admin?: boolean | null;
   commenter_is_admin?: boolean | null;
+  parent_commenter_is_admin?: boolean | null;
 
   // Gender
   gender?: string | null;
   author_gender?: string | null;
   commenter_gender?: string | null;
+  parent_commenter_gender?: string | null;
 
   // Profile image
   profile_image?: string | null;
@@ -20,7 +21,8 @@ export const getUsernameColor = (author: AuthorLike): string => {
   const isAdmin =
     author.is_admin ??
     author.author_is_admin ??
-    author.commenter_is_admin;
+    author.commenter_is_admin ??
+    false;
 
   if (isAdmin) return "text-yellow-400";
 
@@ -52,6 +54,7 @@ export const getUserAvatar = (author: AuthorLike): string => {
     author.gender ??
     author.author_gender ??
     author.commenter_gender ??
+    author.parent_commenter_gender ??
     "Prefer Not to Say";
 
   switch (gender) {
