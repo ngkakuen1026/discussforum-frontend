@@ -16,6 +16,7 @@ export interface CommentType {
   floor_number: string;
   parent_floor_number: string | null;
   parent_comment_content: string | null;
+  parent_comment_created_at: string;
   parent_commenter_username: string | null;
   parent_commenter_is_admin: boolean;
   parent_commenter_gender: "Male" | "Female" | "Prefer Not to Say" | null;

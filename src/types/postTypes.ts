@@ -6,6 +6,7 @@ export interface PostType {
     created_at: string;
     category_id: number;
     pending_tag_name: string | null;
+    views: number;
     author_id: number;
     author_username: string;
     author_profile_image: string;

@@ -59,3 +59,7 @@ export const bookmarksAPI = {
 export const tagsAPI = {
     url: `${baseURL.url}/tags`
 };
+
+export const imagesAPI = {
+    url: `${baseURL.url}/images`
+}

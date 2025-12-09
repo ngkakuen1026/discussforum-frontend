@@ -1,56 +1,56 @@
-import { useQuery } from "@tanstack/react-query";
-import { commentsAPI } from "../../../services/http-api";
-import authAxios from "../../../services/authAxios";
 import CommentList from "./CommentList";
 import { useState } from "react";
 import CommentPopup from "../CommentPopup";
+import type { CommentWithRepliesType } from "../../../types/commentTypes";
+import { useAuthAction } from "../../../utils/authUtils";
 
 interface CommentsSectionProps {
+  comments: CommentWithRepliesType[];
+  currentPage: number;
+  COMMENTS_PER_PAGE: number;
   postId: string | number;
 }
 
-const CommentsSection = ({ postId }: CommentsSectionProps) => {
+const CommentsSection = ({
+  comments,
+  currentPage,
+  COMMENTS_PER_PAGE,
+  postId,
+}: CommentsSectionProps) => {
   const [showCommentPopup, setShowCommentPopup] = useState(false);
+  const { withAuth } = useAuthAction();
 
-  const {
-    data: comments = [],
-    isLoading,
-    isError,
-  } = useQuery({
-    queryKey: ["comments", postId],
-    queryFn: async () => {
-      const res = await authAxios.get(
-        `${commentsAPI.url}/${postId}/all-comments`
-      );
-      return res.data.comments;
-    },
-  });
+  const paginatedComments = (() => {
+    if (!comments || comments.length === 0) return [];
 
-  if (isLoading) {
-    return (
-      <div className="text-center py-12 text-gray-400">Loading comments...</div>
-    );
-  }
+    if (currentPage === 1) {
+      return comments.slice(0, COMMENTS_PER_PAGE - 1);
+    }
 
-  if (isError) {
-    return (
-      <div className="text-center py-12 text-red-500">
-        Failed to load comments
-      </div>
-    );
-  }
+    const start =
+      (currentPage - 2) * COMMENTS_PER_PAGE + (COMMENTS_PER_PAGE - 1);
+    return comments.slice(start, start + COMMENTS_PER_PAGE);
+  })();
 
   return (
-    <section className="mt-16">
-      {comments.length === 0 ? (
+    <section>
+      {paginatedComments.length === 0 ? (
         <div className="text-center py-20 text-gray-500">
-          <p className="text-xl">No comments yet.</p>
-          <p className="text-sm mt-2 cursor-pointer hover:underline" onClick={() => setShowCommentPopup(true)}>
-            Be the first to share your thoughts!
-          </p>
+          <p className="text-lg">No comments on this page.</p>
+          Be the{" "}
+          <button
+            onClick={withAuth(() => setShowCommentPopup(true))}
+            className="text-white font-medium hover:underline focus:underline outline-none cursor-pointer"
+          >
+            first
+          </button>{" "}
+          to comment on this post!
         </div>
       ) : (
-        <CommentList comments={comments} />
+        <CommentList
+          comments={paginatedComments}
+          commentsPerPage={COMMENTS_PER_PAGE}
+        />
       )}
 
       {showCommentPopup && (

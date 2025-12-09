@@ -3,14 +3,15 @@ import CommentItem from "./CommentItem";
 
 interface CommentListProps {
   comments: CommentType[];
+  commentsPerPage: number;
 }
 
-const CommentList = ({ comments }: CommentListProps) => {
+const CommentList = ({ comments, commentsPerPage }: CommentListProps) => {
   return (
-    <div className="space-y-12">
+    <div className="space-y-14">
       {comments.map((comment) => (
         <div key={comment.id} id={`comment-${comment.id}`}>
-          <CommentItem comment={comment} />
+          <CommentItem comment={comment} commentsPerPage={commentsPerPage} />
         </div>
       ))}
     </div>

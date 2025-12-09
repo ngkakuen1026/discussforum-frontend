@@ -28,7 +28,10 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
+import { Route as AdminPanelDashboardRouteImport } from './routes/admin-panel/dashboard'
+import { Route as AdminPanelAllPendingTagsRouteImport } from './routes/admin-panel/all-pending-tags'
 import { Route as PublicProfileUserUserIdRouteImport } from './routes/public-profile/user/$userId'
+import { Route as PostsTagTagNameRouteImport } from './routes/posts/tag/$tagName'
 
 const UserFollowingRoute = UserFollowingRouteImport.update({
   id: '/user-following',
@@ -125,9 +128,25 @@ const PostsPostIdRoute = PostsPostIdRouteImport.update({
   path: '/posts/$postId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPanelDashboardRoute = AdminPanelDashboardRouteImport.update({
+  id: '/admin-panel/dashboard',
+  path: '/admin-panel/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPanelAllPendingTagsRoute =
+  AdminPanelAllPendingTagsRouteImport.update({
+    id: '/admin-panel/all-pending-tags',
+    path: '/admin-panel/all-pending-tags',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const PublicProfileUserUserIdRoute = PublicProfileUserUserIdRouteImport.update({
   id: '/public-profile/user/$userId',
   path: '/public-profile/user/$userId',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PostsTagTagNameRoute = PostsTagTagNameRouteImport.update({
+  id: '/posts/tag/$tagName',
+  path: '/posts/tag/$tagName',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -149,8 +168,11 @@ export interface FileRoutesByFullPath {
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
   '/user-following': typeof UserFollowingRoute
+  '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
+  '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/posts/tag/$tagName': typeof PostsTagTagNameRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdRoute
 }
 export interface FileRoutesByTo {
@@ -171,8 +193,11 @@ export interface FileRoutesByTo {
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
   '/user-following': typeof UserFollowingRoute
+  '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
+  '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/posts/tag/$tagName': typeof PostsTagTagNameRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdRoute
 }
 export interface FileRoutesById {
@@ -194,8 +219,11 @@ export interface FileRoutesById {
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
   '/user-following': typeof UserFollowingRoute
+  '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
+  '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/posts/tag/$tagName': typeof PostsTagTagNameRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdRoute
 }
 export interface FileRouteTypes {
@@ -218,8 +246,11 @@ export interface FileRouteTypes {
     | '/setting'
     | '/terms'
     | '/user-following'
+    | '/admin-panel/all-pending-tags'
+    | '/admin-panel/dashboard'
     | '/posts/$postId'
     | '/settings/notifications'
+    | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -240,8 +271,11 @@ export interface FileRouteTypes {
     | '/setting'
     | '/terms'
     | '/user-following'
+    | '/admin-panel/all-pending-tags'
+    | '/admin-panel/dashboard'
     | '/posts/$postId'
     | '/settings/notifications'
+    | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
   id:
     | '__root__'
@@ -262,8 +296,11 @@ export interface FileRouteTypes {
     | '/setting'
     | '/terms'
     | '/user-following'
+    | '/admin-panel/all-pending-tags'
+    | '/admin-panel/dashboard'
     | '/posts/$postId'
     | '/settings/notifications'
+    | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
   fileRoutesById: FileRoutesById
 }
@@ -285,8 +322,11 @@ export interface RootRouteChildren {
   SettingRoute: typeof SettingRoute
   TermsRoute: typeof TermsRoute
   UserFollowingRoute: typeof UserFollowingRoute
+  AdminPanelAllPendingTagsRoute: typeof AdminPanelAllPendingTagsRoute
+  AdminPanelDashboardRoute: typeof AdminPanelDashboardRoute
   PostsPostIdRoute: typeof PostsPostIdRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
+  PostsTagTagNameRoute: typeof PostsTagTagNameRoute
   PublicProfileUserUserIdRoute: typeof PublicProfileUserUserIdRoute
 }
 
@@ -425,11 +465,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsPostIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin-panel/dashboard': {
+      id: '/admin-panel/dashboard'
+      path: '/admin-panel/dashboard'
+      fullPath: '/admin-panel/dashboard'
+      preLoaderRoute: typeof AdminPanelDashboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin-panel/all-pending-tags': {
+      id: '/admin-panel/all-pending-tags'
+      path: '/admin-panel/all-pending-tags'
+      fullPath: '/admin-panel/all-pending-tags'
+      preLoaderRoute: typeof AdminPanelAllPendingTagsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/public-profile/user/$userId': {
       id: '/public-profile/user/$userId'
       path: '/public-profile/user/$userId'
       fullPath: '/public-profile/user/$userId'
       preLoaderRoute: typeof PublicProfileUserUserIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/posts/tag/$tagName': {
+      id: '/posts/tag/$tagName'
+      path: '/posts/tag/$tagName'
+      fullPath: '/posts/tag/$tagName'
+      preLoaderRoute: typeof PostsTagTagNameRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -453,8 +514,11 @@ const rootRouteChildren: RootRouteChildren = {
   SettingRoute: SettingRoute,
   TermsRoute: TermsRoute,
   UserFollowingRoute: UserFollowingRoute,
+  AdminPanelAllPendingTagsRoute: AdminPanelAllPendingTagsRoute,
+  AdminPanelDashboardRoute: AdminPanelDashboardRoute,
   PostsPostIdRoute: PostsPostIdRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
+  PostsTagTagNameRoute: PostsTagTagNameRoute,
   PublicProfileUserUserIdRoute: PublicProfileUserUserIdRoute,
 }
 export const routeTree = rootRouteImport

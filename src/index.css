@@ -10,3 +10,13 @@ body {
   font-weight: 400;
   font-style: normal;
 }
+
+ul {
+  list-style-type: disc;
+  padding-left: 20px;
+}
+
+ol {
+  list-style-type: decimal;
+  padding-left: 20px;
+}

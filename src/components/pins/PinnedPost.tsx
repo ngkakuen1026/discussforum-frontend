@@ -305,6 +305,7 @@ const PinnedPost = () => {
                       navigate({
                         to: "/posts/$postId",
                         params: { postId: bookmark.post_id.toString() },
+                        search: { page: undefined },
                       })
                     }
                   >
