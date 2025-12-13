@@ -155,7 +155,7 @@ const NotiMenu = ({
           </div>
 
           {/* List */}
-          <div className="max-h-96 overflow-y-auto">
+          <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
             {isLoading ? (
               <div className="p-12 text-center">
                 <div className="animate-pulse text-gray-500">
@@ -176,43 +176,52 @@ const NotiMenu = ({
                 {notifications.slice(0, 10).map((noti) => (
                   <li
                     key={noti.id}
-                    className="px-4 py-3 hover:bg-gray-800 transition-colors border-b border-gray-800 last:border-0 flex items-start gap-3 group"
+                    className="group relative py-4 px-4 -mx-4 hover:bg-gray-800/70 transition-colors border-b border-gray-800 last:border-0 cursor-pointer"
                   >
-                    {/* Unread dot */}
-                    {!noti.read && (
-                      <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 shrink-0" />
-                    )}
+                    <div className="absolute inset-0 bg-gray-800/70 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
 
-                    {/* Content */}
-                    <div className="flex-1 min-w-0">
-                      <p
-                        className={`text-sm leading-snug ${
-                          noti.read ? "text-gray-400" : "text-white font-medium"
-                        }`}
+                    <div className="relative flex items-start gap-3">
+                      {!noti.read && (
+                        <div className="w-2 h-2 bg-blue-500 rounded-full mt-2 shrink-0" />
+                      )}
+
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className={`text-sm leading-snug ${
+                            noti.read
+                              ? "text-gray-400"
+                              : "text-white font-medium"
+                          }`}
+                        >
+                          {noti.message}
+                        </p>
+                        <time className="text-xs text-gray-500 block mt-1">
+                          {new Date(noti.created_at).toLocaleDateString(
+                            "en-US",
+                            {
+                              month: "short",
+                              day: "numeric",
+                              hour: "numeric",
+                              minute: "2-digit",
+                            }
+                          )}
+                        </time>
+                      </div>
+
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          deleteNotificationMutation.mutate(noti.id);
+                        }}
+                        className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer mr-2"
+                        disabled={deleteNotificationMutation.isPending}
                       >
-                        {noti.message}
-                      </p>
-                      <time className="text-xs text-gray-500">
-                        {new Date(noti.created_at).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          hour: "numeric",
-                          minute: "2-digit",
-                        })}
-                      </time>
+                        <X
+                          size={14}
+                          className="text-gray-500 hover:text-red-400"
+                        />
+                      </button>
                     </div>
-
-                    {/* Delete button */}
-                    <button
-                      onClick={() => deleteNotificationMutation.mutate(noti.id)}
-                      className="opacity-0 group-hover:opacity-100 transition-opacity p-1 hover:bg-gray-700 rounded"
-                      disabled={deleteNotificationMutation.isPending}
-                    >
-                      <X
-                        size={16}
-                        className="text-gray-500 hover:text-red-400"
-                      />
-                    </button>
                   </li>
                 ))}
               </ul>

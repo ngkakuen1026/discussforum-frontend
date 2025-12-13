@@ -335,7 +335,7 @@ const PostDetail = () => {
               {post.views}
             </div>
             <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
-              {post.views} {post.views > 1 ? "Comments" : "Comment"}
+              {post.views} {post.views > 1 ? "Views" : "View"}
             </span>
           </div>
           <div className="relative group">
@@ -499,8 +499,8 @@ const PostDetail = () => {
                   )}
                   <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
                     {isBookmarked
-                      ? "Bookmarked (click to remove)"
-                      : "Click to bookmark"}
+                      ? "Pinned (click to remove)"
+                      : "Click to pin"}
                   </span>
                 </button>
                 <button

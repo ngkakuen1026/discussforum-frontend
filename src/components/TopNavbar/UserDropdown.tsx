@@ -133,25 +133,6 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
-                      <Link to="/post-drafts">
-                        <button
-                          className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
-                          } group flex w-full items-center rounded-md px-2 py-2 `}
-                        >
-                          <PencilLine
-                            className="mr-2 h-5 w-5 hover:text-red"
-                            aria-hidden="true"
-                          />
-                          Post Drafts
-                        </button>
-                      </Link>
-                    )}
-                  </Menu.Item>
-                </div>
-                <div className="px-2 py-4">
-                  <Menu.Item>
-                    {({ active }) => (
                       <Link to="/user-following">
                         <button
                           className={`${
@@ -163,6 +144,25 @@ export default function UserDropdown({
                             aria-hidden="true"
                           />
                           Following
+                        </button>
+                      </Link>
+                    )}
+                  </Menu.Item>
+                </div>
+                <div className="px-2 py-4">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link to="/post-drafts">
+                        <button
+                          className={`${
+                            active ? "opacity-75 cursor-pointer" : "text-white"
+                          } group flex w-full items-center rounded-md px-2 py-2 `}
+                        >
+                          <PencilLine
+                            className="mr-2 h-5 w-5 hover:text-red"
+                            aria-hidden="true"
+                          />
+                          Post Drafts
                         </button>
                       </Link>
                     )}

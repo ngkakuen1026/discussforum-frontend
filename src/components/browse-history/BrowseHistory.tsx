@@ -1,73 +1,68 @@
 import {
-  useQuery,
   useMutation,
-  useQueryClient,
   useQueries,
+  useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
-import { Link, useNavigate } from "@tanstack/react-router";
+import type { BrowseHistoryType } from "../../types/browseHistoryTypes";
 import authAxios from "../../services/authAxios";
-import { bookmarksAPI, commentsAPI } from "../../services/http-api";
-import type { BookmarkType } from "../../types/bookmarkTypes";
-import {
-  PinOff,
-  ListMinus,
-  Trash2,
-  Pin,
-  RefreshCcw,
-  X,
-  MousePointer,
-} from "lucide-react";
-import PostCard from "../posts/PostCard";
-import type { PostType } from "../../types/postTypes";
-import { toast } from "sonner";
-import { useState } from "react";
+import { browsingHistoryAPI, commentsAPI } from "../../services/http-api";
 import type { CommentType } from "../../types/commentTypes";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { useState } from "react";
+import { toast } from "sonner";
+import { ListMinus, MousePointer, RefreshCcw, Trash2, X } from "lucide-react";
+import type { PostType } from "../../types/postTypes";
+import PostCard from "../posts/PostCard";
 
-// Convert BookmarkType to PostType (for display only)
-function bookmarkToPostType(bookmark: BookmarkType): PostType {
+function browsingHistoryToPostType(
+  browsingHistory: BrowseHistoryType
+): PostType {
   return {
-    id: bookmark.post_id,
+    id: browsingHistory.post_id,
     user_id: 0,
-    title: bookmark.post_title,
+    title: browsingHistory.post_title,
     content: "",
-    created_at: bookmark.post_created_at,
-    category_id: bookmark.category_id,
+    created_at: browsingHistory.post_created_at,
+    category_id: browsingHistory.category_id,
     pending_tag_name: null,
-    views: bookmark.post_view,
+    views: browsingHistory.post_view,
     author_id: 0,
-    author_username: bookmark.author_username,
-    author_profile_image: bookmark.author_profile_image,
-    author_is_admin: bookmark.author_is_admin,
-    author_registration_date: bookmark.author_registration_date,
-    author_gender: bookmark.author_gender,
+    author_username: browsingHistory.author_username,
+    author_profile_image: browsingHistory.author_profile_image,
+    author_is_admin: browsingHistory.author_is_admin,
+    author_registration_date: browsingHistory.author_registration_date,
+    author_gender: browsingHistory.author_gender,
   };
 }
 
-const PinnedPost = () => {
+const BrowseHistory = () => {
   const queryClient = useQueryClient();
   const {
-    data: bookmarks = [],
+    data: browsingHistories = [],
     isLoading,
     isFetching,
-  } = useQuery<BookmarkType[]>({
-    queryKey: ["my-bookmarks"],
+  } = useQuery<BrowseHistoryType[]>({
+    queryKey: ["my-browsingHistories"],
     queryFn: async () => {
-      const res = await authAxios.get(`${bookmarksAPI.url}/bookmark/me`);
-      return res.data.bookmarks;
+      const res = await authAxios.get(
+        `${browsingHistoryAPI.url}/browsing-history/me`
+      );
+      return res.data.browsingHistories;
     },
     staleTime: 5 * 60 * 1000,
   });
 
   const commentResults = useQueries({
-    queries: bookmarks.map((bookmark: BookmarkType) => ({
-      queryKey: ["comment-length", bookmark.post_id],
+    queries: browsingHistories.map((browsingHistory: BrowseHistoryType) => ({
+      queryKey: ["comment-length", browsingHistory.post_id],
       queryFn: async (): Promise<CommentType[]> => {
         const res = await authAxios.get(
-          `${commentsAPI.url}/${bookmark.post_id}/all-comments`
+          `${commentsAPI.url}/${browsingHistory.post_id}/all-comments`
         );
         return res.data.comments;
       },
-      enabled: bookmarks.length > 0,
+      enabled: browsingHistories.length > 0,
       staleTime: 1 * 60 * 1000,
     })),
   });
@@ -75,27 +70,17 @@ const PinnedPost = () => {
   const [selectMode, setSelectMode] = useState(false);
   const [selectedPostIds, setSelectedPostIds] = useState<number[]>([]);
 
-  const unpinMutation = useMutation({
-    mutationFn: (postId: number) =>
-      authAxios.delete(`${bookmarksAPI.url}/bookmark/${postId}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["my-bookmarks"] });
-      toast.success("Post unpinned");
-    },
-    onError: () => toast.error("Failed to unpin"),
-  });
-
-  const unpinMultiplePinsMutation = useMutation({
+  const deleteMultipleBrowsingHistoriesMutation = useMutation({
     mutationFn: (postIds: number[]) =>
-      authAxios.delete(`${bookmarksAPI.url}/bookmark/multiple`, {
+      authAxios.delete(`${browsingHistoryAPI.url}/browsing-history/me`, {
         data: { postIds },
       }),
     onSuccess: (_, postIds) => {
-      queryClient.invalidateQueries({ queryKey: ["my-bookmarks"] });
+      queryClient.invalidateQueries({ queryKey: ["my-browsingHistories"] });
       setSelectedPostIds([]);
       setSelectMode(false);
       toast.success(
-        `${postIds.length} ${postIds.length > 1 ? "posts" : "post"} unpinned`
+        `${postIds.length} ${postIds.length > 1 ? "browsing history records" : "browsing history record"} deleted`
       );
     },
     onError: () => toast.error("Failed to delete selected posts"),
@@ -115,16 +100,16 @@ const PinnedPost = () => {
   };
 
   const selectAll = () => {
-    if (selectedPostIds.length === bookmarks.length) {
+    if (selectedPostIds.length === browsingHistories.length) {
       setSelectedPostIds([]);
     } else {
-      setSelectedPostIds(bookmarks.map((b) => b.post_id));
+      setSelectedPostIds(browsingHistories.map((b) => b.post_id));
     }
   };
 
-  const refreshBookmarks = () => {
-    queryClient.refetchQueries({ queryKey: ["my-bookmarks"] });
-    toast.success(`Pinned Post Refreshed!`);
+  const refreshbrowsingHistories = () => {
+    queryClient.refetchQueries({ queryKey: ["my-browsingHistories"] });
+    toast.success(`Browsing History Refreshed!`);
   };
 
   const handleCategoryClick = (categoryId: number) => {
@@ -139,11 +124,11 @@ const PinnedPost = () => {
     if (selectedPostIds.length === 0) return;
 
     const confirmed = window.confirm(
-      `Remove ${selectedPostIds.length} pinned ${selectedPostIds.length > 1 ? "posts" : "post"}?\n\nThis action cannot be undone.`
+      `Remove ${selectedPostIds.length} ${selectedPostIds.length > 1 ? "browsing history records" : "browsing history record"}?\n\nThis action cannot be undone.`
     );
 
     if (confirmed) {
-      unpinMultiplePinsMutation.mutate(selectedPostIds);
+      deleteMultipleBrowsingHistoriesMutation.mutate(selectedPostIds);
     }
   };
 
@@ -151,7 +136,7 @@ const PinnedPost = () => {
     return (
       <div className="container mx-auto pt-6">
         <div className="animate-pulse text-white text-2xl">
-          Loading pinned posts...
+          Loading browsing history...
         </div>
       </div>
     );
@@ -161,12 +146,12 @@ const PinnedPost = () => {
     <div className="container mx-auto pt-6">
       <div className="">
         <div className="flex items-center justify-between gap-2">
-          <h1 className="text-white text-2xl font-bold">My Pinned Posts</h1>
+          <h1 className="text-white text-2xl font-bold">My Browsing History</h1>
           {selectMode ? (
             <div className="flex gap-2 ">
               <button
                 onClick={selectAll}
-                disabled={unpinMultiplePinsMutation.isPending}
+                disabled={deleteMultipleBrowsingHistoriesMutation.isPending}
                 className="relative group transition-all"
               >
                 <MousePointer
@@ -174,7 +159,7 @@ const PinnedPost = () => {
                   className="text-gray-400 hover:text-white cursor-pointer"
                 />
                 <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-sm px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-10">
-                  {selectedPostIds.length === bookmarks.length
+                  {selectedPostIds.length === browsingHistories.length
                     ? "Deselect All"
                     : "Select All"}
                 </span>
@@ -183,7 +168,7 @@ const PinnedPost = () => {
               <button
                 onClick={deleteSelected}
                 disabled={
-                  unpinMultiplePinsMutation.isPending ||
+                  deleteMultipleBrowsingHistoriesMutation.isPending ||
                   selectedPostIds.length === 0
                 }
                 className="relative group transition-all"
@@ -224,7 +209,7 @@ const PinnedPost = () => {
                 </span>
               </button>
               <button
-                onClick={refreshBookmarks}
+                onClick={refreshbrowsingHistories}
                 className="relative group transition-all"
               >
                 <RefreshCcw
@@ -241,25 +226,27 @@ const PinnedPost = () => {
         <div>
           <h2 className={`text-gray-400 mt-2`}>
             {selectMode
-              ? `${selectedPostIds.length} pinned ${selectedPostIds.length > 1 ? "posts" : "post"} selected`
-              : "The post pinned"}
+              ? `${selectedPostIds.length} ${selectedPostIds.length > 1 ? "browsing history records" : "browsing history record"} selected`
+              : "The post visited"}
           </h2>
         </div>
       </div>
 
-      {bookmarks.length ? (
+      {browsingHistories.length ? (
         <div className="space-y-4 mt-4">
-          {bookmarks.map((bookmark, index) => {
-            const upvotes = Number(bookmark.upvotes) || 0;
-            const downvotes = Number(bookmark.downvotes) || 0;
-            const isSelected = selectedPostIds.includes(bookmark.post_id);
-            const post: PostType = bookmarkToPostType(bookmark);
+          {browsingHistories.map((browsingHistory, index) => {
+            const upvotes = Number(browsingHistory.upvotes) || 0;
+            const downvotes = Number(browsingHistory.downvotes) || 0;
+            const isSelected = selectedPostIds.includes(
+              browsingHistory.post_id
+            );
+            const post: PostType = browsingHistoryToPostType(browsingHistory);
 
             const commentLength =
               (commentResults[index]?.data?.length || 0) + 1;
             return (
               <div
-                key={bookmark.post_id}
+                key={browsingHistory.post_id}
                 className={`relative ${isSelected ? "ring-2 ring-gray-500 ring-opacity-50 bg-gray-850" : ""}`}
               >
                 {selectMode && (
@@ -267,7 +254,7 @@ const PinnedPost = () => {
                     <input
                       type="checkbox"
                       checked={isSelected}
-                      onChange={() => toggleSelection(bookmark.post_id)}
+                      onChange={() => toggleSelection(browsingHistory.post_id)}
                       className="w-5 h-5 text-gray-500 rounded border-gray-600 focus:ring-gray-400 focus:ring-2"
                     />
                   </div>
@@ -277,21 +264,8 @@ const PinnedPost = () => {
                   upvotes={upvotes}
                   downvotes={downvotes}
                   commentLength={commentLength}
-                  categoryName={bookmark.category_name}
+                  categoryName={browsingHistory.category_name}
                   handleCategoryClick={handleCategoryClick}
-                  rightAction={
-                    !selectMode && (
-                      <button
-                        onClick={() => unpinMutation.mutate(bookmark.post_id)}
-                        disabled={unpinMutation.isPending}
-                        className="flex items-end gap-2 text-yellow-500 hover:text-yellow-400 hover:bg-yellow-900/20 px-3 py-2 cursor-pointer rounded-lg transition text-sm font-medium"
-                        title="Unpin this post"
-                      >
-                        <PinOff size={18} />
-                        Unpin
-                      </button>
-                    )
-                  }
                 />
               </div>
             );
@@ -299,7 +273,9 @@ const PinnedPost = () => {
         </div>
       ) : (
         <div className="text-center py-20">
-          <p className="text-gray-400 text-xl">No pinned posts yet.</p>
+          <p className="text-gray-400 text-xl">
+            No browsing history record found.
+          </p>
           <p className="text-gray-500 mt-4">
             Go{" "}
             <Link
@@ -311,8 +287,7 @@ const PinnedPost = () => {
             >
               explore
             </Link>{" "}
-            and click the <Pin size={18} className="inline text-yellow-500" />{" "}
-            pin icon to save posts!
+            the forum now!
           </p>
         </div>
       )}
@@ -320,4 +295,4 @@ const PinnedPost = () => {
   );
 };
 
-export default PinnedPost;
+export default BrowseHistory;

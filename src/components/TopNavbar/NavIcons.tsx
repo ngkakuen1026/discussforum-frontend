@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { CirclePlus, LayoutGrid, Moon, Sun } from "lucide-react";
+import { CirclePlus, Moon, Sun } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 import type { RefObject } from "react";
 import NotiMenu from "./NotiMenu/NotiMenu";
@@ -26,7 +26,6 @@ interface NavIconProps {
 }
 
 const NavIcons = ({
-  handleSideNavToggle,
   handleToggle,
   isOn,
   notiMenuRef,
@@ -45,14 +44,10 @@ const NavIcons = ({
 }: NavIconProps) => {
   return (
     <div className="flex gap-4 items-center justify-around">
-      {/* <button title="Category List" onClick={handleSideNavToggle}>
-        <LayoutGrid className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
-      </button> */}
-
       {isLoggedIn ? (
         <>
           <button title="Add New Post">
-            <Link to="/add-post">
+            <Link to="/add-post" target="_blank">
               <CirclePlus className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
             </Link>
           </button>

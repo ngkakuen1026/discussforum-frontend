@@ -63,3 +63,7 @@ export const tagsAPI = {
 export const imagesAPI = {
     url: `${baseURL.url}/images`
 }
+
+export const postDraftsAPI = {
+    url: `${baseURL.url}/post-drafts`
+}

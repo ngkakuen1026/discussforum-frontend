@@ -1,4 +1,4 @@
-export interface BookmarkType {
+export interface BrowseHistoryType {
     bookmark_id: number;
     post_id: number;
     post_title: string;
@@ -13,5 +13,5 @@ export interface BookmarkType {
     category_name: string;
     category_id: number;
     post_created_at: string;
-    bookmarked_at: string;
+    browsing_visited_at: string;
 }

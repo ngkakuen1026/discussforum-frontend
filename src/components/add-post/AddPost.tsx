@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { Link, useNavigate, useSearch } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import authAxios from "../../services/authAxios";
 import {
   categoriesAPI,
   imagesAPI,
   parentCategoriesAPI,
+  postDraftsAPI,
   postsAPI,
 } from "../../services/http-api";
 import { toast } from "sonner";
@@ -13,27 +14,21 @@ import type { categoryType } from "../../types/categoryTypes";
 import { Tag, TagIcon, X } from "lucide-react";
 import AddTagPopup from "./AddTagPopup";
 import TiptapEditor from "../TiptapEditor/TiptapEditor";
-
-interface AddPostData {
-  title: string;
-  content: string;
-  categoryId: number | string;
-  tag: string;
-}
-
-interface AddPostResponse {
-  post: {
-    id: number | string;
-    user_id: number | string;
-    title: string;
-    content: string;
-    created_at: string;
-    categoryId: number | string;
-    pending_tag_name?: string | null;
-  };
-}
+import type { AddPostSearch } from "../../types/routeTypes";
+import type {
+  AddPostDraftType,
+  AddPostResponse,
+  AddPostType,
+} from "../../types/postTypes";
 
 const AddPost = () => {
+  const { draftId } = useSearch({
+    from: "/add-post",
+    select: (search: AddPostSearch) => ({
+      draftId: search.draftId,
+    }),
+  });
+
   const [showTagPopup, setShowTagPopup] = useState(false);
   const [input, setInput] = useState({
     title: "",
@@ -66,7 +61,27 @@ const AddPost = () => {
     staleTime: 15 * 60 * 1000,
   });
 
-  const newPostMutation = useMutation<AddPostResponse, Error, AddPostData>({
+  const { data: drafts = [] } = useQuery({
+    queryKey: ["post-drafts"],
+    queryFn: async () => {
+      const res = await authAxios.get(`${postDraftsAPI.url}/post-drafts/me`);
+      return res.data.drafts;
+    },
+  });
+
+  const { data: draft, refetch: refetchDraft } = useQuery({
+    queryKey: ["post-draft", draftId],
+    queryFn: async () => {
+      const res = await authAxios.get(
+        `${postDraftsAPI.url}/post-draft/${draftId}`
+      );
+      return res.data.draft;
+    },
+    enabled: !!draftId && !isNaN(Number(draftId)),
+    staleTime: 0,
+  });
+
+  const newPostMutation = useMutation<AddPostResponse, Error, AddPostType>({
     mutationFn: async (addPostData) => {
       const res = await authAxios.post(`${postsAPI.url}/post`, addPostData);
       return res.data;
@@ -107,6 +122,51 @@ const AddPost = () => {
       }
     },
   });
+
+  // Save draft mutation
+  const saveDraftMutation = useMutation({
+    mutationFn: async (draftData: AddPostDraftType) => {
+      if (draft) {
+        return authAxios.patch(
+          `${postDraftsAPI.url}/post-draft/${draftId}`,
+          draftData
+        );
+      } else {
+        return authAxios.post(`${postDraftsAPI.url}/post-draft`, draftData);
+      }
+    },
+    onSuccess: () => {
+      toast.success("Draft saved!");
+      queryClient.invalidateQueries({ queryKey: ["post-drafts"] });
+      if (draftId) {
+        refetchDraft();
+      }
+    },
+    onError: () => {
+      toast.error("Failed to save draft");
+    },
+  });
+
+  useEffect(() => {
+    if (!draft) return;
+
+    setInput({
+      title: draft.title || "",
+      content: draft.content || "",
+      categoryId: draft.categoryId || 0,
+      tag: draft.tag || "",
+    });
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(draft.content || "", "text/html");
+    const images = doc.querySelectorAll("img") as NodeListOf<HTMLImageElement>;
+
+    const base64Images = Array.from(images)
+      .map((img) => img.src)
+      .filter((src) => src.startsWith("data:"));
+
+    setPendingImages((prev) => [...prev, ...base64Images]);
+  }, [draft]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -159,9 +219,19 @@ const AddPost = () => {
     });
   };
 
+  const isLoading = newPostMutation.isPending || saveDraftMutation.isPending;
+
   return (
     <div className="container mx-auto max-w-5xl py-8 px-4">
-      <h1 className="text-3xl font-bold mb-8 text-white">Create New Post</h1>
+      <div className="flex items-center justify-between mb-8">
+        <h1 className="text-3xl font-bold text-white">Create New Post</h1>
+        <Link
+          to="/post-drafts"
+          className="text-lg font-semibold text-white rounded-full hover:bg-gray-500 px-2 py-4"
+        >
+          {drafts.length}/10 {drafts.length > 1 ? "Drafts" : "Draft"}
+        </Link>
+      </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Category */}
@@ -173,7 +243,7 @@ const AddPost = () => {
               onChange={handleChange}
               className="w-full px-5 py-4 rounded-xl bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-[#0E1113]"
               required
-              disabled={newPostMutation.isPending}
+              disabled={isLoading}
             >
               <option value="">Select a category</option>
 
@@ -218,7 +288,7 @@ const AddPost = () => {
               onChange={handleChange}
               className="w-full px-5 py-3.5 text-lg rounded-xl bg-gray-800 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500"
               required
-              disabled={newPostMutation.isPending}
+              disabled={isLoading}
             />
           </div>
         </div>
@@ -250,30 +320,34 @@ const AddPost = () => {
         )}
 
         <TiptapEditor
-          content={input.content}
+          key={draft ? `draft-${draft.id}` : "new-post"}
+          content={draft ? draft.content : input.content}
           onChange={(html) => setInput((prev) => ({ ...prev, content: html }))}
           placeholder="What's on your mind? Write something amazing..."
-          onAddPendingImage={(base64) => {
-            setPendingImages((prev) => [...prev, base64]);
-          }}
+          onAddPendingImage={(base64) =>
+            setPendingImages((prev) => [...prev, base64])
+          }
         />
 
         {/* Actions */}
         <div className="flex justify-end gap-4 pt-4">
           <button
             type="button"
-            onClick={() =>
-              navigate({ to: "/", replace: true, search: { categoryId: 0 } })
-            }
-            disabled={newPostMutation.isPending}
-            className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-3 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg"
+            onClick={() => {
+              saveDraftMutation.mutate({
+                ...input,
+              });
+              navigate({ to: "/post-drafts" });
+            }}
+            disabled={isLoading}
+            className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-3 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg disabled:opacity-70 disabled:cursor-not-allowed"
           >
-            Cancel
+            {draft ? `Update Draft` : `Save Draft`}
           </button>
 
           <button
             type="submit"
-            disabled={newPostMutation.isPending}
+            disabled={isLoading}
             className="cursor-pointer bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-3 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed text-lg"
           >
             {newPostMutation.isPending ? (
