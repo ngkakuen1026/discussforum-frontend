@@ -5,6 +5,8 @@ import ReactDOM from "react-dom/client";
 import { RouterProvider, createRouter } from "@tanstack/react-router";
 import { routeTree } from "./routeTree.gen";
 import { AuthProvider } from "./context/AuthContext";
+import { BlockedUsersProvider } from "./context/BLockedUserContext";
+import { FollowingUsersProvider } from "./context/FollowingUserContext";
 
 const router = createRouter({ routeTree });
 
@@ -28,11 +30,15 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(
     <StrictMode>
-      <AuthProvider>
-        <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
-        </QueryClientProvider>
-      </AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <AuthProvider>
+          <BlockedUsersProvider>
+            <FollowingUsersProvider>
+              <RouterProvider router={router} />
+            </FollowingUsersProvider>
+          </BlockedUsersProvider>
+        </AuthProvider>
+      </QueryClientProvider>
     </StrictMode>
   );
 }

@@ -1,6 +1,6 @@
 import CommentList from "./CommentList";
 import { useState } from "react";
-import CommentPopup from "../CommentPopup";
+import CommentPopup from "../PostDetail/CommentPopup";
 import type { CommentWithRepliesType } from "../../../types/commentTypes";
 import { useAuthAction } from "../../../utils/authUtils";
 

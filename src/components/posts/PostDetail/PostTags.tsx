@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { Tag } from "lucide-react";
-import authAxios from "../../services/authAxios";
+import authAxios from "../../../services/authAxios";
 import { useQuery } from "@tanstack/react-query";
-import { tagsAPI } from "../../services/http-api";
+import { tagsAPI } from "../../../services/http-api";
 
 interface PostTagsProps {
   postId: number;

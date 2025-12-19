@@ -1,6 +1,7 @@
 import { Menu, Transition } from "@headlessui/react";
 import { Link, useNavigate } from "@tanstack/react-router";
 import {
+  Ban,
   CircleQuestionMark,
   EqualApproximately,
   History,
@@ -68,7 +69,9 @@ export default function UserDropdown({
                       <Link to="/profile">
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <img
@@ -98,7 +101,9 @@ export default function UserDropdown({
                       <Link to="/" search={{ categoryId: 0 }} replace={true}>
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <House className="mr-2 h-5 w-5" aria-hidden="true" />
@@ -117,7 +122,9 @@ export default function UserDropdown({
                       >
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <UserRoundPen
@@ -136,7 +143,9 @@ export default function UserDropdown({
                       <Link to="/user-following">
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <UsersRound
@@ -152,10 +161,33 @@ export default function UserDropdown({
                 <div className="px-2 py-4">
                   <Menu.Item>
                     {({ active }) => (
+                      <Link to="/blocked-user-list">
+                        <button
+                          className={`${
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
+                          } group flex w-full items-center rounded-md px-2 py-2 `}
+                        >
+                          <Ban
+                            className="mr-2 h-5 w-5 hover:text-red"
+                            aria-hidden="true"
+                          />
+                          Blocked Users
+                        </button>
+                      </Link>
+                    )}
+                  </Menu.Item>
+                </div>
+                <div className="px-2 py-4">
+                  <Menu.Item>
+                    {({ active }) => (
                       <Link to="/post-drafts">
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <PencilLine
@@ -174,7 +206,9 @@ export default function UserDropdown({
                       <Link to="/browse-history">
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <History
@@ -193,7 +227,9 @@ export default function UserDropdown({
                       <Link to="/pins">
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <Pin
@@ -214,7 +250,9 @@ export default function UserDropdown({
                       <Link to="/about">
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <EqualApproximately
@@ -233,7 +271,9 @@ export default function UserDropdown({
                       <Link to="/faq">
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <CircleQuestionMark
@@ -252,7 +292,9 @@ export default function UserDropdown({
                       <Link to="/setting">
                         <button
                           className={`${
-                            active ? "opacity-75 cursor-pointer" : "text-white"
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
                           } group flex w-full items-center rounded-md px-2 py-2 `}
                         >
                           <Settings
@@ -271,7 +313,9 @@ export default function UserDropdown({
                   {({ active }) => (
                     <button
                       className={`${
-                        active ? "opacity-75 cursor-pointer" : "text-white"
+                        active
+                          ? "opacity-75 cursor-pointer text-white"
+                          : "text-white"
                       } group flex w-full items-center rounded-md px-2 py-2 `}
                       onClick={() => {
                         logout();

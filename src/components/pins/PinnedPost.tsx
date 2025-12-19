@@ -17,7 +17,7 @@ import {
   X,
   MousePointer,
 } from "lucide-react";
-import PostCard from "../posts/PostCard";
+import PostCard from "../posts/PostListCard";
 import type { PostType } from "../../types/postTypes";
 import { toast } from "sonner";
 import { useState } from "react";

@@ -23,6 +23,7 @@ import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BrowseHistoryRouteImport } from './routes/browse-history'
+import { Route as BlockedUserListRouteImport } from './routes/blocked-user-list'
 import { Route as AddPostRouteImport } from './routes/add-post'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
@@ -103,6 +104,11 @@ const BrowseHistoryRoute = BrowseHistoryRouteImport.update({
   path: '/browse-history',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BlockedUserListRoute = BlockedUserListRouteImport.update({
+  id: '/blocked-user-list',
+  path: '/blocked-user-list',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AddPostRoute = AddPostRouteImport.update({
   id: '/add-post',
   path: '/add-post',
@@ -154,6 +160,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
+  '/blocked-user-list': typeof BlockedUserListRoute
   '/browse-history': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -179,6 +186,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
+  '/blocked-user-list': typeof BlockedUserListRoute
   '/browse-history': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -205,6 +213,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
+  '/blocked-user-list': typeof BlockedUserListRoute
   '/browse-history': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
   '/forgot-password': typeof ForgotPasswordRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/add-post'
+    | '/blocked-user-list'
     | '/browse-history'
     | '/faq'
     | '/forgot-password'
@@ -257,6 +267,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/add-post'
+    | '/blocked-user-list'
     | '/browse-history'
     | '/faq'
     | '/forgot-password'
@@ -282,6 +293,7 @@ export interface FileRouteTypes {
     | '/'
     | '/about'
     | '/add-post'
+    | '/blocked-user-list'
     | '/browse-history'
     | '/faq'
     | '/forgot-password'
@@ -308,6 +320,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
   AddPostRoute: typeof AddPostRoute
+  BlockedUserListRoute: typeof BlockedUserListRoute
   BrowseHistoryRoute: typeof BrowseHistoryRoute
   FaqRoute: typeof FaqRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
@@ -430,6 +443,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BrowseHistoryRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blocked-user-list': {
+      id: '/blocked-user-list'
+      path: '/blocked-user-list'
+      fullPath: '/blocked-user-list'
+      preLoaderRoute: typeof BlockedUserListRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/add-post': {
       id: '/add-post'
       path: '/add-post'
@@ -500,6 +520,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   AddPostRoute: AddPostRoute,
+  BlockedUserListRoute: BlockedUserListRoute,
   BrowseHistoryRoute: BrowseHistoryRoute,
   FaqRoute: FaqRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,

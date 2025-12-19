@@ -1,0 +1,9 @@
+import { createFileRoute } from '@tanstack/react-router'
+
+export const Route = createFileRoute('/blocked-user-list')({
+  component: RouteComponent,
+})
+
+function RouteComponent() {
+  return <div>Hello "/blocked-user-list"!</div>
+}

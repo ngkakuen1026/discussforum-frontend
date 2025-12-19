@@ -28,7 +28,7 @@ const Login = () => {
   const [input, setInput] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const { checkAuth } = useAuth();
+  const { refetch } = useAuth();
   const navigate = useNavigate();
 
   const loginMutation = useMutation<LoginResponse, Error, LoginData>({
@@ -38,7 +38,7 @@ const Login = () => {
     },
     onSuccess: async (data) => {
       console.log("Login successful:", data);
-      await checkAuth();
+      await refetch();
       navigate({ to: "/", search: { categoryId: 0 }, replace: true });
     },
     onError: (error: unknown) => {

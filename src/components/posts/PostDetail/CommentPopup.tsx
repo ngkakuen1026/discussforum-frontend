@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { X, Reply, MessageCircle } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import authAxios from "../../services/authAxios";
+import authAxios from "../../../services/authAxios";
 import { toast } from "sonner";
-import { commentsAPI, imagesAPI } from "../../services/http-api";
-import ClickOutside from "../../hooks/useClickOutside";
-import TiptapEditor from "../TiptapEditor/TiptapEditor";
-import SafeHTML from "../SafeHTML";
+import { commentsAPI, imagesAPI } from "../../../services/http-api";
+import ClickOutside from "../../../hooks/useClickOutside";
+import TiptapEditor from "../../TiptapEditor/TiptapEditor";
+import SafeHTML from "../../SafeHTML";
 
 interface CommentPopupProps {
   postId: string | number;

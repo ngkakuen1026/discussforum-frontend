@@ -2,10 +2,11 @@ import { useState } from "react";
 import { X, Flag, ChevronDown, Check } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { motion } from "framer-motion";
-import authAxios from "../../services/authAxios";
 import { toast } from "sonner";
-import { reportsAPI } from "../../services/http-api";
-import ClickOutside from "../../hooks/useClickOutside";
+import authAxios from "../../../services/authAxios";
+import { reportsAPI } from "../../../services/http-api";
+import ClickOutside from "../../../hooks/useClickOutside";
+
 
 interface ReportPopupProps {
   contentId: string | number;

@@ -13,7 +13,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { ListMinus, MousePointer, RefreshCcw, Trash2, X } from "lucide-react";
 import type { PostType } from "../../types/postTypes";
-import PostCard from "../posts/PostCard";
+import PostCard from "../posts/PostListCard";
 
 function browsingHistoryToPostType(
   browsingHistory: BrowseHistoryType
