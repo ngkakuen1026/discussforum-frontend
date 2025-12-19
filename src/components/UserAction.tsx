@@ -2,6 +2,7 @@ import {
   Ban,
   CircleOff,
   Eye,
+  EyeOff,
   MessageSquare,
   UserMinus,
   UserPlus,
@@ -18,7 +19,8 @@ interface UserActionProps {
   isBlocked: boolean;
   onShowBlockPopup: () => void;
   unBlockMutation: { mutate: () => void; isPending: boolean };
-  onFocusUser?: (userId: number) => void;
+  focusUserId: number | null;
+  onFocusUser: (id: number | null) => void;
 }
 
 const UserAction = ({
@@ -30,6 +32,7 @@ const UserAction = ({
   isBlocked,
   onShowBlockPopup,
   unBlockMutation,
+  focusUserId,
   onFocusUser,
 }: UserActionProps) => {
   const targetUserId = Number(userData.author_id ?? userData.commenter_id);
@@ -39,11 +42,29 @@ const UserAction = ({
   return (
     <div className="flex flex-col gap-2 text-gray-200 mt-4 text-sm space-y-1.5">
       <button
-        onClick={() => onFocusUser?.(targetUserId)}
-        className="flex items-center cursor-pointer hover:text-cyan-500 transition"
+        onClick={() => {
+          if (focusUserId === targetUserId) {
+            onFocusUser(null);
+          } else {
+            onFocusUser(targetUserId);
+          }
+        }}
+        className={`flex items-center cursor-pointer transition font-medium ${
+          focusUserId === targetUserId
+            ? "text-cyan-400 hover:text-cyan-300"
+            : "text-gray-200 hover:text-cyan-500"
+        }`}
       >
-        <Eye size={18} />
-        <span className="pl-2">Only show user's content</span>
+        {focusUserId === targetUserId ? (
+          <EyeOff size={18} />
+        ) : (
+          <Eye size={18} />
+        )}
+        <span className="pl-2">
+          {focusUserId === targetUserId
+            ? "Cancel Focused View"
+            : "Only Show User's Content"}
+        </span>
       </button>
 
       {!isOwnProfile && (

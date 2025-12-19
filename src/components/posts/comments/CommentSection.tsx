@@ -9,6 +9,8 @@ interface CommentsSectionProps {
   currentPage: number;
   COMMENTS_PER_PAGE: number;
   postId: string | number;
+  focusUserId: number | null;
+  onFocusUser: (id: number | null) => void;
 }
 
 const CommentsSection = ({
@@ -16,6 +18,8 @@ const CommentsSection = ({
   currentPage,
   COMMENTS_PER_PAGE,
   postId,
+  focusUserId,
+  onFocusUser,
 }: CommentsSectionProps) => {
   const [showCommentPopup, setShowCommentPopup] = useState(false);
   const { withAuth } = useAuthAction();
@@ -50,6 +54,8 @@ const CommentsSection = ({
         <CommentList
           comments={paginatedComments}
           commentsPerPage={COMMENTS_PER_PAGE}
+          focusUserId={focusUserId}
+          onFocusUser={onFocusUser}
         />
       )}
 

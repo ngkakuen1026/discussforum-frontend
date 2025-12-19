@@ -40,6 +40,8 @@ const PostDetail = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
+  const [focusUserId, setFocusUserId] = useState<number | null>(null);
+
   const search = useSearch({ from: "/posts/$postId" }) as PostRouteSearch;
   const currentPage = Number(search.page) || 1;
   const COMMENTS_PER_PAGE = 15;
@@ -298,6 +300,10 @@ const PostDetail = () => {
   const [showReportPopup, setShowReportPopup] = useState(false);
   const [showBlockPopup, setShowBlockPopup] = useState(false);
 
+  const filteredComment = focusUserId
+    ? allComments.filter((comment) => comment.commenter_id === focusUserId)
+    : allComments;
+
   if (postLoading || commentsLoading) {
     return (
       <div className="flex items-center justify-center h-96">
@@ -366,47 +372,52 @@ const PostDetail = () => {
         </div>
       </Activity>
 
-      {currentPage === 1 && (
-        <div className={`grid grid-cols-12 gap-8`}>
-          <>
-            <UserCard
-              user={user}
-              withAuth={withAuth}
-              userData={post}
-              isFollowed={isFollowed(post.author_id)}
-              onToggleFollow={toggleFollow}
-              isBlocked={isBlocked(post.author_id)}
-              onShowBlockPopup={() => setShowBlockPopup(true)}
-              unBlockMutation={unBlockMutation}
-            />
+      {currentPage === 1 &&
+        (!focusUserId || focusUserId === post.author_id) && (
+          <div className={`grid grid-cols-12 gap-8`}>
+            <>
+              <UserCard
+                user={user}
+                withAuth={withAuth}
+                userData={post}
+                isFollowed={isFollowed(post.author_id)}
+                onToggleFollow={toggleFollow}
+                isBlocked={isBlocked(post.author_id)}
+                onShowBlockPopup={() => setShowBlockPopup(true)}
+                unBlockMutation={unBlockMutation}
+                focusUserId={focusUserId}
+                onFocusUser={setFocusUserId}
+              />
 
-            <PostCard
-              post={post}
-              withAuth={withAuth}
-              userVote={userVote}
-              onToggleBookmark={toggleBookmark}
-              bookmarkPending={bookmarkMutation.isPending}
-              unbookmarkPending={unbookmarkMutation.isPending}
-              bookmarksLoading={bookmarksLoading}
-              isBookmarked={isBookmarked}
-              postUpvotes={postUpvotes}
-              postDownvotes={postDownvotes}
-              upvote={upvote.mutate}
-              downvote={downvote.mutate}
-              upvotePending={upvote.isPending}
-              downvotePending={downvote.isPending}
-              onShowCommentPopup={() => setShowCommentPopup(true)}
-              onShowReportPopup={() => setShowReportPopup(true)}
-            />
-          </>
-        </div>
-      )}
+              <PostCard
+                post={post}
+                withAuth={withAuth}
+                userVote={userVote}
+                onToggleBookmark={toggleBookmark}
+                bookmarkPending={bookmarkMutation.isPending}
+                unbookmarkPending={unbookmarkMutation.isPending}
+                bookmarksLoading={bookmarksLoading}
+                isBookmarked={isBookmarked}
+                postUpvotes={postUpvotes}
+                postDownvotes={postDownvotes}
+                upvote={upvote.mutate}
+                downvote={downvote.mutate}
+                upvotePending={upvote.isPending}
+                downvotePending={downvote.isPending}
+                onShowCommentPopup={() => setShowCommentPopup(true)}
+                onShowReportPopup={() => setShowReportPopup(true)}
+              />
+            </>
+          </div>
+        )}
 
       <CommentsSection
-        comments={allComments}
+        comments={filteredComment}
         currentPage={currentPage}
         COMMENTS_PER_PAGE={COMMENTS_PER_PAGE}
         postId={postId}
+        focusUserId={focusUserId}
+        onFocusUser={setFocusUserId}
       />
 
       {/* Comment Popup */}
