@@ -7,6 +7,8 @@ import { routeTree } from "./routeTree.gen";
 import { AuthProvider } from "./context/AuthContext";
 import { BlockedUsersProvider } from "./context/BLockedUserContext";
 import { FollowingUsersProvider } from "./context/FollowingUserContext";
+import { FocusUserProvider } from "./context/FocusUserContext";
+import { BookmarkProvider } from "./context/BookmarkContext";
 
 const router = createRouter({ routeTree });
 
@@ -34,7 +36,11 @@ if (!rootElement.innerHTML) {
         <AuthProvider>
           <BlockedUsersProvider>
             <FollowingUsersProvider>
-              <RouterProvider router={router} />
+              <FocusUserProvider>
+                <BookmarkProvider>
+                  <RouterProvider router={router} />
+                </BookmarkProvider>
+              </FocusUserProvider>
             </FollowingUsersProvider>
           </BlockedUsersProvider>
         </AuthProvider>

@@ -12,11 +12,7 @@ interface PostCardProps {
   post: PostType;
   withAuth: (action: () => void) => () => void;
   userVote: number | null;
-  onToggleBookmark: () => void;
-  bookmarkPending: boolean;
-  unbookmarkPending: boolean;
-  bookmarksLoading: boolean;
-  isBookmarked: boolean;
+
   postUpvotes: number;
   postDownvotes: number;
   upvote: () => void;
@@ -30,11 +26,6 @@ interface PostCardProps {
 const PostCard = ({
   post,
   withAuth,
-  onToggleBookmark,
-  bookmarkPending,
-  unbookmarkPending,
-  bookmarksLoading,
-  isBookmarked,
   postUpvotes,
   postDownvotes,
   userVote,
@@ -100,11 +91,7 @@ const PostCard = ({
 
           <PostActions
             withAuth={withAuth}
-            onToggleBookmark={onToggleBookmark}
-            bookmarkPending={bookmarkPending}
-            unbookmarkPending={unbookmarkPending}
-            bookmarksLoading={bookmarksLoading}
-            isBookmarked={isBookmarked}
+            postId={post.id}
             onShowCommentPopup={onShowCommentPopup}
             onShowReportPopup={onShowReportPopup}
           />

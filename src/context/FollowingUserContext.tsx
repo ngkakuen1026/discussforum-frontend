@@ -11,12 +11,9 @@ interface FollowingUsersContextType {
   refetch: () => void;
 }
 
-const FollowingUserContext = createContext<FollowingUsersContextType>({
-  myFollowingUsers: [],
-  isFollowed: () => false,
-  isLoading: false,
-  refetch: () => void 0,
-});
+const FollowingUserContext = createContext<
+  FollowingUsersContextType | undefined
+>(undefined);
 
 export const FollowingUsersProvider = ({
   children,

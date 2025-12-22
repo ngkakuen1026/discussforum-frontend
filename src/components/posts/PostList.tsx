@@ -1,9 +1,9 @@
 import { useQuery, useQueries } from "@tanstack/react-query";
 import { Link, useNavigate, useSearch } from "@tanstack/react-router";
-import type { PostType } from "../../types/postTypes";
 import authAxios from "../../services/authAxios";
 import { categoriesAPI, commentsAPI, postsAPI } from "../../services/http-api";
 import PostListCard from "./PostListCard";
+import type { PostType } from "../../types/postTypes";
 import type { categoryType } from "../../types/categoryTypes";
 import type { VoteType } from "../../types/voteType";
 import type { PostRouteSearch } from "../../types/routeTypes";
@@ -253,8 +253,8 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
       {paginatedPosts.map((post, index) => {
         const votes =
           voteResults[(currentPage - 1) * POSTS_PER_PAGE + index]?.data || [];
-        const upvotes = votes.find((v) => v.vote_type === 1)?.count || "0";
-        const downvotes = votes.find((v) => v.vote_type === -1)?.count || "0";
+        const upvotes = votes.find((v) => v.vote_type === 1)?.count || 0;
+        const downvotes = votes.find((v) => v.vote_type === -1)?.count || 0;
         const categoryName = categoryMap[post.category_id] || "Uncategorized";
         const commentLength =
           (commentResults[(currentPage - 1) * POSTS_PER_PAGE + index]?.data
@@ -269,6 +269,7 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
             commentLength={commentLength}
             categoryName={categoryName}
             handleCategoryClick={handleCategoryClick}
+            showTags={true}
           />
         );
       })}

@@ -14,8 +14,6 @@ interface UserCardProps {
   isBlocked: boolean;
   onShowBlockPopup: () => void;
   unBlockMutation: { mutate: () => void; isPending: boolean };
-  focusUserId: number | null;
-  onFocusUser: (id: number | null) => void;
 }
 
 const UserCard = ({
@@ -27,8 +25,6 @@ const UserCard = ({
   isBlocked,
   onShowBlockPopup,
   unBlockMutation,
-  focusUserId,
-  onFocusUser,
 }: UserCardProps) => {
   const navigate = useNavigate();
 
@@ -86,8 +82,6 @@ const UserCard = ({
             isBlocked={isBlocked}
             onShowBlockPopup={onShowBlockPopup}
             unBlockMutation={unBlockMutation}
-            focusUserId={focusUserId}
-            onFocusUser={onFocusUser}
           />
         </div>
       </div>

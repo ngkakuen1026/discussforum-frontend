@@ -1,34 +1,28 @@
 import { Flag, MessageCircle, Pin, Share2 } from "lucide-react";
+import { useBookmark } from "../../../context/BookmarkContext";
 
 interface PostActionProps {
   withAuth: (action: () => void) => () => void;
-  onToggleBookmark: () => void;
-  bookmarkPending: boolean;
-  unbookmarkPending: boolean;
-  bookmarksLoading: boolean;
-  isBookmarked: boolean;
+  postId: number;
   onShowCommentPopup: () => void;
   onShowReportPopup: () => void;
 }
 
 const PostActions = ({
   withAuth,
-  onToggleBookmark,
-  bookmarkPending,
-  unbookmarkPending,
-  bookmarksLoading,
-  isBookmarked,
+  postId,
   onShowCommentPopup,
   onShowReportPopup,
 }: PostActionProps) => {
+  const { isBookmarked, toggleBookmark, isPending } = useBookmark();
   return (
     <div className="flex gap-2 text-gray-400">
       <button
-        onClick={withAuth(onToggleBookmark)}
-        disabled={bookmarkPending || unbookmarkPending || bookmarksLoading}
+        onClick={withAuth(() => toggleBookmark(postId))}
+        disabled={isPending}
         className="relative group cursor-pointer"
       >
-        {isBookmarked ? (
+        {isBookmarked(postId) ? (
           <Pin
             size={18}
             className="fill-yellow-500 text-yellow-500 drop-shadow-md"
@@ -40,7 +34,7 @@ const PostActions = ({
           />
         )}
         <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
-          {isBookmarked ? "Pinned (click to remove)" : "Click to pin"}
+          {isBookmarked(postId) ? "Pinned (click to remove)" : "Click to pin"}
         </span>
       </button>
       <button

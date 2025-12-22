@@ -3,7 +3,6 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMutation } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
 import {
-  bookmarksAPI,
   commentsAPI,
   postsAPI,
   userBlockedAPI,
@@ -19,7 +18,6 @@ import ReportPopup from "./ReportPopup";
 import PostTags from "./PostTags";
 import type { VoteType } from "../../../types/voteType";
 import type { CommentWithRepliesType } from "../../../types/commentTypes";
-import type { BookmarkType } from "../../../types/bookmarkTypes";
 import type { PostRouteSearch } from "../../../types/routeTypes";
 import { useAuth } from "../../../context/AuthContext";
 import { useBlockedUsers } from "../../../context/BLockedUserContext";
@@ -30,6 +28,7 @@ import PostBreadCrumb from "./PostBreadCrumb";
 import PostPagination from "./PostPagination";
 import BlockPopup from "./BlockPopup";
 import UserCard from "../UserCard";
+import { useFocusUser } from "../../../context/FocusUserContext";
 
 const PostDetail = () => {
   const { withAuth } = useAuthAction();
@@ -40,7 +39,7 @@ const PostDetail = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const [focusUserId, setFocusUserId] = useState<number | null>(null);
+  const { focusUserId } = useFocusUser();
 
   const search = useSearch({ from: "/posts/$postId" }) as PostRouteSearch;
   const currentPage = Number(search.page) || 1;
@@ -177,62 +176,6 @@ const PostDetail = () => {
   const postDownvotes =
     votes.find((v: VoteType) => v.vote_type === -1)?.count || 0;
 
-  const { data: myBookmarks = [], isLoading: bookmarksLoading } = useQuery({
-    queryKey: ["my-bookmarks"],
-    queryFn: async () => {
-      const res = await authAxios.get(`${bookmarksAPI.url}/bookmark/me`);
-      return res.data.bookmarks;
-    },
-  });
-
-  const isBookmarked = myBookmarks.some(
-    (b: BookmarkType) => b.post_id === Number(postId)
-  );
-
-  const bookmarkMutation = useMutation({
-    mutationFn: () =>
-      authAxios.post(`${bookmarksAPI.url}/bookmark`, {
-        postId: Number(postId),
-      }),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["my-bookmarks"] });
-      toast.success("Post Pinned!");
-    },
-    onError: (error) => {
-      if (isAxiosError(error)) {
-        const status = error.response?.status;
-        switch (status) {
-          case 409:
-            toast.info("Already Pinned");
-        }
-      }
-    },
-  });
-
-  const unbookmarkMutation = useMutation({
-    mutationFn: () =>
-      authAxios.delete(`${bookmarksAPI.url}/bookmark/${postId}`),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["my-bookmarks"] });
-      toast.success("Post unpinned");
-    },
-    onError: (error) => {
-      if (isAxiosError(error) && error.response?.status === 409) {
-        console.error(`unbookmarkMutation error: ${error}`);
-      } else {
-        toast.error("Failed to remove pin");
-      }
-    },
-  });
-
-  const toggleBookmark = () => {
-    if (isBookmarked) {
-      unbookmarkMutation.mutate();
-    } else {
-      bookmarkMutation.mutate();
-    }
-  };
-
   const followMutation = useMutation({
     mutationFn: () =>
       authAxios.post(`${userFollowingAPI.url}/follow`, {
@@ -301,7 +244,7 @@ const PostDetail = () => {
   const [showBlockPopup, setShowBlockPopup] = useState(false);
 
   const filteredComment = focusUserId
-    ? allComments.filter((comment) => comment.commenter_id === focusUserId)
+    ? allComments.filter((c) => c.commenter_id === focusUserId)
     : allComments;
 
   if (postLoading || commentsLoading) {
@@ -355,11 +298,7 @@ const PostDetail = () => {
         {currentPage > 1 && (
           <PostActions
             withAuth={withAuth}
-            onToggleBookmark={toggleBookmark}
-            bookmarkPending={bookmarkMutation.isPending}
-            unbookmarkPending={unbookmarkMutation.isPending}
-            bookmarksLoading={bookmarksLoading}
-            isBookmarked={isBookmarked}
+            postId={Number(postId)}
             onShowCommentPopup={() => setShowCommentPopup(true)}
             onShowReportPopup={() => setShowReportPopup(true)}
           />
@@ -385,19 +324,12 @@ const PostDetail = () => {
                 isBlocked={isBlocked(post.author_id)}
                 onShowBlockPopup={() => setShowBlockPopup(true)}
                 unBlockMutation={unBlockMutation}
-                focusUserId={focusUserId}
-                onFocusUser={setFocusUserId}
               />
 
               <PostCard
                 post={post}
                 withAuth={withAuth}
                 userVote={userVote}
-                onToggleBookmark={toggleBookmark}
-                bookmarkPending={bookmarkMutation.isPending}
-                unbookmarkPending={unbookmarkMutation.isPending}
-                bookmarksLoading={bookmarksLoading}
-                isBookmarked={isBookmarked}
                 postUpvotes={postUpvotes}
                 postDownvotes={postDownvotes}
                 upvote={upvote.mutate}
@@ -416,8 +348,7 @@ const PostDetail = () => {
         currentPage={currentPage}
         COMMENTS_PER_PAGE={COMMENTS_PER_PAGE}
         postId={postId}
-        focusUserId={focusUserId}
-        onFocusUser={setFocusUserId}
+        focusUserId={focusUserId} 
       />
 
       {/* Comment Popup */}

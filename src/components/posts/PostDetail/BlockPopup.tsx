@@ -31,7 +31,10 @@ const BlockPopup = ({
   const [blockReason, setBlackReason] = useState("");
 
   const blockMutation = useMutation({
-    mutationFn: () => authAxios.post(`${userBlockedAPI.url}/block/${userId}`),
+    mutationFn: () =>
+      authAxios.post(`${userBlockedAPI.url}/block/${userId}`, {
+        block_reason: blockReason,
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["my-blockeds"] });
       toast.success("User blocked!");

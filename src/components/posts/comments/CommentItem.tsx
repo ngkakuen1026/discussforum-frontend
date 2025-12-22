@@ -24,16 +24,9 @@ import CommentCard from "./CommentCard";
 interface CommentItemProps {
   comment: CommentWithRepliesType;
   commentsPerPage: number;
-  focusUserId: number | null;
-  onFocusUser: (id: number | null) => void;
 }
 
-const CommentItem = ({
-  comment,
-  commentsPerPage,
-  focusUserId,
-  onFocusUser,
-}: CommentItemProps) => {
+const CommentItem = ({ comment, commentsPerPage }: CommentItemProps) => {
   const { withAuth } = useAuthAction();
   const { user } = useAuth();
   const { isBlocked } = useBlockedUsers();
@@ -210,8 +203,6 @@ const CommentItem = ({
           isBlocked={isBlocked(comment.commenter_id)}
           onShowBlockPopup={() => setShowBlockPopup(true)}
           unBlockMutation={unBlockMutation}
-          focusUserId={focusUserId}
-          onFocusUser={onFocusUser}
         />
 
         <CommentCard

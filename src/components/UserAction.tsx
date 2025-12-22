@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import type { UserType } from "../types/userTypes";
 import type { UserLikeType } from "../types/userLikeTypes";
+import { useFocusUser } from "../context/FocusUserContext";
 
 interface UserActionProps {
   currentUser: UserType | null;
@@ -19,8 +20,6 @@ interface UserActionProps {
   isBlocked: boolean;
   onShowBlockPopup: () => void;
   unBlockMutation: { mutate: () => void; isPending: boolean };
-  focusUserId: number | null;
-  onFocusUser: (id: number | null) => void;
 }
 
 const UserAction = ({
@@ -32,9 +31,9 @@ const UserAction = ({
   isBlocked,
   onShowBlockPopup,
   unBlockMutation,
-  focusUserId,
-  onFocusUser,
 }: UserActionProps) => {
+  const { focusUserId, setFocusUserId } = useFocusUser();
+
   const targetUserId = Number(userData.author_id ?? userData.commenter_id);
 
   const isOwnProfile = currentUser?.id === targetUserId;
@@ -43,11 +42,7 @@ const UserAction = ({
     <div className="flex flex-col gap-2 text-gray-200 mt-4 text-sm space-y-1.5">
       <button
         onClick={() => {
-          if (focusUserId === targetUserId) {
-            onFocusUser(null);
-          } else {
-            onFocusUser(targetUserId);
-          }
+          setFocusUserId(focusUserId === targetUserId ? null : targetUserId);
         }}
         className={`flex items-center cursor-pointer transition font-medium ${
           focusUserId === targetUserId
@@ -63,7 +58,9 @@ const UserAction = ({
         <span className="pl-2">
           {focusUserId === targetUserId
             ? "Cancel Focused View"
-            : "Only Show User's Content"}
+            : isOwnProfile
+              ? "Only Show My Content"
+              : "Only Show User's Content"}
         </span>
       </button>
 

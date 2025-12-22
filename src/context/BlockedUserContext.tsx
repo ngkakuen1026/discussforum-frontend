@@ -11,12 +11,9 @@ interface BlockedUsersContextType {
   refetch: () => void;
 }
 
-const BlockedUsersContext = createContext<BlockedUsersContextType>({
-  blockedUsers: [],
-  isBlocked: () => false,
-  isLoading: false,
-  refetch: () => void 0,
-});
+const BlockedUsersContext = createContext<BlockedUsersContextType | undefined>(
+  undefined
+);
 
 export const BlockedUsersProvider = ({ children }: { children: ReactNode }) => {
   const {

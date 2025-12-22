@@ -10,7 +10,6 @@ interface CommentsSectionProps {
   COMMENTS_PER_PAGE: number;
   postId: string | number;
   focusUserId: number | null;
-  onFocusUser: (id: number | null) => void;
 }
 
 const CommentsSection = ({
@@ -19,10 +18,13 @@ const CommentsSection = ({
   COMMENTS_PER_PAGE,
   postId,
   focusUserId,
-  onFocusUser,
 }: CommentsSectionProps) => {
   const [showCommentPopup, setShowCommentPopup] = useState(false);
   const { withAuth } = useAuthAction();
+
+  const hasComments = comments.length > 0;
+  const isFocusModeActive = focusUserId !== null;
+  const noCommentsFromFocusedUser = isFocusModeActive && !hasComments;
 
   const paginatedComments = (() => {
     if (!comments || comments.length === 0) return [];
@@ -40,22 +42,35 @@ const CommentsSection = ({
     <section>
       {paginatedComments.length === 0 ? (
         <div className="text-center py-20 text-gray-500">
-          <p className="text-lg">No comments on this page.</p>
-          Be the{" "}
-          <button
-            onClick={withAuth(() => setShowCommentPopup(true))}
-            className="text-white font-medium hover:underline focus:underline outline-none cursor-pointer"
-          >
-            first
-          </button>{" "}
-          to comment on this post!
+          {noCommentsFromFocusedUser ? (
+            <>
+              <p className="text-lg">
+                This user has not commented on this post.
+              </p>
+              <p className="text-lg mt-2">
+                Try viewing comments from other users.
+              </p>
+            </>
+          ) : (
+            <>
+              <p className="text-lg">No comments on this page.</p>
+              <p>
+                Be the{" "}
+                <button
+                  onClick={withAuth(() => setShowCommentPopup(true))}
+                  className="text-white font-medium hover:underline focus:underline outline-none cursor-pointer"
+                >
+                  first
+                </button>{" "}
+                to comment on this post!
+              </p>
+            </>
+          )}
         </div>
       ) : (
         <CommentList
           comments={paginatedComments}
           commentsPerPage={COMMENTS_PER_PAGE}
-          focusUserId={focusUserId}
-          onFocusUser={onFocusUser}
         />
       )}
 

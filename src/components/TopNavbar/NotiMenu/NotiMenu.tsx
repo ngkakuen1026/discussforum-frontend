@@ -32,8 +32,10 @@ const NotiMenu = ({
       );
       return res.data.unreadCount as number;
     },
-    staleTime: 1000 * 30,
-    refetchInterval: 1000 * 60,
+    staleTime: 1000 * 60,
+    refetchOnWindowFocus: true,
+    refetchOnReconnect: true,
+    refetchInterval: showNotiMenu ? 1000 * 30 : false,
   });
 
   const {
