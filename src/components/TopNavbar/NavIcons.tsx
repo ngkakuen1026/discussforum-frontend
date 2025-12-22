@@ -1,5 +1,5 @@
-import { Link } from "@tanstack/react-router";
-import { CirclePlus, Moon, Sun } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { CirclePlus, Moon, Sun, User } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 import type { RefObject } from "react";
 import NotiMenu from "./NotiMenu/NotiMenu";
@@ -42,9 +42,11 @@ const NavIcons = ({
   user,
   logout,
 }: NavIconProps) => {
+  const navigate = useNavigate();
+
   return (
     <div className="flex gap-4 items-center justify-around">
-      {isLoggedIn ? (
+      {isLoggedIn && (
         <>
           <button title="Add New Post">
             <Link to="/add-post" target="_blank">
@@ -58,7 +60,7 @@ const NavIcons = ({
             toggleNotiMenu={toggleNotiMenu}
           />
         </>
-      ) : null}
+      )}
 
       <TranslationMenu
         showTranslationMenu={showTranslationMenu}
@@ -72,18 +74,36 @@ const NavIcons = ({
         title={isOn ? "Switch to light mode" : "Switch to dark mode"}
       >
         {isOn ? (
-          <Sun className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
+          <Sun
+            size={24}
+            className="text-white cursor-pointer hover:opacity-75"
+          />
         ) : (
-          <Moon className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
+          <Moon
+            size={24}
+            className="text-white cursor-pointer hover:opacity-75"
+          />
         )}
       </button>
-      <UserDropdown
-        userMenuRef={userMenuRef}
-        toggleUserMenu={toggleUserMenu}
-        isLoggedIn={isLoggedIn}
-        user={user}
-        logout={logout}
-      />
+
+      {isLoggedIn ? (
+        <UserDropdown
+          userMenuRef={userMenuRef}
+          toggleUserMenu={toggleUserMenu}
+          user={user}
+          logout={logout}
+        />
+      ) : (
+        <button
+          onClick={() => navigate({ to: "/login" })}
+          className="flex items-center justify-center focus:outline-none"
+        >
+          <User
+            size={24}
+            className="text-white cursor-pointer hover:opacity-75 "
+          />
+        </button>
+      )}
     </div>
   );
 };

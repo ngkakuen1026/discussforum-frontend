@@ -1,7 +1,7 @@
 import React from "react";
 
-const blockedUserList = () => {
+const BlockedUserList = () => {
   return <div>Hello "/blocked-user-list"!</div>;
 };
 
-export default blockedUserList;
+export default BlockedUserList;

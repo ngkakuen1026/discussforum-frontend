@@ -31,7 +31,10 @@ const TranslationMenu = ({
         className="flex items-center justify-center focus:outline-none relative cursor-pointer hover:opacity-75"
         title="Language Translation"
       >
-        <LanguagesIcon className="text-white w-7 h-7" />
+        <LanguagesIcon
+          size={24}
+          className="text-white cursor-pointer hover:opacity-75"
+        />
       </button>
       {showTranslationMenu && (
         <motion.div

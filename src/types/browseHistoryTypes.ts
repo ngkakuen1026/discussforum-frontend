@@ -3,6 +3,7 @@ export interface BrowseHistoryType {
     post_id: number;
     post_title: string;
     post_view: number;
+    post_pending_tag_name: string;
     author_username: string;
     author_profile_image: string;
     author_is_admin: boolean;

@@ -1,5 +1,4 @@
 import SearchBar from "./TopNavbar/SearchBar";
-import SideNavBar from "./SideNavBar";
 import { useEffect, useRef, useState } from "react";
 import NavTitle from "./TopNavbar/NavTitle";
 import NavIcons from "./TopNavbar/NavIcons";
@@ -102,8 +101,6 @@ const TopNavbar = () => {
         user={user}
         logout={logout}
       />
-
-      {isSideNavOpen && <SideNavBar onClose={handleSideNavToggle} />}
     </div>
   );
 };

@@ -19,6 +19,7 @@ interface PinnedPostCardProps {
   selectMode: boolean;
   isSelected: boolean;
   toggleSelection: (postId: number) => void;
+  showTags?: boolean;
 }
 
 const PinnedPostCard = ({
@@ -33,6 +34,7 @@ const PinnedPostCard = ({
   selectMode,
   isSelected,
   toggleSelection,
+  showTags = true,
 }: PinnedPostCardProps) => {
   const navigate = useNavigate();
   const [showTooltip, setShowTooltip] = useState<
@@ -165,9 +167,14 @@ const PinnedPostCard = ({
             </time>
           </div>
 
-          <div className="mb-4">
-            <PostTags postId={bookmark.post_id} />
-          </div>
+          {showTags && (
+            <div className="mb-4">
+              <PostTags
+                postId={bookmark.post_id}
+                pendingTagName={bookmark.post_pending_tag_name}
+              />
+            </div>
+          )}
 
           <h3 className="text-xl font-semibold text-white line-clamp-3">
             {bookmark.post_title}

@@ -171,18 +171,18 @@ const BrowseHistoryCard = ({
             </time>
           </div>
 
-          {/* Tags */}
           <div className="mb-4">
-            <PostTags postId={browseHistory.post_id} />
+            <PostTags
+              postId={browseHistory.post_id}
+              pendingTagName={browseHistory.post_pending_tag_name}
+            />
           </div>
 
-          {/* Title */}
           <h3 className="text-xl font-semibold text-white line-clamp-3">
             {browseHistory.post_title}
           </h3>
         </div>
 
-        {/* Column 3: Category Pill (desktop only) */}
         <div className="hidden md:flex flex-col items-end justify-start">
           <button
             onClick={(e) => {
