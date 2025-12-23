@@ -20,7 +20,7 @@ import type { VoteType } from "../../../types/voteType";
 import type { CommentWithRepliesType } from "../../../types/commentTypes";
 import type { PostRouteSearch } from "../../../types/routeTypes";
 import { useAuth } from "../../../context/AuthContext";
-import { useBlockedUsers } from "../../../context/BLockedUserContext";
+import { useBlockedUsers } from "../../../context/BlockedUserContext";
 import { useFollowingUsers } from "../../../context/FollowingUserContext";
 import PostCard from "./PostCard";
 import PostActions from "./PostActions";

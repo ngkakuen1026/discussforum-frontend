@@ -4,7 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { formatDate } from "../../../utils/dateUtils";
 import SafeHTML from "../../SafeHTML";
 import PostActions from "./PostActions";
-import { useBlockedUsers } from "../../../context/BLockedUserContext";
+import { useBlockedUsers } from "../../../context/BlockedUserContext";
 import { useState } from "react";
 import { getUsernameColor } from "../../../utils/userUtils";
 
