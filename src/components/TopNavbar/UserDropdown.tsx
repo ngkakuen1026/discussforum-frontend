@@ -32,6 +32,11 @@ export default function UserDropdown({
 }: UserDropdownProps) {
   const navigate = useNavigate();
 
+  const iconStyle = {
+    iconSize: 16,
+    iconBaseClassName: `mr-2`,
+  };
+
   return (
     <div className="" ref={userMenuRef}>
       <Menu as="div" className="relative inline-block text-left">
@@ -102,7 +107,11 @@ export default function UserDropdown({
                             : "text-white"
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
-                        <House className="mr-2 h-5 w-5" aria-hidden="true" />
+                        <House
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
+                          aria-hidden="true"
+                        />
                         Home
                       </button>
                     </Link>
@@ -124,7 +133,8 @@ export default function UserDropdown({
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
                         <UserRoundPen
-                          className="mr-2 h-5 w-5 hover:text-red"
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
                           aria-hidden="true"
                         />
                         My Profile
@@ -145,7 +155,8 @@ export default function UserDropdown({
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
                         <UsersRound
-                          className="mr-2 h-5 w-5 hover:text-red"
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
                           aria-hidden="true"
                         />
                         Following
@@ -166,7 +177,8 @@ export default function UserDropdown({
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
                         <Ban
-                          className="mr-2 h-5 w-5 hover:text-red"
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
                           aria-hidden="true"
                         />
                         Blocked Users
@@ -187,7 +199,8 @@ export default function UserDropdown({
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
                         <PencilLine
-                          className="mr-2 h-5 w-5 hover:text-red"
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
                           aria-hidden="true"
                         />
                         Post Drafts
@@ -208,7 +221,8 @@ export default function UserDropdown({
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
                         <History
-                          className="mr-2 h-5 w-5 hover:text-red"
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
                           aria-hidden="true"
                         />
                         Browse History
@@ -229,7 +243,8 @@ export default function UserDropdown({
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
                         <Pin
-                          className="mr-2 h-5 w-5 hover:text-red"
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName} rotate-45`}
                           aria-hidden="true"
                         />
                         Pinned Posts
@@ -252,7 +267,8 @@ export default function UserDropdown({
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
                         <EqualApproximately
-                          className="mr-2 h-5 w-5 hover:text-red"
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
                           aria-hidden="true"
                         />
                         About
@@ -273,7 +289,8 @@ export default function UserDropdown({
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
                         <CircleQuestionMark
-                          className="mr-2 h-5 w-5"
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
                           aria-hidden="true"
                         />
                         FAQ
@@ -293,7 +310,11 @@ export default function UserDropdown({
                             : "text-white"
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
-                        <Settings className="mr-2 h-5 w-5" aria-hidden="true" />
+                        <Settings
+                          size={iconStyle.iconSize}
+                          className={`${iconStyle.iconBaseClassName}`}
+                          aria-hidden="true"
+                        />
                         Settings
                       </button>
                     </Link>
@@ -316,7 +337,8 @@ export default function UserDropdown({
                     }}
                   >
                     <LogOut
-                      className="mr-2 h-5 w-5 text-red-400"
+                      size={iconStyle.iconSize}
+                      className={`${iconStyle.iconBaseClassName} text-red-400`}
                       aria-hidden="true"
                     />
                     Logout

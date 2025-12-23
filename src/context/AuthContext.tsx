@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const {
     data: user,
-    isLoading,
+    isLoading: authLoading,
     isError,
     refetch,
   } = useQuery<UserType | null>({
@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         isLoggedIn,
         user: user || null,
-        isLoading,
+        isLoading: authLoading,
         isError,
         refetch,
         logout,

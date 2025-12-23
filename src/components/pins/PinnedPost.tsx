@@ -19,6 +19,7 @@ import { useBookmark } from "../../context/BookmarkContext";
 const PinnedPost = () => {
   const queryClient = useQueryClient();
   const { toggleBookmark, isPending: isBookmarkPending } = useBookmark();
+  const navigate = useNavigate();
 
   const {
     data: bookmarks = [],
@@ -53,7 +54,6 @@ const PinnedPost = () => {
     })),
   });
 
-  const navigate = useNavigate();
   const [selectMode, setSelectMode] = useState(false);
   const [selectedPostIds, setSelectedPostIds] = useState<number[]>([]);
 

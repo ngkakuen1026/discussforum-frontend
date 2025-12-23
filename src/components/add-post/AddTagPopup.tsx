@@ -6,16 +6,11 @@ import { X, Tag as TagIcon, Plus } from "lucide-react";
 import ClickOutside from "../../hooks/useClickOutside";
 
 interface AddTagPopupProps {
-  value?: string;
   onSelectTag: (tagName: string) => void;
   onClose: () => void;
 }
 
-const AddTagPopup = ({
-  value = "",
-  onSelectTag,
-  onClose,
-}: AddTagPopupProps) => {
+const AddTagPopup = ({ onSelectTag, onClose }: AddTagPopupProps) => {
   const [search, setSearch] = useState("");
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);

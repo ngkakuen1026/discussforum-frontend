@@ -1,7 +1,13 @@
-import { createFileRoute } from '@tanstack/react-router'
-import PinnedPost from '../components/pins/PinnedPost'
+import { createFileRoute } from "@tanstack/react-router";
+import RequireAuth from "../utils/RequireAuth";
+import PinnedPost from "../components/pins/PinnedPost";
 
-export const Route = createFileRoute('/pins')({
-  component: PinnedPost
-})
+const ProtectedPinnedPost = () => (
+  <RequireAuth redirectParam="/pins">
+    <PinnedPost />
+  </RequireAuth>
+);
 
+export const Route = createFileRoute("/pins")({
+  component: ProtectedPinnedPost,
+});

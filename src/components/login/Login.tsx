@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "@tanstack/react-router";
 import { useMutation } from "@tanstack/react-query";
@@ -28,7 +28,7 @@ const Login = () => {
   const [input, setInput] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
-  const { refetch } = useAuth();
+  const { isLoggedIn, isLoading: authLoading, refetch } = useAuth();
   const navigate = useNavigate();
 
   const loginMutation = useMutation<LoginResponse, Error, LoginData>({
@@ -39,7 +39,6 @@ const Login = () => {
     onSuccess: async (data) => {
       console.log("Login successful:", data);
       await refetch();
-      navigate({ to: "/", search: { categoryId: 0 }, replace: true });
     },
     onError: (error: unknown) => {
       let message = "Login failed. Please try again";
@@ -72,6 +71,15 @@ const Login = () => {
       toast.error(message);
     },
   });
+
+  useEffect(() => {
+    if (isLoggedIn && !authLoading) {
+      const params = new URLSearchParams(window.location.search);
+      const redirectTo = params.get("redirect") || "/";
+
+      navigate({ to: redirectTo as string, replace: true });
+    }
+  }, [isLoggedIn, authLoading, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
