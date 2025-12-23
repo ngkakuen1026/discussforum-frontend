@@ -15,11 +15,11 @@ import CommentPopup from "../PostDetail/CommentPopup";
 import { useAuthAction } from "../../../utils/authUtils";
 import ReportPopup from "../PostDetail/ReportPopup";
 import { useAuth } from "../../../context/AuthContext";
-import { useBlockedUsers } from "../../../context/BLockedUserContext";
 import { useFollowingUsers } from "../../../context/FollowingUserContext";
 import BlockPopup from "../PostDetail/BlockPopup";
 import UserCard from "../UserCard";
 import CommentCard from "./CommentCard";
+import { useBlockedUsers } from "../../../context/BLockedUserContext";
 
 interface CommentItemProps {
   comment: CommentWithRepliesType;
