@@ -12,7 +12,7 @@ import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { toast } from "sonner";
 import BrowseHistoryToolbar from "./BrowseHistoryToolbar";
-import BrowseHistoryCard from "./BrowseHIstoryCard";
+import BrowseHistoryCard from "./BrowseHistoryCard";
 
 const BrowseHistory = () => {
   const queryClient = useQueryClient();
