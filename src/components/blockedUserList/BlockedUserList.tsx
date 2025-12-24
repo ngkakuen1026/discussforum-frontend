@@ -8,6 +8,8 @@ import { Ban } from "lucide-react";
 import BlockedUserListCard from "./BlockedUserListCard";
 import { Link } from "@tanstack/react-router";
 import { useBlockedUsers } from "../../context/BlockedUserContext";
+import { useState } from "react";
+import BlockedReasonPopup from "./BlockedReasonPopup";
 
 const BlockedUserList = () => {
   const queryClient = useQueryClient();
@@ -27,6 +29,9 @@ const BlockedUserList = () => {
     queryClient.refetchQueries({ queryKey: ["my-blockeds"] });
     toast.success(`User blocked refreshed!`);
   };
+
+  const [selectedUserForReason, setSelectedUserForReason] =
+    useState<UserBlockedType | null>(null);
 
   if (isLoading) {
     return (
@@ -51,6 +56,7 @@ const BlockedUserList = () => {
               blockedUser={blockedUser}
               onUnblock={() => toggleBlockedUsers(blockedUser.blocked_user_id)}
               isPending={isBlockedUserPending}
+              onOpenReasonPopup={() => setSelectedUserForReason(blockedUser)}
             />
           ))}
         </div>
@@ -77,6 +83,17 @@ const BlockedUserList = () => {
             posts and comments.
           </p>
         </div>
+      )}
+      {selectedUserForReason && (
+        <BlockedReasonPopup
+          userId={selectedUserForReason.blocked_user_id}
+          userName={selectedUserForReason.blocked_user_username}
+          userProfileImage={selectedUserForReason.blocked_user_profile_image}
+          userGender={selectedUserForReason.blocked_user_gender}
+          userIsAdmin={selectedUserForReason.blocked_user_is_admin}
+          userBlockedReason={selectedUserForReason.blocked_reason}
+          onClose={() => setSelectedUserForReason(null)}
+        />
       )}
     </div>
   );

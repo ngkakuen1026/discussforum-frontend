@@ -1,19 +1,25 @@
 import type { UserBlockedType } from "../../types/userBlcokedTypes";
 import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
 import { formatDistanceToNow } from "date-fns";
-import { CircleOff, EllipsisVertical } from "lucide-react";
+import { EllipsisVertical } from "lucide-react";
+import { useState } from "react";
+import BlockedUserListActionDropdown from "./BlockedUserListActionDropdown";
 
 interface BlockedUserListCardProps {
   blockedUser: UserBlockedType;
   onUnblock: () => void;
   isPending?: boolean;
+  onOpenReasonPopup: () => void;
 }
 
 const BlockedUserListCard = ({
   blockedUser,
   onUnblock,
   isPending,
+  onOpenReasonPopup,
 }: BlockedUserListCardProps) => {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
   return (
     <div className="group relative border-b border-gray-800/80 last:border-b-0 hover:bg-white/5 transition-all duration-200 cursor-pointer">
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-cyan-500 to-purple-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300" />
@@ -57,29 +63,35 @@ const BlockedUserListCard = ({
             </time>
           </div>
           <div className="text-gray-300 mt-2">
-            Blocked Reason:{" "}
+            Blocking Reason:{" "}
             {blockedUser.blocked_reason
               ? blockedUser.blocked_reason
               : "No Reason Provided"}
           </div>
         </div>
 
-        <div className="hidden md:flex flex-col items-end justify-start">
-          <EllipsisVertical
-            size={18}
-            className="text-gray-400 hover:text-white cursor-pointer"
-          />
+        <div className="hidden md:flex flex-col items-end justify-start relative">
           <button
+            type="button"
+            className="p-2 rounded-full hover:bg-gray-800/40"
             onClick={(e) => {
               e.stopPropagation();
-              onUnblock();
+              setDropdownOpen((open) => !open);
             }}
-            disabled={isPending}
-            className="flex items-end gap-2 text-red-500 hover:text-red-400 hover:bg-red-900/20 px-3 py-2 cursor-pointer rounded-lg transition text-sm font-medium"
           >
-            <CircleOff size={18} />
-            Unblock User
+            <EllipsisVertical
+              size={18}
+              className="text-gray-400 hover:text-white cursor-pointer"
+            />
           </button>
+          {dropdownOpen && (
+            <BlockedUserListActionDropdown
+              isPending={isPending}
+              onUnblock={onUnblock}
+              onClose={() => setDropdownOpen(false)}
+              onBlockReasonPopupOpen={onOpenReasonPopup}
+            />
+          )}
         </div>
       </div>
     </div>
