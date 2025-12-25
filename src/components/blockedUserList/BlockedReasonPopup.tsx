@@ -1,5 +1,5 @@
 import ClickOutside from "../../hooks/useClickOutside";
-import { Ban, X } from "lucide-react";
+import { User, X } from "lucide-react";
 import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
@@ -30,7 +30,7 @@ const BlockedReasonPopup = ({
 }: BlockPopupProps) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [blockReason, setBlackReason] = useState("");
+  const [blockReason, setBlackReason] = useState(`${userBlockedReason}`);
 
   const updateBlockReasonMutation = useMutation({
     mutationFn: () =>
@@ -62,8 +62,10 @@ const BlockedReasonPopup = ({
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-700">
             <div className="flex items-center gap-3">
-              <Ban size={24} className="text-red-500" />
-              <h2 className="text-xl font-bold text-white">User Data</h2>
+              <User size={24} className="text-white" />
+              <h2 className="text-xl font-bold text-white">
+                Blocked User Data
+              </h2>
             </div>
             <button
               onClick={onClose}
@@ -97,7 +99,7 @@ const BlockedReasonPopup = ({
             </p>
             <p className="text-lg font-medium text-gray-300 mt-2">
               Blocking Reason:{" "}
-              <span className="text-red-400">
+              <span className="text-red-500 break-all">
                 {userBlockedReason ? userBlockedReason : "No Reason Provided"}
               </span>
             </p>

@@ -15,7 +15,7 @@ const BlockedUserListActionDropdown = ({
   onBlockReasonPopupOpen,
 }: BlockedUserListActionDropdownProps) => {
   return (
-    <div className="absolute right-0 top-8 z-10 min-w-[180px] bg-[#181A20] border border-gray-800 rounded-xl shadow-lg py-2 flex flex-col gap-1">
+    <div className="absolute right-5 top-10 z-10 min-w-[180px] bg-[#181A20] border border-gray-800 rounded-xl shadow-lg py-2 flex flex-col gap-1">
       <ClickOutside onClickOutside={onClose}>
         <button
           onClick={(e) => {

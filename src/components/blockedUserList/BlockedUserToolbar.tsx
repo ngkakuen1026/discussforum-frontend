@@ -32,7 +32,7 @@ const BlockedUserToolbar = ({
       </div>
     </div>
     <div>
-      <h2 className={`text-gray-400 mt-2`}>The user you blocked</h2>
+      <h2 className={`text-gray-400 mt-2`}>The users blocked</h2>
     </div>
   </div>
 );

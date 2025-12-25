@@ -62,7 +62,7 @@ const BlockedUserListCard = ({
                 : "Recently"}
             </time>
           </div>
-          <div className="text-gray-300 mt-2">
+          <div className="text-gray-300 mt-2 break-all">
             Blocking Reason:{" "}
             {blockedUser.blocked_reason
               ? blockedUser.blocked_reason
