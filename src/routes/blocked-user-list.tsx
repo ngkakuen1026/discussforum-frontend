@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import BlockedUserList from "../components/posts/blockedUserList/blockedUserList";
 import RequireAuth from "../utils/RequireAuth";
+import BlockedUserList from "../components/blockedUserList/BlockedUserList";
 
 const ProtectedBlockedUserList = () => (
   <RequireAuth redirectParam="/blocked-user-list">

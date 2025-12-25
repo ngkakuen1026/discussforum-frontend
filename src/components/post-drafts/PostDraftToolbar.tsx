@@ -26,7 +26,7 @@ const PostDraftToolbar: React.FC<PostDraftToolbarProps> = ({
   <div className="">
     <div className="flex items-center justify-between gap-2">
       <h1 className="text-white text-2xl font-bold">
-        Your draft ({drafts.length}/10)
+        My draft ({drafts.length}/10)
       </h1>
       {selectMode ? (
         <div className="flex gap-2 ">
@@ -107,7 +107,7 @@ const PostDraftToolbar: React.FC<PostDraftToolbarProps> = ({
       <h2 className={`text-gray-400 mt-2`}>
         {selectMode
           ? `${selectedDraftIds.length} ${selectedDraftIds.length > 1 ? "post drafts" : "post draft"} selected`
-          : "The post drafts saved, you can only save up 10 drafts"}
+          : "The post drafts saved, can only save up to 10 drafts"}
       </h2>
     </div>
   </div>

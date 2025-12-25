@@ -4,7 +4,7 @@ import { ThumbsUp, ThumbsDown, Reply, Ban, ArrowLeft } from "lucide-react";
 import type { CommentType } from "../../../types/commentTypes";
 import { getUsernameColor } from "../../../utils/userUtils";
 import SafeHTML from "../../SafeHTML";
-import { useBlockedUsers } from "../../../context/BLockedUserContext";
+import { useBlockedUsers } from "../../../context/BlockedUserContext";
 import { useState } from "react";
 import CommentActions from "./CommentActions";
 
