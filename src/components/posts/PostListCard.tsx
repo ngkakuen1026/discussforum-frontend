@@ -6,6 +6,7 @@ import { formatDate } from "../../utils/dateUtils";
 import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
 import PostTags from "./PostDetail/PostTags";
 import type { PostType } from "../../types/postTypes";
+import { UserRoleTag } from "../UserRoleTag";
 
 interface PostListCardProps {
   post: PostType;
@@ -52,7 +53,7 @@ const PostListCard = ({
           <img
             src={getUserAvatar(post)}
             alt={post.author_username}
-            className="w-20 h-20 rounded-full ring-2 ring-gray-800 group-hover:ring-cyan-500/50 transition-all mb-6"
+            className="w-20 h-20 object-cover rounded-full ring-2 ring-gray-800 group-hover:ring-cyan-500/50 transition-all mb-6"
           />
 
           <div className="space-y-4 text-sm">
@@ -130,15 +131,11 @@ const PostListCard = ({
 
         {/* Column 2: Main Content */}
         <div className="flex flex-col">
-          <div className="flex items-center gap-3 text-sm text-gray-400 ">
+          <div className="flex items-center gap-3 text-sm">
             <span className={`font-semibold ${getUsernameColor(post)}`}>
               {post.author_username}
             </span>
-            {post.author_is_admin && (
-              <span className="px-2 py-0.5 text-xs bg-yellow-600/80 rounded-lg font-medium">
-                Admin
-              </span>
-            )}
+            <UserRoleTag user={post} />
             <span className="text-gray-400">•</span>
             <time className="text-gray-400 hover:text-gray-300 transition">
               {formatDate(post.created_at)}

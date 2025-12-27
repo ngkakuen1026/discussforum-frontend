@@ -6,6 +6,7 @@ import PostTags from "../posts/PostDetail/PostTags";
 import { formatDate } from "../../utils/dateUtils";
 import { useState } from "react";
 import type { BookmarkType } from "../../types/bookmarkTypes";
+import { UserRoleTag } from "../UserRoleTag";
 
 interface PinnedPostCardProps {
   bookmark: BookmarkType;
@@ -148,11 +149,7 @@ const PinnedPostCard = ({
             <span className={`font-semibold ${getUsernameColor(bookmark)}`}>
               {bookmark.author_username}
             </span>
-            {bookmark.author_is_admin && (
-              <span className="px-2 py-0.5 text-xs bg-yellow-600/80 rounded-lg font-medium">
-                Admin
-              </span>
-            )}
+            <UserRoleTag user={bookmark} />
             <span className="text-gray-400">•</span>
             <time className="text-gray-400 hover:text-gray-300 transition">
               {formatDate(bookmark.post_created_at)}

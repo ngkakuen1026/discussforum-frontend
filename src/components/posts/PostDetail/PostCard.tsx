@@ -121,39 +121,41 @@ const PostCard = ({
         </div>
       </div>
 
-      <div className="flex items-center gap-3 mt-auto">
-        <button
-          onClick={withAuth(() => upvote())}
-          disabled={upvotePending || downvotePending}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all font-medium ${
-            userVote === 1
-              ? "bg-green-900/80 text-green-400 ring-2 ring-green-500 shadow-lg shadow-green-500/20 cursor-not-allowed"
-              : "text-green-400 hover:bg-green-900/40"
-          } ${userVote === -1 ? "cursor-not-allowed opacity-70" : ""}`}
-        >
-          <ThumbsUp
-            size={18}
-            className={userVote === 1 ? "fill-green-400" : ""}
-          />
-          <span className="tabular-nums">{postUpvotes}</span>
-        </button>
+      {(!blocked || showBlockedContent) && (
+        <div className="flex items-center gap-3 mt-auto">
+          <button
+            onClick={withAuth(() => upvote())}
+            disabled={upvotePending || downvotePending}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all font-medium ${
+              userVote === 1
+                ? "bg-green-900/80 text-green-400 ring-2 ring-green-500 shadow-lg shadow-green-500/20 cursor-not-allowed"
+                : "text-green-400 hover:bg-green-900/40"
+            } ${userVote === -1 ? "cursor-not-allowed opacity-70" : ""}`}
+          >
+            <ThumbsUp
+              size={18}
+              className={userVote === 1 ? "fill-green-400" : ""}
+            />
+            <span className="tabular-nums">{postUpvotes}</span>
+          </button>
 
-        <button
-          onClick={withAuth(() => downvote())}
-          disabled={upvotePending || downvotePending}
-          className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all font-medium ${
-            userVote === -1
-              ? "bg-red-900/80 text-red-400 ring-2 ring-red-500 shadow-lg shadow-red-500/20 cursor-not-allowed"
-              : "text-red-400 hover:bg-red-900/40"
-          } ${userVote === 1 ? "cursor-not-allowed opacity-70" : ""}`}
-        >
-          <ThumbsDown
-            size={18}
-            className={userVote === -1 ? "fill-red-400" : ""}
-          />
-          <span className="tabular-nums">{postDownvotes}</span>
-        </button>
-      </div>
+          <button
+            onClick={withAuth(() => downvote())}
+            disabled={upvotePending || downvotePending}
+            className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all font-medium ${
+              userVote === -1
+                ? "bg-red-900/80 text-red-400 ring-2 ring-red-500 shadow-lg shadow-red-500/20 cursor-not-allowed"
+                : "text-red-400 hover:bg-red-900/40"
+            } ${userVote === 1 ? "cursor-not-allowed opacity-70" : ""}`}
+          >
+            <ThumbsDown
+              size={18}
+              className={userVote === -1 ? "fill-red-400" : ""}
+            />
+            <span className="tabular-nums">{postDownvotes}</span>
+          </button>
+        </div>
+      )}
     </div>
   );
 };

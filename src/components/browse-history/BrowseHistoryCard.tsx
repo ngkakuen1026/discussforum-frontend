@@ -6,6 +6,7 @@ import { Eye, MessageCircle, ThumbsDown, ThumbsUp } from "lucide-react";
 import { formatDate } from "../../utils/dateUtils";
 import { formatDistanceToNow } from "date-fns";
 import PostTags from "../posts/PostDetail/PostTags";
+import { UserRoleTag } from "../UserRoleTag";
 
 interface BrowseHistoryCardProps {
   browseHistory: BrowseHistoryType;
@@ -152,11 +153,7 @@ const BrowseHistoryCard = ({
             >
               {browseHistory.author_username}
             </span>
-            {browseHistory.author_is_admin && (
-              <span className="px-2 py-0.5 text-xs bg-yellow-600/80 rounded-lg font-medium">
-                Admin
-              </span>
-            )}
+            <UserRoleTag user={browseHistory} />
             <span className="text-gray-400">•</span>
             <time className="text-gray-400 hover:text-gray-300 transition">
               {formatDate(browseHistory.post_created_at)}

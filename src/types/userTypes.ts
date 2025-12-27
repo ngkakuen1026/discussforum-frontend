@@ -8,6 +8,7 @@ export interface UserType {
     gender: "Male" | "Female" | "Prefer Not to Say";
     bio: string;
     profile_image: string;
+    profile_banner: string;
     registration_date: string;
     is_admin: boolean;
 };

@@ -7,6 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { userBlockedAPI } from "../../../services/http-api";
 import { getUserAvatar, getUsernameColor } from "../../../utils/userUtils";
 import { isAxiosError } from "axios";
+import { UserRoleTag } from "../../UserRoleTag";
 
 interface BlockPopupProps {
   userId: string | number;
@@ -88,11 +89,7 @@ const BlockPopup = ({
               })} flex items-center gap-2`}
             >
               <span className="text-2xl mb-1">{userName}</span>
-              {userIsAdmin && (
-                <span className="text-xs bg-yellow-600 px-3 py-1 rounded-lg font-medium">
-                  Admin
-                </span>
-              )}
+              <UserRoleTag user={{ is_admin: userIsAdmin }} />
             </p>
             <p className="text-sm font-medium text-red-400">
               After blocking a user, you will no longer be able to see that

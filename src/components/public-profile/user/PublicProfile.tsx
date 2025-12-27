@@ -2,10 +2,16 @@ import { useQuery } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
 import { usersAPI } from "../../../services/http-api";
 import { useNavigate, useParams } from "@tanstack/react-router";
+import PublicProfileHeader from "./PublicProfileHeader/PublicProfileHeader";
+import { useState } from "react";
+import AvatarPopup from "./PublicProfileHeader/AvatarPopup";
+import BannerPopup from "./PublicProfileHeader/ProfileBannerPopup";
 
 const PublicProfile = () => {
   const { userId } = useParams({ from: "/public-profile/user/$userId" });
   const navigate = useNavigate();
+  const [showAvatarPopup, setShowAvatarPopup] = useState(false);
+  const [showBannerPopup, setShowBannerPopup] = useState(false);
 
   const {
     data: user,
@@ -17,6 +23,7 @@ const PublicProfile = () => {
       const res = await authAxios.get(`${usersAPI.url}/user-profile/${userId}`);
       return res.data.user;
     },
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading) {
@@ -46,8 +53,26 @@ const PublicProfile = () => {
   }
 
   return (
-    <div>
-      <h1 className="text-white">Hello, {user.email} </h1>
+    <div className="container mx-auto px-1 pb-8">
+      <PublicProfileHeader
+        publicUser={user}
+        onShowAvatarPopup={() => setShowAvatarPopup(true)}
+        onShowBannerPopup={() => setShowBannerPopup(true)}
+      />
+
+      {showAvatarPopup && (
+        <AvatarPopup
+          publicUser={user}
+          onClose={() => setShowAvatarPopup(false)}
+        />
+      )}
+
+      {showBannerPopup && (
+        <BannerPopup
+          publicUser={user}
+          onClose={() => setShowBannerPopup(false)}
+        />
+      )}
     </div>
   );
 };

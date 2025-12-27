@@ -16,6 +16,7 @@ import {
 import { Fragment, type RefObject } from "react";
 import type { UserType } from "../../types/userTypes";
 import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
+import { UserRoleTag } from "../UserRoleTag";
 
 interface UserDropdownProps {
   userMenuRef: RefObject<HTMLDivElement | null>;
@@ -83,9 +84,10 @@ export default function UserDropdown({
                         <div className="grid text-left">
                           <span>Edit Profile</span>
                           <span
-                            className={`font-bold ${getUsernameColor(user!)}`}
+                            className={`font-bold ${getUsernameColor(user!)} `}
                           >
                             {user!.username}
+                            <UserRoleTag user={user!} />
                           </span>
                         </div>
                       </button>

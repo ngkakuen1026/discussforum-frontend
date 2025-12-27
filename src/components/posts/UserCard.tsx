@@ -4,6 +4,7 @@ import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
 import { formatUserRegistrationDate } from "../../utils/dateUtils";
 import type { UserLikeType } from "../../types/userLikeTypes";
 import UserAction from "../UserAction";
+import { UserRoleTag } from "../UserRoleTag";
 
 interface UserCardProps {
   user: UserType | null;
@@ -30,8 +31,6 @@ const UserCard = ({
 
   const userId = (userData.author_id ?? userData.commenter_id)!;
   const username = (userData.author_username ?? userData.commenter_username)!;
-  const isAdmin =
-    userData.author_is_admin ?? userData.commenter_is_admin ?? false;
   const registrationDate =
     userData.author_registration_date ??
     userData.commenter_registration_date ??
@@ -63,11 +62,7 @@ const UserCard = ({
                 View {username}'s profile
               </span>
             </button>
-            {isAdmin && (
-              <span className="text-xs bg-yellow-600 px-3 py-1 rounded-lg font-medium">
-                Admin
-              </span>
-            )}
+            <UserRoleTag user={userData} />
           </p>
           <p className="text-gray-400 text-sm mt-2">
             Registered: {formatUserRegistrationDate(registrationDate)}

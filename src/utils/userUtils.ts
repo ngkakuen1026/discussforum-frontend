@@ -1,3 +1,7 @@
+import defaultMale from "../assets/Images/default_male_icon.png";
+import defaultFemale from "../assets/Images/default_female_icon.png";
+import defaultUser from "../assets/Images/default_user_icon.png";
+
 export type AuthorLike = {
   // Admin
   is_admin?: boolean | null;
@@ -59,10 +63,10 @@ export const getUserAvatar = (author: AuthorLike): string => {
 
   switch (gender) {
     case "Male":
-      return "../src/assets/Images/default_male_icon.png";
+      return defaultMale;
     case "Female":
-      return "../src/assets/Images/default_female_icon.png";
+      return defaultFemale;
     default:
-      return "../src/assets/Images/default_user_icon.png";
+      return defaultUser;
   }
 };
