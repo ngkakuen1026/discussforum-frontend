@@ -67,8 +67,23 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
   });
 
   const handleFile = (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please upload a valid image file.");
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error(
+        "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed."
+      );
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File too large. Maximum size is 10MB.");
       return;
     }
 
@@ -85,12 +100,28 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
       const response = await fetch(imageUrlInput, { mode: "cors" });
       if (!response.ok) throw new Error("Invalid image URL");
       const blob = await response.blob();
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
+      if (!allowedTypes.includes(blob.type)) {
+        toast.error(
+          "Invalid image type. Only JPG, PNG, GIF, and WebP are supported."
+        );
+        return;
+      }
+
       const file = new File([blob], "avatar-from-url.jpg", { type: blob.type });
       handleFile(file);
       setImageUrlInput("");
     } catch (error) {
       console.error("Failed to load image from URL" + error);
-      toast.error("Failed to load image from URL");
+      toast.error(
+        "Failed to load image from URL. Check if it's valid and publicly accessible."
+      );
     }
   };
 
@@ -161,7 +192,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
                   disabled={!imageUrlInput.trim() || uploadMutation.isPending}
                   className="px-8 py-3 bg-cyan-600 hover:bg-cyan-500 rounded-xl text-white font-medium transition disabled:opacity-50"
                 >
-                  Insert
+                  {uploadMutation.isPending ? "Updating..." : "Insert"}
                 </button>
               </div>
             </div>

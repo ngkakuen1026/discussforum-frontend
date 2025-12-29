@@ -46,6 +46,23 @@ export const getUsernameColor = (author: AuthorLike): string => {
   }
 };
 
+export const getGenderColor = (author: AuthorLike): string => {
+  const gender =
+    author.gender ??
+    author.author_gender ??
+    author.commenter_gender ??
+    "Prefer Not to Say";
+
+  switch (gender) {
+    case "Male":
+      return "text-blue-400";
+    case "Female":
+      return "text-pink-400";
+    default:
+      return "text-gray-300";
+  }
+};
+
 export const getUserAvatar = (author: AuthorLike): string => {
   const image =
     author.profile_image ??

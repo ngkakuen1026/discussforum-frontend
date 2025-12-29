@@ -348,7 +348,7 @@ const PostDetail = () => {
         currentPage={currentPage}
         COMMENTS_PER_PAGE={COMMENTS_PER_PAGE}
         postId={postId}
-        focusUserId={focusUserId} 
+        focusUserId={focusUserId}
       />
 
       {/* Comment Popup */}

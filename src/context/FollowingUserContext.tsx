@@ -5,10 +5,13 @@ import type { UserFollowType } from "../types/userFollowTypes";
 import { userFollowingAPI } from "../services/http-api";
 
 interface FollowingUsersContextType {
-  myFollowingUsers: UserFollowType[];
   isFollowed: (userId: number) => boolean;
-  isLoading: boolean;
-  refetch: () => void;
+  myFollowingUsers: UserFollowType[];
+  myFollowingLoading: boolean;
+  myFollowingRefetch: () => void;
+  myFollowers: UserFollowType[];
+  myFollowersLoading: boolean;
+  myFollowersRefetch: () => void;
 }
 
 const FollowingUserContext = createContext<
@@ -22,8 +25,8 @@ export const FollowingUsersProvider = ({
 }) => {
   const {
     data: myFollowingUsers = [],
-    isLoading,
-    refetch,
+    isLoading: myFollowingLoading,
+    refetch: myFollowingRefetch,
   } = useQuery<UserFollowType[]>({
     queryKey: ["my-followings"],
     queryFn: async () => {
@@ -37,9 +40,30 @@ export const FollowingUsersProvider = ({
     return myFollowingUsers.some((f) => f.following_user_id === userId);
   };
 
+  const {
+    data: myFollowers = [],
+    isLoading: myFollowersLoading,
+    refetch: myFollowersRefetch,
+  } = useQuery<UserFollowType[]>({
+    queryKey: ["my-followers"],
+    queryFn: async () => {
+      const res = await authAxios.get(`${userFollowingAPI.url}/followers/me`);
+      return res.data.followers;
+    },
+    staleTime: 5 * 60 * 1000,
+  });
+
   return (
     <FollowingUserContext.Provider
-      value={{ myFollowingUsers, isFollowed, isLoading, refetch }}
+      value={{
+        myFollowingUsers,
+        isFollowed,
+        myFollowingLoading,
+        myFollowingRefetch,
+        myFollowers,
+        myFollowersLoading,
+        myFollowersRefetch,
+      }}
     >
       {children}
     </FollowingUserContext.Provider>

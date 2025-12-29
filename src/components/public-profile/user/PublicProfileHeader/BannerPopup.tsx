@@ -65,8 +65,23 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
   });
 
   const handleFile = (file: File) => {
-    if (!file.type.startsWith("image/")) {
-      toast.error("Please upload a valid image file.");
+    const allowedTypes = [
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/gif",
+      "image/webp",
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+      toast.error(
+        "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed."
+      );
+      return;
+    }
+
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error("File too large. Maximum size is 10MB.");
       return;
     }
 
@@ -81,14 +96,31 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
 
     try {
       const response = await fetch(imageUrlInput, { mode: "cors" });
-      if (!response.ok) throw new Error("Invalid image URL");
+      if (!response.ok) throw new Error("Failed to fetch image");
+
       const blob = await response.blob();
-      const file = new File([blob], "Banner-from-url.jpg", { type: blob.type });
+
+      const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
+      if (!allowedTypes.includes(blob.type)) {
+        toast.error(
+          "Invalid image type. Only JPG, PNG, GIF, and WebP are supported."
+        );
+        return;
+      }
+
+      const file = new File([blob], "banner-from-url.jpg", { type: blob.type });
       handleFile(file);
       setImageUrlInput("");
     } catch (error) {
       console.error("Failed to load image from URL" + error);
-      toast.error("Failed to load image from URL");
+      toast.error(
+        "Failed to load image from URL. Check if it's valid and publicly accessible."
+      );
     }
   };
 

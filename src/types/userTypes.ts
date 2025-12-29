@@ -11,6 +11,7 @@ export interface UserType {
     profile_banner: string;
     registration_date: string;
     is_admin: boolean;
+    last_login_at: string;
 };
 
 export type GenderType = "Male" | "Female" | "Prefer Not to Say";

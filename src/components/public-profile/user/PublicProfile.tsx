@@ -1,11 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
-import { usersAPI } from "../../../services/http-api";
+import { commentsAPI, postsAPI, usersAPI } from "../../../services/http-api";
 import { useNavigate, useParams } from "@tanstack/react-router";
 import PublicProfileHeader from "./PublicProfileHeader/PublicProfileHeader";
 import { useState } from "react";
 import AvatarPopup from "./PublicProfileHeader/AvatarPopup";
-import BannerPopup from "./PublicProfileHeader/ProfileBannerPopup";
+import BannerPopup from "./PublicProfileHeader/BannerPopup";
+import PublicProfileUserData from "./UserData/PublicProfileUserData";
+import type { PostType } from "../../../types/postTypes";
+import PublicProfileUserPostData from "./PostData/PublicProfileUserPostData";
 
 const PublicProfile = () => {
   const { userId } = useParams({ from: "/public-profile/user/$userId" });
@@ -25,6 +28,33 @@ const PublicProfile = () => {
     },
     refetchOnWindowFocus: false,
   });
+
+  const { data: PublicUserPosts = [] } = useQuery<PostType[]>({
+    queryKey: ["public-user-posts", user?.id],
+    queryFn: async () => {
+      const res = await authAxios.get(
+        `${postsAPI.url}/all-posts/user/${user!.id}`
+      );
+      return res.data.publicUserPosts;
+    },
+    enabled: !!user,
+  });
+
+  const { data: publicUserCommentCountData = [] } = useQuery<
+    { comment_count: string }[]
+  >({
+    queryKey: ["public-user-comments", user?.id],
+    queryFn: async () => {
+      const res = await authAxios.get(
+        `${commentsAPI.url}/all-comments/user/${user!.id}`
+      );
+      return res.data.publicUserCommentCount;
+    },
+    enabled: !!user,
+  });
+
+  const publicUserCommentCount =
+    publicUserCommentCountData[0]?.comment_count ?? "0";
 
   if (isLoading) {
     return (
@@ -59,6 +89,23 @@ const PublicProfile = () => {
         onShowAvatarPopup={() => setShowAvatarPopup(true)}
         onShowBannerPopup={() => setShowBannerPopup(true)}
       />
+
+      <div className="flex gap-10">
+        <div className="flex-3">
+          <PublicProfileUserData
+            publicUser={user}
+            publicUserPosts={PublicUserPosts}
+            publicUserCommentCount={publicUserCommentCount}
+          />
+        </div>
+
+        <div className="flex-7">
+          <PublicProfileUserPostData
+            publicUser={user}
+            publicUserPosts={PublicUserPosts}
+          />
+        </div>
+      </div>
 
       {showAvatarPopup && (
         <AvatarPopup
