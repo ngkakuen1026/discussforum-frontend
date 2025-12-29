@@ -1,4 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQueries, useQuery } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
 import { commentsAPI, postsAPI, usersAPI } from "../../../services/http-api";
 import { useNavigate, useParams } from "@tanstack/react-router";
@@ -9,6 +9,7 @@ import BannerPopup from "./PublicProfileHeader/BannerPopup";
 import PublicProfileUserData from "./UserData/PublicProfileUserData";
 import type { PostType } from "../../../types/postTypes";
 import PublicProfileUserPostData from "./PostData/PublicProfileUserPostData";
+import type { VoteType } from "../../../types/voteType";
 
 const PublicProfile = () => {
   const { userId } = useParams({ from: "/public-profile/user/$userId" });
@@ -29,7 +30,7 @@ const PublicProfile = () => {
     refetchOnWindowFocus: false,
   });
 
-  const { data: PublicUserPosts = [] } = useQuery<PostType[]>({
+  const { data: publicUserPosts = [] } = useQuery<PostType[]>({
     queryKey: ["public-user-posts", user?.id],
     queryFn: async () => {
       const res = await authAxios.get(
@@ -55,6 +56,44 @@ const PublicProfile = () => {
 
   const publicUserCommentCount =
     publicUserCommentCountData[0]?.comment_count ?? "0";
+
+  const voteQueries =
+    publicUserPosts?.map((publicUserPost) => ({
+      queryKey: ["post-votes", publicUserPost.id],
+      queryFn: async (): Promise<VoteType[]> => {
+        const res = await authAxios.get(
+          `${postsAPI.url}/votes/${publicUserPost.id}`
+        );
+        return res.data.votes;
+      },
+      enabled: !!publicUserPosts,
+      staleTime: 1 * 60 * 1000,
+    })) || [];
+
+  const voteResults = useQueries({ queries: voteQueries });
+
+  const commentQueries =
+    publicUserPosts?.map((publicUserPost) => ({
+      queryKey: ["comment-length", publicUserPost.id],
+      queryFn: async () => {
+        const res = await authAxios.get(
+          `${commentsAPI.url}/${publicUserPost.id}/all-comments`
+        );
+        return res.data.comments;
+      },
+      enabled: !!publicUserPosts,
+      staleTime: 1 * 60 * 1000,
+    })) || [];
+
+  const commentResults = useQueries({ queries: commentQueries });
+
+  const handleCategoryClick = (categoryId: number) => {
+    navigate({
+      to: "/",
+      search: { categoryId },
+      replace: false,
+    });
+  };
 
   if (isLoading) {
     return (
@@ -94,7 +133,7 @@ const PublicProfile = () => {
         <div className="flex-3">
           <PublicProfileUserData
             publicUser={user}
-            publicUserPosts={PublicUserPosts}
+            publicUserPosts={publicUserPosts}
             publicUserCommentCount={publicUserCommentCount}
           />
         </div>
@@ -102,7 +141,10 @@ const PublicProfile = () => {
         <div className="flex-7">
           <PublicProfileUserPostData
             publicUser={user}
-            publicUserPosts={PublicUserPosts}
+            publicUserPosts={publicUserPosts}
+            voteResults={voteResults}
+            commentResults={commentResults}
+            handleCategoryClick={handleCategoryClick}
           />
         </div>
       </div>

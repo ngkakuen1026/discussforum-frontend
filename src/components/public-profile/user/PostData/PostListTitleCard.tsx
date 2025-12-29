@@ -1,5 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import { ChevronRight, CirclePlus } from "lucide-react";
+import { CirclePlus } from "lucide-react";
 import type { UserType } from "../../../../types/userTypes";
 import { useAuth } from "../../../../context/AuthContext";
 
@@ -19,7 +19,7 @@ const PostListTitleCard = ({ publicUser }: PostListTitleCardProps) => {
         {isOwnProfile && (
           <button className="relative group cursor-pointer">
             <CirclePlus
-              size={18}
+              size={16}
               className="text-gray-200 hover:text-gray-400 transition"
               onClick={() => navigate({ to: "/add-post" })}
             />

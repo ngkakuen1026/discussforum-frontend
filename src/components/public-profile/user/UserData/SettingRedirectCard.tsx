@@ -11,7 +11,7 @@ const SettingRedirectCard = () => {
         onClick={() => navigate({ to: "/settings/account" })}
       >
         <h3 className="text-xl font-semibold">Account Settings</h3>
-        <ChevronRight size={18} />
+        <ChevronRight size={16} />
       </div>
     </div>
   );

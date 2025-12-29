@@ -152,7 +152,7 @@ const PostListCard = ({
 
           {/* Tags */}
           {showTags && (
-            <div className="mb-4">
+            <div className="my-4">
               <PostTags
                 postId={post.id}
                 pendingTagName={post.pending_tag_name}

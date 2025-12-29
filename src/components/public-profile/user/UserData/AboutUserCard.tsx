@@ -22,7 +22,7 @@ const AboutUserCard = ({ publicUser }: AboutUserCardProps) => {
         {isOwnProfile && (
           <button className="relative group cursor-pointer">
             <Edit2
-              size={18}
+              size={16}
               className="text-gray-400 hover:text-cyan-400 transition"
               onClick={() => navigate({ to: "/settings/account" })}
             />
