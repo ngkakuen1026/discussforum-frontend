@@ -165,7 +165,7 @@ const PinnedPostCard = ({
           </div>
 
           {showTags && (
-            <div className="mb-4">
+            <div className="my-4">
               <PostTags
                 postId={bookmark.post_id}
                 pendingTagName={bookmark.post_pending_tag_name}

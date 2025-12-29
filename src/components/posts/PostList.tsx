@@ -8,7 +8,7 @@ import type { categoryType } from "../../types/categoryTypes";
 import type { VoteType } from "../../types/voteType";
 import type { PostRouteSearch } from "../../types/routeTypes";
 import { useState, useEffect } from "react";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import PostListPagination from "./PostListPagination";
 
 const PostList = ({ categoryId }: { categoryId: number | null }) => {
   const navigate = useNavigate();
@@ -133,121 +133,13 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
               : "All Posts"}{" "}
         </h2>
 
-        <div className="flex gap-2 items-center">
-          {totalPages > 9 && (
-            <button
-              onClick={() => handlePageChange(1)}
-              disabled={currentPage === 1}
-              className="px-4 py-2.5 flex items-center rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-medium text-sm cursor-pointer"
-            >
-              First Page
-            </button>
-          )}
-
-          <button
-            onClick={() => handlePageChange(currentPage - 1)}
-            disabled={currentPage === 1}
-            className="px-4 py-2.5 flex items-center rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-medium text-sm cursor-pointer"
-          >
-            <ArrowLeft size={12} /> Previous
-          </button>
-
-          <div className="flex gap-2">
-            {Array.from({ length: Math.min(9, totalPages) }, (_, i) => {
-              let pageNum = i + 1;
-              if (totalPages > 9 && currentPage > 5) {
-                pageNum = Math.max(currentPage - 4, 1) + i;
-                if (pageNum > totalPages) return null;
-              }
-              return (
-                <button
-                  key={pageNum}
-                  onClick={() => handlePageChange(pageNum)}
-                  className={`w-10 h-10 rounded-lg text-sm font-medium transition cursor-pointer ${
-                    currentPage === pageNum
-                      ? "bg-cyan-600 text-white shadow-lg"
-                      : "bg-gray-800 text-gray-400 hover:bg-gray-700"
-                  }`}
-                >
-                  {pageNum}
-                </button>
-              );
-            }).filter(Boolean)}
-
-            {totalPages > 9 && currentPage < totalPages - 4 && (
-              <>
-                <span className="text-gray-500 px-2">...</span>
-                <button
-                  onClick={() => handlePageChange(totalPages)}
-                  className="w-10 h-10 rounded-lg bg-gray-800 text-gray-400 hover:bg-gray-700 text-sm font-medium"
-                >
-                  {totalPages}
-                </button>
-              </>
-            )}
-          </div>
-
-          <button
-            onClick={() => handlePageChange(currentPage + 1)}
-            disabled={currentPage === totalPages}
-            className="px-4 py-2.5 flex items-center rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-medium text-sm cursor-pointer"
-          >
-            Next <ArrowRight size={12} />
-          </button>
-
-          {totalPages > 9 && (
-            <button
-              onClick={() => handlePageChange(totalPages)}
-              disabled={currentPage === 1}
-              className="px-4 py-2.5 flex items-center rounded-lg bg-gray-800 text-gray-300 hover:bg-gray-700 disabled:opacity-50 disabled:cursor-not-allowed transition font-medium text-sm cursor-pointer"
-            >
-              Last Page
-            </button>
-          )}
-
-          <div className="">
-            <input
-              type="text"
-              inputMode="numeric"
-              pattern="[0-9]*"
-              value={inputPage}
-              onChange={(e) =>
-                setInputPage(e.target.value.replace(/[^\d]/g, ""))
-              }
-              onBlur={() => {
-                const pageNum = Number(inputPage);
-                if (
-                  inputPage &&
-                  pageNum >= 1 &&
-                  pageNum <= totalPages &&
-                  pageNum !== currentPage
-                ) {
-                  handlePageChange(pageNum);
-                } else {
-                  setInputPage(currentPage.toString());
-                }
-              }}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  const pageNum = Number(inputPage);
-                  if (
-                    inputPage &&
-                    pageNum >= 1 &&
-                    pageNum <= totalPages &&
-                    pageNum !== currentPage
-                  ) {
-                    handlePageChange(pageNum);
-                  } else {
-                    setInputPage(currentPage.toString());
-                  }
-                }
-              }}
-              className="w-16 px-2 py-1 rounded border border-gray-600 bg-gray-900 text-center text-white focus:outline-none focus:ring-2 focus:ring-cyan-500"
-              aria-label="Go to page"
-            />
-            <span className="ml-1 text-gray-400 text-sm"></span>
-          </div>
-        </div>
+        <PostListPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={handlePageChange}
+          inputPage={inputPage}
+          setInputPage={setInputPage}
+        />
       </div>
 
       {paginatedPosts.map((post, index) => {

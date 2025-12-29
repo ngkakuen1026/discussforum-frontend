@@ -36,7 +36,11 @@ const UserPostList = ({
   return (
     <div className="mt-8 space-y-8">
       {publicUserPosts.length === 0 ? (
-        <div className="text-gray-400 text-center py-8">No posts found </div>
+        <div className="rounded-2xl bg-gray-800/60 border border-gray-800/80 shadow-lg p-6 hover:bg-white/5 transition-all duration-300">
+          <span className="text-gray-500 text-lg italic">
+            This user hasn't post yet.
+          </span>
+        </div>
       ) : (
         publicUserPosts.map((publicUserPost, index) => {
           const voteData = voteResults[index]?.data || [];

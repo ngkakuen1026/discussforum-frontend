@@ -140,7 +140,6 @@ const PublicProfile = () => {
 
         <div className="flex-7">
           <PublicProfileUserPostData
-            publicUser={user}
             publicUserPosts={publicUserPosts}
             voteResults={voteResults}
             commentResults={commentResults}
