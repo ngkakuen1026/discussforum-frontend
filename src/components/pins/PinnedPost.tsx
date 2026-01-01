@@ -167,7 +167,6 @@ const PinnedPost = () => {
                   selectMode={selectMode}
                   isSelected={isSelected}
                   toggleSelection={toggleSelection}
-                  showTags={true}
                 />
               </div>
             );

@@ -25,7 +25,9 @@ const PinnedPostToolbar = ({
   return (
     <div className="">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-white text-2xl font-bold">My Pinned Posts</h1>
+        <h1 className="text-white text-2xl font-bold">
+          My Pinned Posts ({bookmarks.length}){" "}
+        </h1>
         {selectMode ? (
           <div className="flex gap-2 ">
             <button
@@ -106,7 +108,7 @@ const PinnedPostToolbar = ({
         <h2 className={`text-gray-400 mt-2`}>
           {selectMode
             ? `${selectedPostIds.length} pinned ${selectedPostIds.length > 1 ? "posts" : "post"} selected`
-            : `The post pinned (${bookmarks.length}) ${bookmarks.length > 1 ? "posts" : "post"}`}
+            : `The post pinned`}
         </h2>
       </div>
     </div>

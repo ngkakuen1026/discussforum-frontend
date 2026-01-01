@@ -67,7 +67,7 @@ const BlockPopup = ({
             </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white transition"
+              className="text-gray-400 hover:text-gray-600 transition"
             >
               <X size={24} className="cursor-pointer" />
             </button>

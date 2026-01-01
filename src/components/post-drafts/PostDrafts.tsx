@@ -149,7 +149,7 @@ const PostDrafts = () => {
               className="text-gray-200 hover:opacity-75"
               target="_blank"
             >
-              <CirclePlus className="inline" />
+              <CirclePlus className="inline" size={20} />
               add post
             </Link>{" "}
             and click "Save Draft" to save your work!

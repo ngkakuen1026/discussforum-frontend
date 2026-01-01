@@ -161,7 +161,6 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
             commentLength={commentLength}
             categoryName={categoryName}
             handleCategoryClick={handleCategoryClick}
-            showTags={true}
           />
         );
       })}

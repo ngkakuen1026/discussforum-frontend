@@ -64,7 +64,7 @@ const BlockedUserList = () => {
         <div className="text-center py-20">
           <p className="text-gray-400 text-xl">No blocked user.</p>
           <p className="text-gray-500 mt-4 ">
-            Go to post and click{" "}
+            Open the post and click{" "}
             <Link
               to="/"
               search={{ categoryId: 0 }}
@@ -72,10 +72,10 @@ const BlockedUserList = () => {
               className="hover:underline text-white"
               target="_blank"
             >
-              <Ban className="inline" />
+              <Ban className="inline" size={20} />
               Block User
             </Link>{" "}
-            to block the user.
+            to restrict this account.
           </p>
           <p className="text-gray-500 mt-2">
             {" "}

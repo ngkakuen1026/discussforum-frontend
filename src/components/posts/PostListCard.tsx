@@ -16,7 +16,6 @@ interface PostListCardProps {
   categoryName: string;
   handleCategoryClick: (categoryId: number) => void;
   rightAction?: ReactNode;
-  showTags?: boolean;
 }
 
 const PostListCard = ({
@@ -27,7 +26,6 @@ const PostListCard = ({
   categoryName,
   handleCategoryClick,
   rightAction,
-  showTags = true,
 }: PostListCardProps) => {
   const navigate = useNavigate();
   const [showTooltip, setShowTooltip] = useState<
@@ -151,17 +149,10 @@ const PostListCard = ({
           </div>
 
           {/* Tags */}
-          {showTags && (
-            <div className="my-4">
-              <PostTags
-                postId={post.id}
-                pendingTagName={post.pending_tag_name}
-              />
-            </div>
-          )}
+          <PostTags postId={post.id} pendingTagName={post.pending_tag_name} />
 
           {/* Title */}
-          <h3 className="text-xl font-semibold text-white line-clamp-3">
+          <h3 className={`text-xl font-semibold text-white line-clamp-3`}>
             {post.title}
           </h3>
         </div>

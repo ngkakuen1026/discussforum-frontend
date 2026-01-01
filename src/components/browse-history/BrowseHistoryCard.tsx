@@ -168,12 +168,10 @@ const BrowseHistoryCard = ({
             </time>
           </div>
 
-          <div className="mb-4">
-            <PostTags
-              postId={browseHistory.post_id}
-              pendingTagName={browseHistory.post_pending_tag_name}
-            />
-          </div>
+          <PostTags
+            postId={browseHistory.post_id}
+            pendingTagName={browseHistory.post_pending_tag_name}
+          />
 
           <h3 className="text-xl font-semibold text-white line-clamp-3">
             {browseHistory.post_title}
