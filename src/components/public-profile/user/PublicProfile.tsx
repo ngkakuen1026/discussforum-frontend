@@ -1,7 +1,7 @@
 import { useQueries, useQuery } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
 import { commentsAPI, postsAPI, usersAPI } from "../../../services/http-api";
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { Outlet, useNavigate, useParams } from "@tanstack/react-router";
 import PublicProfileHeader from "./PublicProfileHeader/PublicProfileHeader";
 import { useState } from "react";
 import AvatarPopup from "./PublicProfileHeader/AvatarPopup";
@@ -147,6 +147,9 @@ const PublicProfile = () => {
           />
         </div>
       </div>
+
+      {/* Nested route outlet for /user-following and others */}
+      <Outlet />
 
       {showAvatarPopup && (
         <AvatarPopup

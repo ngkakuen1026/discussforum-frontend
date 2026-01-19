@@ -148,7 +148,10 @@ export default function UserDropdown({
               <div className="px-2 py-4">
                 <Menu.Item>
                   {({ active }) => (
-                    <Link to="/user-following">
+                    <Link
+                      to="/public-profile/user/$userId/user-following"
+                      params={{ userId: user!.id.toString() }}
+                    >
                       <button
                         className={`${
                           active

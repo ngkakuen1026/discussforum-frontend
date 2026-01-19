@@ -47,18 +47,18 @@ const CommentsSection = ({
               <p className="text-lg">
                 This user has not commented on this post.
               </p>
-              <p className="text-lg mt-2">
+              <p className="mt-2">
                 Try viewing comments from other users.
               </p>
             </>
           ) : (
             <>
               <p className="text-lg">No comments on this page.</p>
-              <p>
+              <p className="mt-2">
                 Be the{" "}
                 <button
                   onClick={withAuth(() => setShowCommentPopup(true))}
-                  className="text-white font-medium hover:underline focus:underline outline-none cursor-pointer"
+                  className="text-white font-medium  hover:underline focus:underline outline-none cursor-pointer"
                 >
                   first
                 </button>{" "}

@@ -1,7 +1,7 @@
 import { createContext, useContext, type ReactNode } from "react";
 import { useQuery } from "@tanstack/react-query";
 import authAxios from "../services/authAxios";
-import type { UserFollowType } from "../types/userFollowTypes";
+import type { UserFollowerType, UserFollowType } from "../types/userFollowTypes";
 import { userFollowingAPI } from "../services/http-api";
 
 interface FollowingUsersContextType {
@@ -9,7 +9,7 @@ interface FollowingUsersContextType {
   myFollowingUsers: UserFollowType[];
   myFollowingLoading: boolean;
   myFollowingRefetch: () => void;
-  myFollowers: UserFollowType[];
+  myFollowers: UserFollowerType[];
   myFollowersLoading: boolean;
   myFollowersRefetch: () => void;
 }
@@ -44,7 +44,7 @@ export const FollowingUsersProvider = ({
     data: myFollowers = [],
     isLoading: myFollowersLoading,
     refetch: myFollowersRefetch,
-  } = useQuery<UserFollowType[]>({
+  } = useQuery<UserFollowerType[]>({
     queryKey: ["my-followers"],
     queryFn: async () => {
       const res = await authAxios.get(`${userFollowingAPI.url}/followers/me`);

@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as UserFollowingRouteImport } from './routes/user-following'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SettingRouteImport } from './routes/setting'
 import { Route as RegisterRouteImport } from './routes/register'
@@ -34,12 +33,10 @@ import { Route as AdminPanelDashboardRouteImport } from './routes/admin-panel/da
 import { Route as AdminPanelAllPendingTagsRouteImport } from './routes/admin-panel/all-pending-tags'
 import { Route as PublicProfileUserUserIdRouteImport } from './routes/public-profile/user/$userId'
 import { Route as PostsTagTagNameRouteImport } from './routes/posts/tag/$tagName'
+import { Route as PublicProfileUserUserIdIndexRouteImport } from './routes/public-profile/user/$userId/index'
+import { Route as PublicProfileUserUserIdUserFollowingRouteImport } from './routes/public-profile/user/$userId/user-following'
+import { Route as PublicProfileUserUserIdUserFollowerRouteImport } from './routes/public-profile/user/$userId/user-follower'
 
-const UserFollowingRoute = UserFollowingRouteImport.update({
-  id: '/user-following',
-  path: '/user-following',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
   path: '/terms',
@@ -161,6 +158,24 @@ const PostsTagTagNameRoute = PostsTagTagNameRouteImport.update({
   path: '/posts/tag/$tagName',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PublicProfileUserUserIdIndexRoute =
+  PublicProfileUserUserIdIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => PublicProfileUserUserIdRoute,
+  } as any)
+const PublicProfileUserUserIdUserFollowingRoute =
+  PublicProfileUserUserIdUserFollowingRouteImport.update({
+    id: '/user-following',
+    path: '/user-following',
+    getParentRoute: () => PublicProfileUserUserIdRoute,
+  } as any)
+const PublicProfileUserUserIdUserFollowerRoute =
+  PublicProfileUserUserIdUserFollowerRouteImport.update({
+    id: '/user-follower',
+    path: '/user-follower',
+    getParentRoute: () => PublicProfileUserUserIdRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -180,14 +195,16 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
-  '/user-following': typeof UserFollowingRoute
   '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
-  '/public-profile/user/$userId': typeof PublicProfileUserUserIdRoute
+  '/public-profile/user/$userId': typeof PublicProfileUserUserIdRouteWithChildren
+  '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
+  '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
+  '/public-profile/user/$userId/': typeof PublicProfileUserUserIdIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -207,14 +224,15 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
-  '/user-following': typeof UserFollowingRoute
   '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
-  '/public-profile/user/$userId': typeof PublicProfileUserUserIdRoute
+  '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
+  '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
+  '/public-profile/user/$userId': typeof PublicProfileUserUserIdIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -235,14 +253,16 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
-  '/user-following': typeof UserFollowingRoute
   '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
-  '/public-profile/user/$userId': typeof PublicProfileUserUserIdRoute
+  '/public-profile/user/$userId': typeof PublicProfileUserUserIdRouteWithChildren
+  '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
+  '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
+  '/public-profile/user/$userId/': typeof PublicProfileUserUserIdIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -264,7 +284,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/setting'
     | '/terms'
-    | '/user-following'
     | '/admin-panel/all-pending-tags'
     | '/admin-panel/dashboard'
     | '/posts/$postId'
@@ -272,6 +291,9 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
+    | '/public-profile/user/$userId/user-follower'
+    | '/public-profile/user/$userId/user-following'
+    | '/public-profile/user/$userId/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -291,13 +313,14 @@ export interface FileRouteTypes {
     | '/register'
     | '/setting'
     | '/terms'
-    | '/user-following'
     | '/admin-panel/all-pending-tags'
     | '/admin-panel/dashboard'
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
     | '/posts/tag/$tagName'
+    | '/public-profile/user/$userId/user-follower'
+    | '/public-profile/user/$userId/user-following'
     | '/public-profile/user/$userId'
   id:
     | '__root__'
@@ -318,7 +341,6 @@ export interface FileRouteTypes {
     | '/register'
     | '/setting'
     | '/terms'
-    | '/user-following'
     | '/admin-panel/all-pending-tags'
     | '/admin-panel/dashboard'
     | '/posts/$postId'
@@ -326,6 +348,9 @@ export interface FileRouteTypes {
     | '/settings/notifications'
     | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
+    | '/public-profile/user/$userId/user-follower'
+    | '/public-profile/user/$userId/user-following'
+    | '/public-profile/user/$userId/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -346,25 +371,17 @@ export interface RootRouteChildren {
   RegisterRoute: typeof RegisterRoute
   SettingRoute: typeof SettingRoute
   TermsRoute: typeof TermsRoute
-  UserFollowingRoute: typeof UserFollowingRoute
   AdminPanelAllPendingTagsRoute: typeof AdminPanelAllPendingTagsRoute
   AdminPanelDashboardRoute: typeof AdminPanelDashboardRoute
   PostsPostIdRoute: typeof PostsPostIdRoute
   SettingsAccountRoute: typeof SettingsAccountRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   PostsTagTagNameRoute: typeof PostsTagTagNameRoute
-  PublicProfileUserUserIdRoute: typeof PublicProfileUserUserIdRoute
+  PublicProfileUserUserIdRoute: typeof PublicProfileUserUserIdRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/user-following': {
-      id: '/user-following'
-      path: '/user-following'
-      fullPath: '/user-following'
-      preLoaderRoute: typeof UserFollowingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/terms': {
       id: '/terms'
       path: '/terms'
@@ -533,8 +550,49 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsTagTagNameRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/public-profile/user/$userId/': {
+      id: '/public-profile/user/$userId/'
+      path: '/'
+      fullPath: '/public-profile/user/$userId/'
+      preLoaderRoute: typeof PublicProfileUserUserIdIndexRouteImport
+      parentRoute: typeof PublicProfileUserUserIdRoute
+    }
+    '/public-profile/user/$userId/user-following': {
+      id: '/public-profile/user/$userId/user-following'
+      path: '/user-following'
+      fullPath: '/public-profile/user/$userId/user-following'
+      preLoaderRoute: typeof PublicProfileUserUserIdUserFollowingRouteImport
+      parentRoute: typeof PublicProfileUserUserIdRoute
+    }
+    '/public-profile/user/$userId/user-follower': {
+      id: '/public-profile/user/$userId/user-follower'
+      path: '/user-follower'
+      fullPath: '/public-profile/user/$userId/user-follower'
+      preLoaderRoute: typeof PublicProfileUserUserIdUserFollowerRouteImport
+      parentRoute: typeof PublicProfileUserUserIdRoute
+    }
   }
 }
+
+interface PublicProfileUserUserIdRouteChildren {
+  PublicProfileUserUserIdUserFollowerRoute: typeof PublicProfileUserUserIdUserFollowerRoute
+  PublicProfileUserUserIdUserFollowingRoute: typeof PublicProfileUserUserIdUserFollowingRoute
+  PublicProfileUserUserIdIndexRoute: typeof PublicProfileUserUserIdIndexRoute
+}
+
+const PublicProfileUserUserIdRouteChildren: PublicProfileUserUserIdRouteChildren =
+  {
+    PublicProfileUserUserIdUserFollowerRoute:
+      PublicProfileUserUserIdUserFollowerRoute,
+    PublicProfileUserUserIdUserFollowingRoute:
+      PublicProfileUserUserIdUserFollowingRoute,
+    PublicProfileUserUserIdIndexRoute: PublicProfileUserUserIdIndexRoute,
+  }
+
+const PublicProfileUserUserIdRouteWithChildren =
+  PublicProfileUserUserIdRoute._addFileChildren(
+    PublicProfileUserUserIdRouteChildren,
+  )
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
@@ -554,14 +612,13 @@ const rootRouteChildren: RootRouteChildren = {
   RegisterRoute: RegisterRoute,
   SettingRoute: SettingRoute,
   TermsRoute: TermsRoute,
-  UserFollowingRoute: UserFollowingRoute,
   AdminPanelAllPendingTagsRoute: AdminPanelAllPendingTagsRoute,
   AdminPanelDashboardRoute: AdminPanelDashboardRoute,
   PostsPostIdRoute: PostsPostIdRoute,
   SettingsAccountRoute: SettingsAccountRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
   PostsTagTagNameRoute: PostsTagTagNameRoute,
-  PublicProfileUserUserIdRoute: PublicProfileUserUserIdRoute,
+  PublicProfileUserUserIdRoute: PublicProfileUserUserIdRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

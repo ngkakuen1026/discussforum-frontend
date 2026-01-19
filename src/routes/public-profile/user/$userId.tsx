@@ -1,6 +1,8 @@
+import { Outlet } from "@tanstack/react-router";
 import { createFileRoute } from "@tanstack/react-router";
-import PublicProfile from "../../../components/public-profile/user/PublicProfile";
+
+const UserIdLayout = () => <Outlet />;
 
 export const Route = createFileRoute("/public-profile/user/$userId")({
-  component: PublicProfile,
+  component: UserIdLayout,
 });

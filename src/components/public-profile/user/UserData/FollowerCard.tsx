@@ -46,17 +46,42 @@ const FollowerCard = ({ publicUser }: FollowerCardProps) => {
 
       <div className="p-4">
         <div className="flex justify-center space-x-2 ">
-          <div className="group flex flex-col items-center gap-3 px-6 py-4 rounded-xl transition-all duration-300">
-            <span className="text-3xl text-gray-300 group-hover:text-gray-100 font-medium transition ">
-              {PublicUserFollowers.length}
-            </span>
-            <span className="text-gray-300 group-hover:text-gray-100 font-medium transition">
-              Followers
-            </span>
-          </div>
           {isOwnProfile ? (
             <div
-              onClick={() => navigate({ to: "/user-following" })}
+              onClick={() =>
+                navigate({
+                  to: "/public-profile/user/$userId/user-follower",
+                  params: { userId: user.id.toString() },
+                })
+              }
+              className="group flex flex-col items-center gap-3 px-6 py-4 rounded-xl transition-all duration-300 cursor-pointer"
+            >
+              <span className="text-3xl text-gray-300 group-hover:text-gray-100 font-medium transition ">
+                {PublicUserFollowers.length}
+              </span>
+              <span className="text-gray-300 group-hover:text-gray-100 font-medium transition">
+                Followers
+              </span>
+            </div>
+          ) : (
+            <div className="group flex flex-col items-center gap-3 px-6 py-4 rounded-xl transition-all duration-300">
+              <span className="text-3xl text-gray-300 group-hover:text-gray-100 font-medium transition">
+                {PublicUserFollowers.length}
+              </span>
+              <span className="text-gray-300 group-hover:text-gray-100 font-medium transition">
+                Followers
+              </span>
+            </div>
+          )}
+
+          {isOwnProfile ? (
+            <div
+              onClick={() =>
+                navigate({
+                  to: "/public-profile/user/$userId/user-following",
+                  params: { userId: user.id.toString() },
+                })
+              }
               className="group flex flex-col items-center gap-3 px-6 py-4 rounded-xl transition-all duration-300 cursor-pointer"
             >
               <span className="text-3xl text-gray-300 group-hover:text-gray-100 font-medium transition">

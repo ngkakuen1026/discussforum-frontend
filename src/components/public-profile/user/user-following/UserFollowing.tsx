@@ -1,12 +1,12 @@
 import UserFollowingToolbar from "./UserFollowingToolbar";
-import { useFollowingUsers } from "../../context/FollowingUserContext";
+import { useFollowingUsers } from "../../../../context/FollowingUserContext";
 import { UserPlus } from "lucide-react";
 import UserFollowingPostCard from "./UserFollowingCard";
 import { Link } from "@tanstack/react-router";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import authAxios from "../../services/authAxios";
-import { userFollowingAPI } from "../../services/http-api";
+import authAxios from "../../../../services/authAxios";
+import { userFollowingAPI } from "../../../../services/http-api";
 import { isAxiosError } from "axios";
 
 const UserFollowing = () => {
@@ -15,6 +15,7 @@ const UserFollowing = () => {
 
   const refreshMyFollowing = () => {
     queryClient.refetchQueries({ queryKey: ["my-followings"] });
+    queryClient.refetchQueries({ queryKey: ["public-user-followings"] });
     toast.success(`My Following User Refreshed!`);
   };
 
@@ -25,6 +26,7 @@ const UserFollowing = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["my-followings"] });
+      queryClient.refetchQueries({ queryKey: ["public-user-followings"] });
       toast.success("User unfollowed!");
     },
     onError: (error) => {
@@ -48,7 +50,7 @@ const UserFollowing = () => {
       />
 
       {myFollowingUsers.length > 0 ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-8">
           {myFollowingUsers.map((followingUser) => (
             <UserFollowingPostCard
               key={followingUser.following_user_id}

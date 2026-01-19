@@ -1,4 +1,4 @@
-import type { UserFollowType } from "../../types/userFollowTypes";
+import type { UserFollowType } from "../../../../types/userFollowTypes";
 import { RefreshCcw } from "lucide-react";
 
 interface UserFollowingToolbarProps {

@@ -1,8 +1,8 @@
 import { useNavigate } from "@tanstack/react-router";
-import type { UserFollowType } from "../../types/userFollowTypes";
-import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
-import { UserRoleTag } from "../UserRoleTag";
-import { formatUserRegistrationDate } from "../../utils/dateUtils";
+import type { UserFollowType } from "../../../../types/userFollowTypes";
+import { getUserAvatar, getUsernameColor } from "../../../../utils/userUtils";
+import { UserRoleTag } from "../../../UserRoleTag";
+import { formatUserRegistrationDate } from "../../../../utils/dateUtils";
 import { X } from "lucide-react";
 import type { UseMutationResult } from "@tanstack/react-query";
 
