@@ -1,26 +1,28 @@
 import { Link } from "@tanstack/react-router";
-import type { UserFollowType } from "../../../../types/userFollowTypes";
+import type { PostType } from "../../types/postTypes";
 import { RefreshCcw } from "lucide-react";
+import type { UserType } from "../../types/userTypes";
 
-interface UserFollowingToolbarProps {
-  followingUsers: UserFollowType[];
-  refreshMyFollowing: () => void;
+interface FollowingFeedToolbarProps {
+  posts: PostType[];
+  refreshPosts: () => void;
+  user: UserType | null;
 }
 
-const UserFollowingToolbar = ({
-  followingUsers,
-  refreshMyFollowing,
-}: UserFollowingToolbarProps) => {
+const FollowingFeedToolbar = ({
+  posts,
+  refreshPosts,
+  user,
+}: FollowingFeedToolbarProps) => {
   return (
     <div className="">
       <div className="flex items-center justify-between gap-2">
         <h1 className="text-white text-2xl font-bold">
-          My Following User ({followingUsers.length})
+          My Following Feeds ({posts.length})
         </h1>
-
         <div className="flex gap-2 ">
           <button
-            onClick={refreshMyFollowing}
+            onClick={refreshPosts}
             className="relative group transition-all"
           >
             <RefreshCcw
@@ -35,12 +37,13 @@ const UserFollowingToolbar = ({
       </div>
       <div>
         <h2 className={`text-gray-400 mt-2`}>
-          The user following, check their{" "}
+          The posts published by your{" "}
           <Link
-            to="/following-feed"
+            to="/public-profile/user/$userId/user-following"
+            params={{ userId: user!.id.toString() }}
             className="underline text-gray-400 hover:text-white cursor-pointer"
           >
-            published post
+            following
           </Link>
         </h2>
       </div>
@@ -48,4 +51,4 @@ const UserFollowingToolbar = ({
   );
 };
 
-export default UserFollowingToolbar;
+export default FollowingFeedToolbar;

@@ -20,6 +20,7 @@ import { Route as NotificationsRouteImport } from './routes/notifications'
 import { Route as NotiRouteImport } from './routes/noti'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as FollowingFeedRouteImport } from './routes/following-feed'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BrowseHistoryRouteImport } from './routes/browse-history'
 import { Route as BlockedUserListRouteImport } from './routes/blocked-user-list'
@@ -90,6 +91,11 @@ const LoginRoute = LoginRouteImport.update({
 const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
   id: '/forgot-password',
   path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FollowingFeedRoute = FollowingFeedRouteImport.update({
+  id: '/following-feed',
+  path: '/following-feed',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaqRoute = FaqRouteImport.update({
@@ -184,6 +190,7 @@ export interface FileRoutesByFullPath {
   '/blocked-user-list': typeof BlockedUserListRoute
   '/browse-history': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/following-feed': typeof FollowingFeedRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
@@ -213,6 +220,7 @@ export interface FileRoutesByTo {
   '/blocked-user-list': typeof BlockedUserListRoute
   '/browse-history': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/following-feed': typeof FollowingFeedRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
@@ -242,6 +250,7 @@ export interface FileRoutesById {
   '/blocked-user-list': typeof BlockedUserListRoute
   '/browse-history': typeof BrowseHistoryRoute
   '/faq': typeof FaqRoute
+  '/following-feed': typeof FollowingFeedRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/login': typeof LoginRoute
   '/noti': typeof NotiRoute
@@ -273,6 +282,7 @@ export interface FileRouteTypes {
     | '/blocked-user-list'
     | '/browse-history'
     | '/faq'
+    | '/following-feed'
     | '/forgot-password'
     | '/login'
     | '/noti'
@@ -302,6 +312,7 @@ export interface FileRouteTypes {
     | '/blocked-user-list'
     | '/browse-history'
     | '/faq'
+    | '/following-feed'
     | '/forgot-password'
     | '/login'
     | '/noti'
@@ -330,6 +341,7 @@ export interface FileRouteTypes {
     | '/blocked-user-list'
     | '/browse-history'
     | '/faq'
+    | '/following-feed'
     | '/forgot-password'
     | '/login'
     | '/noti'
@@ -360,6 +372,7 @@ export interface RootRouteChildren {
   BlockedUserListRoute: typeof BlockedUserListRoute
   BrowseHistoryRoute: typeof BrowseHistoryRoute
   FaqRoute: typeof FaqRoute
+  FollowingFeedRoute: typeof FollowingFeedRoute
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   LoginRoute: typeof LoginRoute
   NotiRoute: typeof NotiRoute
@@ -457,6 +470,13 @@ declare module '@tanstack/react-router' {
       path: '/forgot-password'
       fullPath: '/forgot-password'
       preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/following-feed': {
+      id: '/following-feed'
+      path: '/following-feed'
+      fullPath: '/following-feed'
+      preLoaderRoute: typeof FollowingFeedRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faq': {
@@ -601,6 +621,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlockedUserListRoute: BlockedUserListRoute,
   BrowseHistoryRoute: BrowseHistoryRoute,
   FaqRoute: FaqRoute,
+  FollowingFeedRoute: FollowingFeedRoute,
   ForgotPasswordRoute: ForgotPasswordRoute,
   LoginRoute: LoginRoute,
   NotiRoute: NotiRoute,

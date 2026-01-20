@@ -16,7 +16,7 @@ const UserFollowing = () => {
   const refreshMyFollowing = () => {
     queryClient.refetchQueries({ queryKey: ["my-followings"] });
     queryClient.refetchQueries({ queryKey: ["public-user-followings"] });
-    toast.success(`My Following User Refreshed!`);
+    toast.success(`Following User Refreshed!`);
   };
 
   const unfollowMutation = useMutation({

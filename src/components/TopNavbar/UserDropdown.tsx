@@ -7,11 +7,11 @@ import {
   History,
   House,
   LogOut,
+  Newspaper,
   PencilLine,
   Pin,
   Settings,
   UserRoundPen,
-  UsersRound,
 } from "lucide-react";
 import { Fragment, type RefObject } from "react";
 import type { UserType } from "../../types/userTypes";
@@ -148,10 +148,7 @@ export default function UserDropdown({
               <div className="px-2 py-4">
                 <Menu.Item>
                   {({ active }) => (
-                    <Link
-                      to="/public-profile/user/$userId/user-following"
-                      params={{ userId: user!.id.toString() }}
-                    >
+                    <Link to="/following-feed">
                       <button
                         className={`${
                           active
@@ -159,12 +156,12 @@ export default function UserDropdown({
                             : "text-white"
                         } group flex w-full items-center rounded-md px-2 py-2 `}
                       >
-                        <UsersRound
+                        <Newspaper
                           size={iconStyle.iconSize}
                           className={`${iconStyle.iconBaseClassName}`}
                           aria-hidden="true"
                         />
-                        Following
+                        Following Feeds
                       </button>
                     </Link>
                   )}

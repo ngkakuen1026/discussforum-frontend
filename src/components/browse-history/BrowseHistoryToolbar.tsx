@@ -25,7 +25,7 @@ const BrowseHistoryToolbar = ({
   return (
     <div className="">
       <div className="flex items-center justify-between gap-2">
-        <h1 className="text-white text-2xl font-bold">My Browsing History</h1>
+        <h1 className="text-white text-2xl font-bold">My Browsing History ({browsingHistories.length})</h1>
         {selectMode ? (
           <div className="flex gap-2 ">
             <button

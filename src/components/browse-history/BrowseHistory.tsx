@@ -44,6 +44,7 @@ const BrowseHistory = () => {
       staleTime: 1 * 60 * 1000,
     })),
   });
+  
   const navigate = useNavigate();
   const [selectMode, setSelectMode] = useState(false);
   const [selectedPostIds, setSelectedPostIds] = useState<number[]>([]);
