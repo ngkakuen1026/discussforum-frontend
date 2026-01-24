@@ -29,7 +29,7 @@ const BlockPopup = ({
   onSuccess,
 }: BlockPopupProps) => {
   const queryClient = useQueryClient();
-  const [blockReason, setBlackReason] = useState("");
+  const [blockReason, setBlockReason] = useState("");
 
   const blockMutation = useMutation({
     mutationFn: () =>
@@ -104,7 +104,7 @@ const BlockPopup = ({
               </label>
               <textarea
                 value={blockReason}
-                onChange={(e) => setBlackReason(e.target.value)}
+                onChange={(e) => setBlockReason(e.target.value)}
                 placeholder="Anything else you'd like to add..."
                 className="w-full h-28 bg-gray-800 border border-gray-700 rounded-lg p-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
               />

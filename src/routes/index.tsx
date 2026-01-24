@@ -1,4 +1,3 @@
-// routes/index.tsx
 import { createFileRoute, useSearch } from "@tanstack/react-router";
 import PostList from "../components/posts/PostList";
 import CategoryList from "../components/posts/CategoryList";

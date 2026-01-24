@@ -68,7 +68,7 @@ export default function UserDropdown({
               <div className="px-2 py-4">
                 <Menu.Item>
                   {({ active }) => (
-                    <Link to="/profile">
+                    <Link to="/settings/account">
                       <button
                         className={`${
                           active
@@ -304,7 +304,7 @@ export default function UserDropdown({
               <div className="px-2 py-4">
                 <Menu.Item>
                   {({ active }) => (
-                    <Link to="/setting">
+                    <Link to="/settings">
                       <button
                         className={`${
                           active

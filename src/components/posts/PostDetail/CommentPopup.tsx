@@ -105,7 +105,7 @@ const CommentPopup = (props: CommentPopupProps) => {
         <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-5xl max-h-screen overflow-y-auto">
           <div className="flex items-center justify-between p-6 border-b border-gray-700">
             <div className="flex items-center gap-3 text-white">
-              <MessageCircle />
+              <MessageCircle size={24} />
               <h2 className="text-xl font-bold ">
                 {parentComment ? "Reply to Comment" : "Add a Comment"}
               </h2>
@@ -113,6 +113,7 @@ const CommentPopup = (props: CommentPopupProps) => {
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition"
+              aria-label="Close"
             >
               <X size={24} className="cursor-pointer" />
             </button>

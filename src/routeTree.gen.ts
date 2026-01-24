@@ -10,9 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as TermsRouteImport } from './routes/terms'
-import { Route as SettingRouteImport } from './routes/setting'
 import { Route as RegisterRouteImport } from './routes/register'
-import { Route as ProfileRouteImport } from './routes/profile'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PostDraftsRouteImport } from './routes/post-drafts'
 import { Route as PinsRouteImport } from './routes/pins'
@@ -26,7 +24,14 @@ import { Route as BrowseHistoryRouteImport } from './routes/browse-history'
 import { Route as BlockedUserListRouteImport } from './routes/blocked-user-list'
 import { Route as AddPostRouteImport } from './routes/add-post'
 import { Route as AboutRouteImport } from './routes/about'
+import { Route as SettingsRouteRouteImport } from './routes/settings/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as SettingsUpdatePasswordRouteImport } from './routes/settings/update-password'
+import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
+import { Route as SettingsPrivacyRouteImport } from './routes/settings/privacy'
+import { Route as SettingsPreferencesRouteImport } from './routes/settings/preferences'
+import { Route as SettingsPostsRouteImport } from './routes/settings/posts'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as SettingsAccountRouteImport } from './routes/settings/account'
 import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
@@ -43,19 +48,9 @@ const TermsRoute = TermsRouteImport.update({
   path: '/terms',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SettingRoute = SettingRouteImport.update({
-  id: '/setting',
-  path: '/setting',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const RegisterRoute = RegisterRouteImport.update({
   id: '/register',
   path: '/register',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProfileRoute = ProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
@@ -123,20 +118,55 @@ const AboutRoute = AboutRouteImport.update({
   path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRouteRoute = SettingsRouteRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsIndexRoute = SettingsIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const SettingsUpdatePasswordRoute = SettingsUpdatePasswordRouteImport.update({
+  id: '/update-password',
+  path: '/update-password',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const SettingsProfileRoute = SettingsProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const SettingsPrivacyRoute = SettingsPrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const SettingsPreferencesRoute = SettingsPreferencesRouteImport.update({
+  id: '/preferences',
+  path: '/preferences',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
+const SettingsPostsRoute = SettingsPostsRouteImport.update({
+  id: '/posts',
+  path: '/posts',
+  getParentRoute: () => SettingsRouteRoute,
+} as any)
 const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
-  id: '/settings/notifications',
-  path: '/settings/notifications',
-  getParentRoute: () => rootRouteImport,
+  id: '/notifications',
+  path: '/notifications',
+  getParentRoute: () => SettingsRouteRoute,
 } as any)
 const SettingsAccountRoute = SettingsAccountRouteImport.update({
-  id: '/settings/account',
-  path: '/settings/account',
-  getParentRoute: () => rootRouteImport,
+  id: '/account',
+  path: '/account',
+  getParentRoute: () => SettingsRouteRoute,
 } as any)
 const PostsPostIdRoute = PostsPostIdRouteImport.update({
   id: '/posts/$postId',
@@ -185,6 +215,7 @@ const PublicProfileUserUserIdUserFollowerRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/settings': typeof SettingsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
   '/blocked-user-list': typeof BlockedUserListRoute
@@ -198,15 +229,19 @@ export interface FileRoutesByFullPath {
   '/pins': typeof PinsRoute
   '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
-  '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
   '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/posts': typeof SettingsPostsRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/privacy': typeof SettingsPrivacyRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/settings/update-password': typeof SettingsUpdatePasswordRoute
+  '/settings/': typeof SettingsIndexRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdRouteWithChildren
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
@@ -228,15 +263,19 @@ export interface FileRoutesByTo {
   '/pins': typeof PinsRoute
   '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
-  '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
   '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/posts': typeof SettingsPostsRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/privacy': typeof SettingsPrivacyRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/settings/update-password': typeof SettingsUpdatePasswordRoute
+  '/settings': typeof SettingsIndexRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
   '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
@@ -245,6 +284,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/settings': typeof SettingsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
   '/blocked-user-list': typeof BlockedUserListRoute
@@ -258,15 +298,19 @@ export interface FileRoutesById {
   '/pins': typeof PinsRoute
   '/post-drafts': typeof PostDraftsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
-  '/profile': typeof ProfileRoute
   '/register': typeof RegisterRoute
-  '/setting': typeof SettingRoute
   '/terms': typeof TermsRoute
   '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
+  '/settings/posts': typeof SettingsPostsRoute
+  '/settings/preferences': typeof SettingsPreferencesRoute
+  '/settings/privacy': typeof SettingsPrivacyRoute
+  '/settings/profile': typeof SettingsProfileRoute
+  '/settings/update-password': typeof SettingsUpdatePasswordRoute
+  '/settings/': typeof SettingsIndexRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdRouteWithChildren
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
@@ -277,6 +321,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/settings'
     | '/about'
     | '/add-post'
     | '/blocked-user-list'
@@ -290,15 +335,19 @@ export interface FileRouteTypes {
     | '/pins'
     | '/post-drafts'
     | '/privacy-policy'
-    | '/profile'
     | '/register'
-    | '/setting'
     | '/terms'
     | '/admin-panel/all-pending-tags'
     | '/admin-panel/dashboard'
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
+    | '/settings/posts'
+    | '/settings/preferences'
+    | '/settings/privacy'
+    | '/settings/profile'
+    | '/settings/update-password'
+    | '/settings/'
     | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
     | '/public-profile/user/$userId/user-follower'
@@ -320,15 +369,19 @@ export interface FileRouteTypes {
     | '/pins'
     | '/post-drafts'
     | '/privacy-policy'
-    | '/profile'
     | '/register'
-    | '/setting'
     | '/terms'
     | '/admin-panel/all-pending-tags'
     | '/admin-panel/dashboard'
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
+    | '/settings/posts'
+    | '/settings/preferences'
+    | '/settings/privacy'
+    | '/settings/profile'
+    | '/settings/update-password'
+    | '/settings'
     | '/posts/tag/$tagName'
     | '/public-profile/user/$userId/user-follower'
     | '/public-profile/user/$userId/user-following'
@@ -336,6 +389,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/settings'
     | '/about'
     | '/add-post'
     | '/blocked-user-list'
@@ -349,15 +403,19 @@ export interface FileRouteTypes {
     | '/pins'
     | '/post-drafts'
     | '/privacy-policy'
-    | '/profile'
     | '/register'
-    | '/setting'
     | '/terms'
     | '/admin-panel/all-pending-tags'
     | '/admin-panel/dashboard'
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
+    | '/settings/posts'
+    | '/settings/preferences'
+    | '/settings/privacy'
+    | '/settings/profile'
+    | '/settings/update-password'
+    | '/settings/'
     | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
     | '/public-profile/user/$userId/user-follower'
@@ -367,6 +425,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AddPostRoute: typeof AddPostRoute
   BlockedUserListRoute: typeof BlockedUserListRoute
@@ -380,15 +439,11 @@ export interface RootRouteChildren {
   PinsRoute: typeof PinsRoute
   PostDraftsRoute: typeof PostDraftsRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
-  ProfileRoute: typeof ProfileRoute
   RegisterRoute: typeof RegisterRoute
-  SettingRoute: typeof SettingRoute
   TermsRoute: typeof TermsRoute
   AdminPanelAllPendingTagsRoute: typeof AdminPanelAllPendingTagsRoute
   AdminPanelDashboardRoute: typeof AdminPanelDashboardRoute
   PostsPostIdRoute: typeof PostsPostIdRoute
-  SettingsAccountRoute: typeof SettingsAccountRoute
-  SettingsNotificationsRoute: typeof SettingsNotificationsRoute
   PostsTagTagNameRoute: typeof PostsTagTagNameRoute
   PublicProfileUserUserIdRoute: typeof PublicProfileUserUserIdRouteWithChildren
 }
@@ -402,25 +457,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TermsRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/setting': {
-      id: '/setting'
-      path: '/setting'
-      fullPath: '/setting'
-      preLoaderRoute: typeof SettingRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/register': {
       id: '/register'
       path: '/register'
       fullPath: '/register'
       preLoaderRoute: typeof RegisterRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/profile': {
-      id: '/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof ProfileRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy-policy': {
@@ -514,6 +555,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -521,19 +569,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings/': {
+      id: '/settings/'
+      path: '/'
+      fullPath: '/settings/'
+      preLoaderRoute: typeof SettingsIndexRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/settings/update-password': {
+      id: '/settings/update-password'
+      path: '/update-password'
+      fullPath: '/settings/update-password'
+      preLoaderRoute: typeof SettingsUpdatePasswordRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/settings/profile': {
+      id: '/settings/profile'
+      path: '/profile'
+      fullPath: '/settings/profile'
+      preLoaderRoute: typeof SettingsProfileRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/settings/privacy': {
+      id: '/settings/privacy'
+      path: '/privacy'
+      fullPath: '/settings/privacy'
+      preLoaderRoute: typeof SettingsPrivacyRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/settings/preferences': {
+      id: '/settings/preferences'
+      path: '/preferences'
+      fullPath: '/settings/preferences'
+      preLoaderRoute: typeof SettingsPreferencesRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
+    '/settings/posts': {
+      id: '/settings/posts'
+      path: '/posts'
+      fullPath: '/settings/posts'
+      preLoaderRoute: typeof SettingsPostsRouteImport
+      parentRoute: typeof SettingsRouteRoute
+    }
     '/settings/notifications': {
       id: '/settings/notifications'
-      path: '/settings/notifications'
+      path: '/notifications'
       fullPath: '/settings/notifications'
       preLoaderRoute: typeof SettingsNotificationsRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof SettingsRouteRoute
     }
     '/settings/account': {
       id: '/settings/account'
-      path: '/settings/account'
+      path: '/account'
       fullPath: '/settings/account'
       preLoaderRoute: typeof SettingsAccountRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof SettingsRouteRoute
     }
     '/posts/$postId': {
       id: '/posts/$postId'
@@ -594,6 +684,32 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface SettingsRouteRouteChildren {
+  SettingsAccountRoute: typeof SettingsAccountRoute
+  SettingsNotificationsRoute: typeof SettingsNotificationsRoute
+  SettingsPostsRoute: typeof SettingsPostsRoute
+  SettingsPreferencesRoute: typeof SettingsPreferencesRoute
+  SettingsPrivacyRoute: typeof SettingsPrivacyRoute
+  SettingsProfileRoute: typeof SettingsProfileRoute
+  SettingsUpdatePasswordRoute: typeof SettingsUpdatePasswordRoute
+  SettingsIndexRoute: typeof SettingsIndexRoute
+}
+
+const SettingsRouteRouteChildren: SettingsRouteRouteChildren = {
+  SettingsAccountRoute: SettingsAccountRoute,
+  SettingsNotificationsRoute: SettingsNotificationsRoute,
+  SettingsPostsRoute: SettingsPostsRoute,
+  SettingsPreferencesRoute: SettingsPreferencesRoute,
+  SettingsPrivacyRoute: SettingsPrivacyRoute,
+  SettingsProfileRoute: SettingsProfileRoute,
+  SettingsUpdatePasswordRoute: SettingsUpdatePasswordRoute,
+  SettingsIndexRoute: SettingsIndexRoute,
+}
+
+const SettingsRouteRouteWithChildren = SettingsRouteRoute._addFileChildren(
+  SettingsRouteRouteChildren,
+)
+
 interface PublicProfileUserUserIdRouteChildren {
   PublicProfileUserUserIdUserFollowerRoute: typeof PublicProfileUserUserIdUserFollowerRoute
   PublicProfileUserUserIdUserFollowingRoute: typeof PublicProfileUserUserIdUserFollowingRoute
@@ -616,6 +732,7 @@ const PublicProfileUserUserIdRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  SettingsRouteRoute: SettingsRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AddPostRoute: AddPostRoute,
   BlockedUserListRoute: BlockedUserListRoute,
@@ -629,15 +746,11 @@ const rootRouteChildren: RootRouteChildren = {
   PinsRoute: PinsRoute,
   PostDraftsRoute: PostDraftsRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
-  ProfileRoute: ProfileRoute,
   RegisterRoute: RegisterRoute,
-  SettingRoute: SettingRoute,
   TermsRoute: TermsRoute,
   AdminPanelAllPendingTagsRoute: AdminPanelAllPendingTagsRoute,
   AdminPanelDashboardRoute: AdminPanelDashboardRoute,
   PostsPostIdRoute: PostsPostIdRoute,
-  SettingsAccountRoute: SettingsAccountRoute,
-  SettingsNotificationsRoute: SettingsNotificationsRoute,
   PostsTagTagNameRoute: PostsTagTagNameRoute,
   PublicProfileUserUserIdRoute: PublicProfileUserUserIdRouteWithChildren,
 }

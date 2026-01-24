@@ -1,9 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router'
+import RequireAuth from '../../utils/RequireAuth';
+import NotiSetting from '../../components/settings/notifications/NotiSetting';
 
-export const Route = createFileRoute('/settings/notifications')({
-  component: RouteComponent,
-})
+const ProtectedNotificationSettings = () => (
+  <RequireAuth redirectParam="/settings/notifications">
+    <NotiSetting />
+  </RequireAuth>
+);
 
-function RouteComponent() {
-  return <div>Hello "/settings/notifications"!</div>
-}
+export const Route = createFileRoute("/settings/notifications")({
+  component: ProtectedNotificationSettings,
+});

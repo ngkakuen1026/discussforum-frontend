@@ -121,6 +121,7 @@ const RegisterStep1Account = ({
             />
           ))}
         </div>
+
         <p
           className={`text-sm font-medium ${
             passwordStrength.score > 0
@@ -128,6 +129,7 @@ const RegisterStep1Account = ({
               : "text-gray-400"
           }`}
         >
+          Password Strength:{" "}
           {passwordStrength.score > 0 ? passwordStrength.label : ""}
         </p>
       </div>
