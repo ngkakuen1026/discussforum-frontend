@@ -16,7 +16,7 @@ const AdvancedAccountSetting = () => {
       >
         <p>Update Password</p>
         <div className="flex items-center justify-around">
-          <button className="group-hover/update-pw:bg-gray-700 rounded-full p-4 cursor-pointer">
+          <button className="group-hover/update-pw:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>
@@ -25,7 +25,7 @@ const AdvancedAccountSetting = () => {
       <div className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/delete-account">
         <p className="text-red-400">Delete Account</p>
         <div className="flex items-center justify-around">
-          <button className="group-hover/delete-account:bg-red-800 text-red-400 rounded-full p-4 cursor-pointer">
+          <button className="group-hover/delete-account:bg-red-800 text-red-400 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>

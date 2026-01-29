@@ -68,7 +68,7 @@ export default function UserDropdown({
               <div className="px-2 py-4">
                 <Menu.Item>
                   {({ active }) => (
-                    <Link to="/settings/account">
+                    <Link to="/settings/profile">
                       <button
                         className={`${
                           active

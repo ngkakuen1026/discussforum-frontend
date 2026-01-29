@@ -54,7 +54,7 @@ const AddPost = () => {
     queryKey: ["parent-categories"],
     queryFn: async () => {
       const res = await authAxios.get(
-        `${parentCategoriesAPI.url}/all-parent-categories`
+        `${parentCategoriesAPI.url}/all-parent-categories`,
       );
       return res.data.parentCategories || res.data.categories || [];
     },
@@ -73,7 +73,7 @@ const AddPost = () => {
     queryKey: ["post-draft", draftId],
     queryFn: async () => {
       const res = await authAxios.get(
-        `${postDraftsAPI.url}/post-draft/${draftId}`
+        `${postDraftsAPI.url}/post-draft/${draftId}`,
       );
       return res.data.draft;
     },
@@ -129,7 +129,7 @@ const AddPost = () => {
       if (draft) {
         return authAxios.patch(
           `${postDraftsAPI.url}/post-draft/${draftId}`,
-          draftData
+          draftData,
         );
       } else {
         return authAxios.post(`${postDraftsAPI.url}/post-draft`, draftData);
@@ -169,7 +169,7 @@ const AddPost = () => {
   }, [draft]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setInput((prev) => ({ ...prev, [name]: value }));
@@ -327,6 +327,7 @@ const AddPost = () => {
           onAddPendingImage={(base64) =>
             setPendingImages((prev) => [...prev, base64])
           }
+          variant="full"
         />
 
         {/* Actions */}

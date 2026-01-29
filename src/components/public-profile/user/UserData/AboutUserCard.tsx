@@ -2,6 +2,7 @@ import type { UserType } from "../../../../types/userTypes";
 import { useAuth } from "../../../../context/AuthContext";
 import { Edit2 } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
+import SafeHTML from "../../../SafeHTML";
 
 interface AboutUserCardProps {
   publicUser: UserType;
@@ -24,7 +25,7 @@ const AboutUserCard = ({ publicUser }: AboutUserCardProps) => {
             <Edit2
               size={16}
               className="text-gray-400 hover:text-cyan-400 transition"
-              onClick={() => navigate({ to: "/settings/account" })}
+              onClick={() => navigate({ to: "/settings/profile" })}
             />
             <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50 ">
               Edit Bio
@@ -35,9 +36,10 @@ const AboutUserCard = ({ publicUser }: AboutUserCardProps) => {
 
       <div className="p-8">
         {publicUser.bio ? (
-          <p className="text-lg text-gray-200 leading-relaxed whitespace-pre-wrap">
-            {publicUser.bio}
-          </p>
+          <SafeHTML
+            html={publicUser.bio}
+            className="text-lg text-gray-200 leading-relaxed whitespace-pre-wrap break-all"
+          />
         ) : (
           <div className="text-center py-12">
             <p className="text-gray-500 text-lg italic">

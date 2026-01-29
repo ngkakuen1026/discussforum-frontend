@@ -98,7 +98,7 @@ const UserPostCard = ({
         >
           <SafeHTML
             html={publicUserPost.content}
-            className="text-gray-300 py-4 border-b border-gray-700/70 mb-4  cursor-pointer"
+            className="text-gray-300 py-4 border-b border-gray-700/70 mb-4 cursor-pointer whitespace-pre-wrap break-all"
           />
         </div>
       </div>

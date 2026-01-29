@@ -1,9 +1,9 @@
-import React from "react";
+import ProfileGeneralSetting from "./ProfileGeneralSetting";
 
 const ProfileSetting = () => {
   return (
-    <div className="">
-      <h1 className="text-white">Profile Setting</h1>
+    <div>
+      <ProfileGeneralSetting />
     </div>
   );
 };

@@ -68,14 +68,14 @@ const TiptapAddImagePopup = ({
         <div className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl w-full max-w-2xl">
           <div className="flex items-center justify-between p-6 border-b border-gray-800">
             <div className="flex items-center gap-3 text-white">
-              <ImageIcon size={16} />
+              <ImageIcon size={18} />
               <h2 className="text-lg font-bold"> Insert Image</h2>
             </div>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-white"
             >
-              <X size={16} className="cursor-pointer" />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
 

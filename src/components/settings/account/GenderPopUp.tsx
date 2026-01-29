@@ -60,15 +60,15 @@ const GenderPopUp = ({ currentUser, onClose, onSuccess }: GenderPopUpProps) => {
         <div className="bg-gray-900 border border-gray-700 rounded-2xl shadow-2xl w-full max-w-xl overflow-hidden">
           <div className="flex items-center justify-between px-6 py-5 border-b border-gray-800">
             <div className="flex items-center gap-3">
-              <Pencil size={24} />
-              <h2 className="text-xl font-bold text-white">Update Gender</h2>
+              <Pencil size={18} />
+              <h2 className="text-lg font-bold text-white">Change Gender</h2>
             </div>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-gray-600 transition"
               aria-label="Close"
             >
-              <X size={24} className="cursor-pointer" />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
 
@@ -122,14 +122,14 @@ const GenderPopUp = ({ currentUser, onClose, onSuccess }: GenderPopUpProps) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg"
+                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl "
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={updateGenderMutation.isPending || !gender}
-                className="cursor-pointer bg-linear-to-br from-cyan-700 to-cyan-500 hover:from-cyan-600 hover:to-cyan-400 text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+                className="cursor-pointer bg-linear-to-br from-cyan-700 to-cyan-500 hover:from-cyan-600 hover:to-cyan-400 text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed "
               >
                 {updateGenderMutation.isPending ? (
                   <>

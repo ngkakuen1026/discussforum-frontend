@@ -12,7 +12,7 @@ const GeneralAccountSetting = () => {
   const [showGenderPopup, setShowGenderPopup] = useState(false);
 
   return (
-    <div>
+    <div className="mt-4">
       <h1 className="text-white text-2xl pb-4 font-semibold">
         Gerenal Settings
       </h1>
@@ -23,7 +23,7 @@ const GeneralAccountSetting = () => {
         <p>Email</p>
         <div className="flex items-center justify-around ">
           <p className="mr-2">{user?.email}</p>
-          <button className="group-hover/email:bg-gray-700 rounded-full p-4 cursor-pointer">
+          <button className="group-hover/email:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>
@@ -40,7 +40,7 @@ const GeneralAccountSetting = () => {
           >
             {user?.gender}
           </p>
-          <button className="group-hover/gender:bg-gray-700 rounded-full p-4 cursor-pointer">
+          <button className="group-hover/gender:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>
@@ -52,7 +52,7 @@ const GeneralAccountSetting = () => {
           <p className="mr-2">
             {formatUserRegistrationDate(user!.registration_date)}
           </p>
-          <button className="group-hover/registration-date:bg-gray-700 rounded-full p-4">
+          <button className="group-hover/registration-date:bg-gray-700 rounded-full p-4 transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>
@@ -62,7 +62,7 @@ const GeneralAccountSetting = () => {
         <p>Role</p>
         <div className="flex items-center justify-around ">
           <p className="mr-2">{user?.is_admin ? "Admin" : "Member"}</p>
-          <button className="group-hover/role:bg-gray-700 rounded-full p-4">
+          <button className="group-hover/role:bg-gray-700 rounded-full p-4 transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>

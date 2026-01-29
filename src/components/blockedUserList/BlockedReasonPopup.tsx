@@ -62,8 +62,8 @@ const BlockedReasonPopup = ({
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-700">
             <div className="flex items-center gap-3">
-              <User size={24} className="text-white" />
-              <h2 className="text-xl font-bold text-white">
+              <User size={18} className="text-white" />
+              <h2 className="text-lg font-bold text-white">
                 Blocked User Data
               </h2>
             </div>
@@ -71,7 +71,7 @@ const BlockedReasonPopup = ({
               onClick={onClose}
               className="text-gray-400 hover:text-white transition"
             >
-              <X size={24} className="cursor-pointer" />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
 
@@ -125,14 +125,14 @@ const BlockedReasonPopup = ({
                 onClick={() =>
                   navigate({ to: `/public-profile/user/${userId}` })
                 }
-                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg"
+                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl"
               >
                 Go to Profile
               </button>
               <button
                 type="submit"
                 disabled={updateBlockReasonMutation.isPending}
-                className="cursor-pointer bg-linear-to-br from-red-700 to-red-500 hover:from-red-600 hover:to-red-400 text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+                className="cursor-pointer bg-linear-to-br from-red-700 to-red-500 hover:from-red-600 hover:to-red-400 text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {updateBlockReasonMutation.isPending
                   ? "Updating..."

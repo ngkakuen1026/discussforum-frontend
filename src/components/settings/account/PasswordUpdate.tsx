@@ -1,6 +1,6 @@
-import { useRouter } from "@tanstack/react-router";
-import { Eye, EyeOff } from "lucide-react";
-import React, { useState } from "react";
+import { useNavigate, useRouter } from "@tanstack/react-router";
+import { Check, Eye, EyeOff, X } from "lucide-react";
+import React, { useEffect, useState } from "react";
 import { usePasswordStrength } from "../../../hooks/usePasswordStrength";
 import { useMutation } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
@@ -10,7 +10,7 @@ import { passwordSchema } from "../../../schema/authSchema";
 
 const PasswordUpdate = () => {
   const router = useRouter();
-
+  const navigate = useNavigate();
   const [showOldPassword, setShowOldPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -91,12 +91,47 @@ const PasswordUpdate = () => {
     updatePasswordMutation.mutate();
   };
 
+  // Visual Only - For user to know password requirements
+  const passwordRequirements = [
+    {
+      test: (pw: string) => pw.length >= 8,
+      message: "Password must be at least 8 characters",
+    },
+    {
+      test: (pw: string) => /[A-Z]/.test(pw),
+      message: "Must contain at least one uppercase letter",
+    },
+    {
+      test: (pw: string) => /[a-z]/.test(pw),
+      message: "Must contain at least one lowercase letter",
+    },
+    {
+      test: (pw: string) => /[0-9]/.test(pw),
+      message: "Must contain at least one number",
+    },
+    {
+      test: (pw: string) => /[^A-Za-z0-9]/.test(pw),
+      message: "One special character",
+    },
+  ];
+
   const isFormValid =
     input.oldPassword.trim() &&
     input.newPassword &&
     input.confirmPassword &&
     input.newPassword === input.confirmPassword &&
     passwordSchema.safeParse(input.newPassword).success;
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      navigate({ to: "/settings/account", replace: true });
+      toast.info("Redirected to Account Settings due to inactivity.");
+    }, 180000);
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [navigate]);
 
   return (
     <div className="max-w-2xl">
@@ -160,19 +195,21 @@ const PasswordUpdate = () => {
           </div>
 
           {input.newPassword && (
-            <div className="mt-3 space-y-2">
-              <div className="flex gap-1.5">
+            <div className="mt-3 space-y-1.5 text-sm">
+              <div className="flex gap-1.5 mb-2">
                 {[1, 2, 3, 4, 5].map((i) => (
                   <div
                     key={i}
                     className={`h-2 flex-1 rounded-full transition-all ${
                       i <= passwordStrength.score
-                        ? passwordStrength.color.split(" ")[0]
-                        : "bg-white/10"
+                        ? (passwordStrength.color.split(" ")[0] ??
+                          "bg-green-500")
+                        : "bg-gray-700/50"
                     }`}
                   />
                 ))}
               </div>
+
               <p
                 className={`font-medium text-sm ${
                   passwordStrength.score > 0
@@ -180,8 +217,36 @@ const PasswordUpdate = () => {
                     : "text-gray-400"
                 }`}
               >
-                {passwordStrength.label || "Enter password"}
+                Password Strength: {passwordStrength.label}
               </p>
+
+              <ul className="space-y-1">
+                <h1 className="text-cyan-400">Password Requirements:</h1>
+                {passwordRequirements.map((req, i) => {
+                  const passed = req.test(input.newPassword);
+                  return (
+                    <li
+                      key={i}
+                      className={`flex items-center gap-2 ${
+                        passed ? "text-green-400" : "text-red-400/90"
+                      }`}
+                    >
+                      {passed ? (
+                        <Check size={16} className="text-green-500" />
+                      ) : (
+                        <X size={16} className="text-red-500/80" />
+                      )}
+                      {req.message}
+                    </li>
+                  );
+                })}
+              </ul>
+
+              {errors.newPassword && (
+                <p className="mt-2 text-red-400 text-sm font-medium">
+                  {errors.newPassword}
+                </p>
+              )}
             </div>
           )}
 
@@ -225,7 +290,7 @@ const PasswordUpdate = () => {
           <button
             type="button"
             onClick={() => router.history.back()}
-            className="cursor-pointer w-fit border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg"
+            className="cursor-pointer w-fit border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl "
           >
             Cancel
           </button>
@@ -233,7 +298,7 @@ const PasswordUpdate = () => {
           <button
             type="submit"
             disabled={updatePasswordMutation.isPending || !isFormValid}
-            className="cursor-pointer w-fit bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+            className="cursor-pointer w-fit bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed "
           >
             {updatePasswordMutation.isPending
               ? "Updating..."

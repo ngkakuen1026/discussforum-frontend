@@ -8,6 +8,7 @@ import { TextStyle, FontSize } from "@tiptap/extension-text-style";
 import Color from "@tiptap/extension-color";
 import Youtube from "@tiptap/extension-youtube";
 import Heading from "@tiptap/extension-heading";
+import CharacterCount from "@tiptap/extension-character-count";
 import {
   Palette,
   Bold,
@@ -24,17 +25,21 @@ import {
   Highlighter,
   ALargeSmall,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState, type MutableRefObject } from "react";
 import TiptapAddImagePopup from "./TiptapAddImagePopup";
 import TiptapAddUrlPopup from "./TiptapAddUrlPopup";
 import TiptapColorDropdown from "./TipTapColorDropdown";
 import TiptapFontSizeDropdown from "./TiptapFontSizeDropdown";
 
+import type { Editor } from "@tiptap/react";
 interface TiptapEditorProps {
   content: string;
   onChange: (content: string) => void;
   placeholder?: string;
   onAddPendingImage?: (base64: string) => void;
+  variant?: "full" | "bio";
+  maxLength?: number;
+  editorRef?: MutableRefObject<Editor | null>;
 }
 
 const TiptapEditor = ({
@@ -42,7 +47,11 @@ const TiptapEditor = ({
   onChange,
   placeholder = "Body text (optional)",
   onAddPendingImage,
+  variant,
+  maxLength,
+  editorRef,
 }: TiptapEditorProps) => {
+  const isBio = variant === "bio";
   const [showFontSizeDropdown, setShowFontSizeDropdown] = useState(false);
   const [showColorDropdown, setShowColorDropdown] = useState(false);
   const [showAddImagePopup, setShowAddImagePopup] = useState(false);
@@ -79,6 +88,10 @@ const TiptapEditor = ({
           class: "rounded-xl shadow-lg w-full aspect-video",
         },
       }),
+      CharacterCount.configure({
+        limit: isBio ? maxLength : null,
+        mode: "textSize",
+      }),
     ],
     content,
     editorProps: {
@@ -87,14 +100,30 @@ const TiptapEditor = ({
           "prose prose-invert max-w-none focus:outline-none min-h-96 p-6 bg-gray-900 rounded-b-2xl",
       },
     },
-    onUpdate: ({ editor }) => onChange(editor.getHTML()),
+    onUpdate: ({ editor }) => {
+      const html = editor.getHTML();
+      if (
+        variant === "full" &&
+        editor.storage.characterCount.characters() > maxLength!
+      ) {
+        editor.commands.undo();
+        return;
+      }
+      onChange(html);
+    },
   });
+
+  useEffect(() => {
+    if (editor && editorRef) {
+      editorRef.current = editor;
+    }
+  }, [editor, editorRef]);
 
   if (!editor) return null;
 
   const currentColor = editor.getAttributes("textStyle").color || "#ffffff";
 
-  const buttons = [
+  const fullButtons = [
     {
       icon: Bold,
       onClick: () => editor.chain().focus().toggleBold().run(),
@@ -182,16 +211,58 @@ const TiptapEditor = ({
     },
   ];
 
+  const bioButtons = [
+    {
+      icon: Bold,
+      onClick: () => editor.chain().focus().toggleBold().run(),
+      isActive: editor.isActive("bold"),
+      description: "Bold (Ctrl+B)",
+    },
+    {
+      icon: Italic,
+      onClick: () => editor.chain().focus().toggleItalic().run(),
+      isActive: editor.isActive("italic"),
+      description: "Italic (Ctrl+I)",
+    },
+    {
+      icon: Palette,
+      onClick: () => setShowColorDropdown((prev) => !prev),
+      isActive: editor.isActive("textStyle", { color: /.+/ }),
+      description: "Text Color",
+      isColor: true,
+    },
+    {
+      icon: Link2,
+      onClick: () => setShowAddUrlPopup(true),
+      isActive: editor.isActive("link"),
+      description: "Insert/Edit Link",
+    },
+    {
+      icon: Undo,
+      onClick: () => editor.chain().focus().undo().run(),
+      isActive: false,
+      description: "Undo",
+    },
+    {
+      icon: Redo,
+      onClick: () => editor.chain().focus().redo().run(),
+      isActive: false,
+      description: "Redo",
+    },
+  ];
+
+  const activeButtons = isBio ? bioButtons : fullButtons;
+
   return (
     <div className="border border-gray-800 rounded-2xl bg-gray-900">
       <div
         className="relative flex items-center gap-1 bg-gray-800 border-b border-gray-700 p-3 flex-wrap"
         onClick={(e) => e.preventDefault()}
       >
-        {buttons.map((btn, i) => {
+        {activeButtons.map((btn, i) => {
           const Icon = btn.icon;
-          const isColorButton = btn.isColor === true;
-          const isFontSizeButton = btn.isFontSize === true;
+          const isColorButton = 'isColor' in btn && btn.isColor === true;
+          const isFontSizeButton = 'isFontSize' in btn && btn.isFontSize === true;
 
           return (
             <div key={i} className="relative">

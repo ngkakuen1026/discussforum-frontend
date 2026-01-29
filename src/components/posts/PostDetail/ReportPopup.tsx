@@ -80,14 +80,14 @@ export default function ReportPopup({
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-700">
             <div className="flex items-center gap-3">
-              <Flag size={24} className="text-red-500" />
-              <h2 className="text-xl font-bold text-white">Report Content</h2>
+              <Flag size={18} className="text-red-500" />
+              <h2 className="text-lg font-bold text-white">Report Content</h2>
             </div>
             <button
               onClick={onClose}
               className="text-gray-400 hover:text-white transition"
             >
-              <X size={24} className="cursor-pointer" />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
 
@@ -108,7 +108,7 @@ export default function ReportPopup({
                   {selectedLabel}
                 </span>
                 <ChevronDown
-                  size={20}
+                  size={16}
                   className={`text-gray-400 transition-transform group-hover:text-red-400 ${
                     isReasonOpen ? "rotate-180" : ""
                   }`}
@@ -143,7 +143,7 @@ export default function ReportPopup({
                           {option.label}
                         </span>
                         {reason === option.value && (
-                          <Check size={20} className="text-red-400" />
+                          <Check size={16} className="text-red-400" />
                         )}
                       </button>
                     ))}
@@ -187,14 +187,14 @@ export default function ReportPopup({
               <button
                 type="button"
                 onClick={onClose}
-                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg"
+                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={mutation.isPending || !reason}
-                className="cursor-pointer bg-linear-to-br from-red-700 to-red-500 hover:from-red-600 hover:to-red-400 text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+                className="cursor-pointer bg-linear-to-br from-red-700 to-red-500 hover:from-red-600 hover:to-red-400 text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {mutation.isPending ? "Submitting..." : <>Submit Report</>}
               </button>

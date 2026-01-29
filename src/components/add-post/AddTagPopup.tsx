@@ -51,14 +51,14 @@ const AddTagPopup = ({ onSelectTag, onClose }: AddTagPopupProps) => {
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-800">
             <div className="flex items-center gap-3 text-white">
-              <TagIcon size={16} />
+              <TagIcon size={18} />
               <h2 className="text-lg font-bold ">Add Tag</h2>
             </div>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-white transition"
             >
-              <X size={16} className="cursor-pointer" />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
 

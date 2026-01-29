@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
-import RequireAuth from '../../utils/RequireAuth';
-import ProfileSetting from '../../components/settings/profile/ProfileSetting';
+import { createFileRoute } from "@tanstack/react-router";
+import RequireAuth from "../../utils/RequireAuth";
+import ProfileSetting from "../../components/settings/profile/ProfileSetting";
 
 const ProtectedProfileSettings = () => (
   <RequireAuth redirectParam="/settings/profile">

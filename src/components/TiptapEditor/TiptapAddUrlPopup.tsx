@@ -23,14 +23,14 @@ const TiptapAddUrlPopup = ({
         <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-2xl max-h-screen">
           <div className="flex items-center justify-between p-6 border-b border-gray-800">
             <div className="flex items-center gap-3 text-white">
-              <Link2 size={16} />
+              <Link2 size={18} />
               <h2 className="text-lg font-bold">Insert Link</h2>
             </div>
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-white transition"
             >
-              <X size={16} className="cursor-pointer" />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
           <div className="p-6 flex gap-2">

@@ -10,7 +10,7 @@ import { getUserAvatar } from "../../../../utils/userUtils";
 
 interface AvatarPopupProps {
   onClose: () => void;
-  publicUser: UserType;
+  publicUser: UserType | null;
 }
 
 const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
@@ -30,14 +30,14 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        }
+        },
       );
     },
     onSuccess: () => {
       toast.success("Avatar updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       queryClient.invalidateQueries({
-        queryKey: ["user", publicUser.id.toString()],
+        queryKey: ["user", publicUser?.id.toString()],
       });
       onClose();
     },
@@ -55,7 +55,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
       toast.success("Avatar reset to default!");
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       queryClient.invalidateQueries({
-        queryKey: ["user", publicUser.id.toString()],
+        queryKey: ["user", publicUser?.id.toString()],
       });
       setPreviewUrl(null);
       setSelectedFile(null);
@@ -77,7 +77,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
 
     if (!allowedTypes.includes(file.type)) {
       toast.error(
-        "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed."
+        "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed.",
       );
       return;
     }
@@ -109,7 +109,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
       ];
       if (!allowedTypes.includes(blob.type)) {
         toast.error(
-          "Invalid image type. Only JPG, PNG, GIF, and WebP are supported."
+          "Invalid image type. Only JPG, PNG, GIF, and WebP are supported.",
         );
         return;
       }
@@ -120,7 +120,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
     } catch (error) {
       console.error("Failed to load image from URL" + error);
       toast.error(
-        "Failed to load image from URL. Check if it's valid and publicly accessible."
+        "Failed to load image from URL. Check if it's valid and publicly accessible.",
       );
     }
   };
@@ -161,7 +161,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
           <div className="flex-6 p-6 space-y-6">
             <div className="flex items-center justify-between border-b border-gray-800 pb-6">
               <div className="flex items-center gap-3 text-white">
-                <Camera size={16} />
+                <Camera size={18} />
                 <h2 className="text-lg font-bold">Upload Avatar</h2>
               </div>
               <button
@@ -169,7 +169,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
                 className="text-gray-400 hover:text-white"
                 disabled={uploadMutation.isPending || deleteMutation.isPending}
               >
-                <X size={16} className="cursor-pointer" />
+                <X size={18} className="cursor-pointer" />
               </button>
             </div>
 
@@ -260,7 +260,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
                 type="button"
                 onClick={() => deleteMutation.mutate()}
                 disabled={deleteMutation.isPending || uploadMutation.isPending}
-                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg"
+                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl"
               >
                 {deleteMutation.isPending ? "Setting..." : "Set Default Avatar"}
               </button>
@@ -271,7 +271,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
                   uploadMutation.isPending ||
                   deleteMutation.isPending
                 }
-                className="cursor-pointer bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+                className="cursor-pointer bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {uploadMutation.isPending ? "Updating..." : "Update Avatar"}
               </button>
@@ -283,7 +283,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
             <span className="text-lg text-gray-400 mb-4">
               {previewUrl
                 ? "Avatar Preview"
-                : publicUser.profile_image
+                : publicUser?.profile_image
                   ? "Current Avatar"
                   : "No Avatar"}
             </span>
@@ -294,13 +294,13 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
                 alt="Avatar preview"
                 className="w-96 h-96 rounded-full object-cover border-8 border-gray-700 shadow-2xl"
               />
-            ) : publicUser.profile_image ? (
+            ) : publicUser?.profile_image ? (
               <img
                 src={getUserAvatar({
-                  profile_image: publicUser.profile_image,
-                  gender: publicUser.gender,
+                  profile_image: publicUser?.profile_image,
+                  gender: publicUser?.gender,
                 })}
-                alt={`${publicUser.username}'s current avatar`}
+                alt={`${publicUser?.username}'s current avatar`}
                 className="w-96 h-96 rounded-full object-cover border-8 border-gray-700 shadow-2xl"
               />
             ) : (

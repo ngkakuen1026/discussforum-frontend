@@ -9,7 +9,7 @@ import type { UserType } from "../../../../types/userTypes";
 
 interface BannerPopupProps {
   onClose: () => void;
-  publicUser: UserType;
+  publicUser: UserType | null;
 }
 
 const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
@@ -29,14 +29,14 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
-        }
+        },
       );
     },
     onSuccess: () => {
       toast.success("Banner updated successfully!");
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       queryClient.invalidateQueries({
-        queryKey: ["user", publicUser.id.toString()],
+        queryKey: ["user", publicUser?.id.toString()],
       });
       onClose();
     },
@@ -53,7 +53,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
       toast.success("Banner reset to default!");
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
       queryClient.invalidateQueries({
-        queryKey: ["user", publicUser.id.toString()],
+        queryKey: ["user", publicUser?.id.toString()],
       });
       setPreviewUrl(null);
       setSelectedFile(null);
@@ -75,7 +75,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
 
     if (!allowedTypes.includes(file.type)) {
       toast.error(
-        "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed."
+        "Invalid file type. Only JPG, PNG, GIF, and WebP are allowed.",
       );
       return;
     }
@@ -108,7 +108,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
       ];
       if (!allowedTypes.includes(blob.type)) {
         toast.error(
-          "Invalid image type. Only JPG, PNG, GIF, and WebP are supported."
+          "Invalid image type. Only JPG, PNG, GIF, and WebP are supported.",
         );
         return;
       }
@@ -119,7 +119,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
     } catch (error) {
       console.error("Failed to load image from URL" + error);
       toast.error(
-        "Failed to load image from URL. Check if it's valid and publicly accessible."
+        "Failed to load image from URL. Check if it's valid and publicly accessible.",
       );
     }
   };
@@ -159,7 +159,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
           {/* Header */}
           <div className="flex items-center justify-between p-6 border-b border-gray-800">
             <div className="flex items-center gap-3 text-white">
-              <Camera size={16} />
+              <Camera size={18} />
               <h2 className="text-lg font-bold">Upload Banner</h2>
             </div>
             <button
@@ -167,7 +167,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
               className="text-gray-400 hover:text-white"
               disabled={uploadMutation.isPending || deleteMutation.isPending}
             >
-              <X size={16} className="cursor-pointer" />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
 
@@ -176,7 +176,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
             <p className="text-lg text-gray-400 mb-4 text-center">
               {previewUrl
                 ? "Banner Preview"
-                : publicUser.profile_banner
+                : publicUser?.profile_banner
                   ? "Current Banner"
                   : "No Banner (You are using default banner provided by ChatterNest)"}
             </p>
@@ -187,9 +187,9 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
                   alt="Banner preview"
                   className="w-full h-full object-cover"
                 />
-              ) : publicUser.profile_banner ? (
+              ) : publicUser?.profile_banner ? (
                 <img
-                  src={publicUser.profile_banner}
+                  src={publicUser?.profile_banner}
                   alt="Current banner"
                   className="w-full h-full object-cover"
                 />
@@ -290,7 +290,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
                 type="button"
                 onClick={() => deleteMutation.mutate()}
                 disabled={deleteMutation.isPending || uploadMutation.isPending}
-                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg"
+                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl"
               >
                 {deleteMutation.isPending ? "Setting..." : "Set Default Banner"}
               </button>
@@ -301,7 +301,7 @@ const BannerPopup = ({ onClose, publicUser }: BannerPopupProps) => {
                   uploadMutation.isPending ||
                   deleteMutation.isPending
                 }
-                className="cursor-pointer bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+                className="cursor-pointer bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {uploadMutation.isPending ? "Updating..." : "Update Banner"}
               </button>

@@ -1,5 +1,5 @@
 import React from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Check, Eye, EyeOff, X } from "lucide-react";
 import type { UserRegistrationType } from "../../types/userTypes";
 
 type FormData = UserRegistrationType;
@@ -30,131 +30,181 @@ const RegisterStep1Account = ({
   canProceed,
   navigateToLogin,
   passwordStrength,
-}: RegisterStep1AccountProps) => (
-  <div className="space-y-6">
-    <div className="flex items-center justify-between">
-      <h3 className="text-2xl font-semibold text-white">Account Details</h3>
-      {validation && (
-        <span
-          className={`text-sm font-semibold ${validation.color} flex items-center gap-2 text-right`}
-        >
-          {validation.text} {validation.icon}
-        </span>
+}: RegisterStep1AccountProps) => {
+  const passwordRequirements = [
+    {
+      test: (pw: string) => pw.length >= 8,
+      message: "Password must be at least 8 characters",
+    },
+    {
+      test: (pw: string) => /[A-Z]/.test(pw),
+      message: "Password Must contain uppercase letter",
+    },
+    {
+      test: (pw: string) => /[a-z]/.test(pw),
+      message: "Password Must contain lowercase letter",
+    },
+    {
+      test: (pw: string) => /[0-9]/.test(pw),
+      message: "Password Must contain a number",
+    },
+    {
+      test: (pw: string) => /[^A-Za-z0-9]/.test(pw),
+      message: "Password Must contain a symbol",
+    },
+  ];
+
+  return (
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h3 className="text-2xl font-semibold text-white">Account Details</h3>
+        {validation && (
+          <span
+            className={`text-sm font-semibold ${validation.color} flex items-center gap-2 text-right`}
+          >
+            {validation.text} {validation.icon}
+          </span>
+        )}
+      </div>
+      {/* Username */}
+      <div>
+        <label className="block text-white mb-3">Username</label>
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="Username"
+            value={formData.username}
+            onChange={(e) => {
+              updateFormData({ username: e.target.value });
+              clearError("username");
+            }}
+            className="peer w-full px-6 py-5 pr-12 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 text-lg backdrop-blur-xl"
+          />
+        </div>
+        <div className="text-red-400 text-sm mt-2 italic">
+          {errors.username && <p>{errors.username}</p>}
+        </div>
+      </div>
+      {/* Email */}
+      <div>
+        <label className="block text-white mb-3">Email Address</label>
+        <div className="relative">
+          <input
+            type="email"
+            placeholder="Email"
+            value={formData.email}
+            onChange={(e) => {
+              updateFormData({ email: e.target.value });
+              clearError("email");
+            }}
+            className="peer w-full px-6 py-5 pr-12 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 text-lg backdrop-blur-xl"
+          />
+        </div>
+        <div className="text-red-400 text-sm mt-2">
+          {errors.email && <p>{errors.email}</p>}
+        </div>
+      </div>
+      {/* Password */}
+      <div>
+        <label className="block text-white mb-3">Password</label>
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"}
+            placeholder={showPassword ? "••••••••" : "Password"}
+            value={formData.password}
+            onChange={(e) => {
+              updateFormData({ password: e.target.value });
+              clearError("password");
+            }}
+            className="peer w-full px-6 py-5 pr-14 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 text-lg backdrop-blur-xl"
+          />
+          <button
+            type="button"
+            onClick={() => setShowPassword(!showPassword)}
+            className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+          >
+            {showPassword ? <EyeOff size={24} /> : <Eye size={24} />}
+          </button>
+        </div>
+        <div className="text-red-400 text-sm mt-2 italic">
+          {errors.password && <p>{errors.password}</p>}
+        </div>
+      </div>
+
+      {/* Password Strength */}
+      {formData.password && (
+        <div className="space-y-2">
+          <div className="flex gap-1">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div
+                key={i}
+                className={`h-2 flex-1 rounded-full transition-all ${
+                  i <= passwordStrength.score
+                    ? passwordStrength.color.split(" ")[0]
+                    : "bg-white/10"
+                }`}
+              />
+            ))}
+          </div>
+
+          <p
+            className={`text-sm font-medium ${
+              passwordStrength.score > 0
+                ? passwordStrength.color.split(" ")[1]
+                : "text-gray-400"
+            }`}
+          >
+            Password Strength:{" "}
+            {passwordStrength.score > 0 ? passwordStrength.label : ""}
+          </p>
+        </div>
       )}
-    </div>
-    {/* Username */}
-    <div>
-      <label className="block text-white mb-3">Username</label>
-      <div className="relative">
-        <input
-          type="text"
-          placeholder="Username"
-          value={formData.username}
-          onChange={(e) => {
-            updateFormData({ username: e.target.value });
-            clearError("username");
-          }}
-          className="peer w-full px-6 py-5 pr-12 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 text-lg backdrop-blur-xl"
-        />
-      </div>
-      <div className="text-red-400 text-sm mt-2 italic">
-        {errors.username && <p>{errors.username}</p>}
-      </div>
-    </div>
-    {/* Email */}
-    <div>
-      <label className="block text-white mb-3">Email Address</label>
-      <div className="relative">
-        <input
-          type="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={(e) => {
-            updateFormData({ email: e.target.value });
-            clearError("email");
-          }}
-          className="peer w-full px-6 py-5 pr-12 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 text-lg backdrop-blur-xl"
-        />
-      </div>
-      <div className="text-red-400 text-sm mt-2">
-        {errors.email && <p>{errors.email}</p>}
-      </div>
-    </div>
-    {/* Password */}
-    <div>
-      <label className="block text-white mb-3">Password</label>
-      <div className="relative">
-        <input
-          type={showPassword ? "text" : "password"}
-          placeholder={showPassword ? "••••••••" : "Password"}
-          value={formData.password}
-          onChange={(e) => {
-            updateFormData({ password: e.target.value });
-            clearError("password");
-          }}
-          className="peer w-full px-6 py-5 pr-14 bg-white/10 border border-white/20 rounded-2xl text-white focus:outline-none focus:ring-2 focus:ring-cyan-500 text-lg backdrop-blur-xl"
-        />
+
+      {/* Password Requirments */}
+      <ul className="space-y-1">
+        <h1 className="text-cyan-400">Password Requirements:</h1>
+        {passwordRequirements.map((req, i) => {
+          const passed = req.test(formData.password);
+          return (
+            <li
+              key={i}
+              className={`flex items-center gap-2 ${
+                passed ? "text-green-400" : "text-red-400/90"
+              }`}
+            >
+              {passed ? (
+                <Check size={16} className="text-green-500" />
+              ) : (
+                <X size={16} className="text-red-500/80" />
+              )}
+              {req.message}
+            </li>
+          );
+        })}
+      </ul>
+
+      <div className="flex flex-col sm:flex-row gap-4 mt-6">
         <button
           type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white"
+          onClick={navigateToLogin}
+          className="w-full border-2 border-white/30 hover:border-white/50 text-white font-bold py-3 px-6 rounded-2xl hover:bg-white/10 text-lg transition-all cursor-pointer"
         >
-          {showPassword ? <EyeOff size={24} /> : <Eye size={24} />}
+          Back to Login
         </button>
-      </div>
-      <div className="text-red-400 text-sm mt-2 italic">
-        {errors.password && <p>{errors.password}</p>}
-      </div>
-    </div>
-    {/* Password Strength */}
-    {formData.password && (
-      <div className="space-y-2">
-        <div className="flex gap-1">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <div
-              key={i}
-              className={`h-2 flex-1 rounded-full transition-all ${
-                i <= passwordStrength.score
-                  ? passwordStrength.color.split(" ")[0]
-                  : "bg-white/10"
-              }`}
-            />
-          ))}
-        </div>
-
-        <p
-          className={`text-sm font-medium ${
-            passwordStrength.score > 0
-              ? passwordStrength.color.split(" ")[1]
-              : "text-gray-400"
+        <button
+          onClick={handleNextStep}
+          disabled={!canProceed}
+          className={`w-full py-5 bg-linear-to-br from-gray-500 to-white text-white font-bold rounded-2xl transition-all cursor-pointer ${
+            canProceed
+              ? "hover:from-gray-400 hover:to-white hover:scale-105"
+              : "opacity-50 cursor-not-allowed"
           }`}
         >
-          Password Strength:{" "}
-          {passwordStrength.score > 0 ? passwordStrength.label : ""}
-        </p>
+          Continue
+        </button>
       </div>
-    )}
-    <div className="flex flex-col sm:flex-row gap-4 mt-6">
-      <button
-        type="button"
-        onClick={navigateToLogin}
-        className="w-full border-2 border-white/30 hover:border-white/50 text-white font-bold py-3 px-6 rounded-2xl hover:bg-white/10 text-lg transition-all cursor-pointer"
-      >
-        Back to Login
-      </button>
-      <button
-        onClick={handleNextStep}
-        disabled={!canProceed}
-        className={`w-full py-5 bg-linear-to-br from-gray-500 to-white text-white font-bold rounded-2xl transition-all cursor-pointer ${
-          canProceed
-            ? "hover:from-gray-400 hover:to-white hover:scale-105"
-            : "opacity-50 cursor-not-allowed"
-        }`}
-      >
-        Continue
-      </button>
     </div>
-  </div>
-);
+  );
+};
 
 export default RegisterStep1Account;

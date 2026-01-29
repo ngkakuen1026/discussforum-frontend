@@ -105,8 +105,8 @@ const CommentPopup = (props: CommentPopupProps) => {
         <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-5xl max-h-screen overflow-y-auto">
           <div className="flex items-center justify-between p-6 border-b border-gray-700">
             <div className="flex items-center gap-3 text-white">
-              <MessageCircle size={24} />
-              <h2 className="text-xl font-bold ">
+              <MessageCircle size={18} />
+              <h2 className="text-lg font-bold ">
                 {parentComment ? "Reply to Comment" : "Add a Comment"}
               </h2>
             </div>
@@ -115,7 +115,7 @@ const CommentPopup = (props: CommentPopupProps) => {
               className="text-gray-400 hover:text-gray-600 transition"
               aria-label="Close"
             >
-              <X size={24} className="cursor-pointer" />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
 
@@ -180,14 +180,14 @@ const CommentPopup = (props: CommentPopupProps) => {
               <button
                 type="button"
                 onClick={onClose}
-                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl text-lg"
+                className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl"
               >
                 Cancel
               </button>
               <button
                 type="submit"
                 disabled={mutation.isPending || !content.trim()}
-                className="cursor-pointer bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed text-lg"
+                className="cursor-pointer bg-linear-to-br from-gray-500 to-white hover:from-gray-400 hover:to-white text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
               >
                 {mutation.isPending
                   ? "Posting..."
