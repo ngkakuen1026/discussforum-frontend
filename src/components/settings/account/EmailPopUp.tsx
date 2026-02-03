@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
 import { usersAPI } from "../../../services/http-api";
 import { toast } from "sonner";
+import { emailSchema } from "../../../schema/userDataSchema";
+import z from "zod";
 
 interface EmailPopUpProps {
   currentUser: UserType | null;
@@ -19,6 +21,7 @@ const EmailPopUp = ({ currentUser, onClose, onSuccess }: EmailPopUpProps) => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [isPasswordError, setIsPasswordError] = useState(false);
   const [isEmailError, setIsEmailError] = useState(false);
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const isEmailChanging = newEmail.trim() !== (currentUser?.email || "");
 
@@ -82,11 +85,40 @@ const EmailPopUp = ({ currentUser, onClose, onSuccess }: EmailPopUpProps) => {
     }
   }, []);
 
+  const validateEmail = (value: string): boolean => {
+    const trimmed = value.trim();
+    try {
+      emailSchema.parse(trimmed);
+      setValidationError(null);
+      return true;
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        const firstError = err.issues?.[0]?.message ?? "Invalid email format";
+        setValidationError(firstError);
+        toast.error(firstError);
+        return false;
+      }
+      setValidationError("Invalid email");
+      toast.error("Invalid email");
+      return false;
+    }
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setNewEmail(value);
+
+    if (validationError) {
+      setValidationError(null);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!newEmail.trim()) {
-      toast.error("Email cannot be empty");
+    const isValid = validateEmail(newEmail);
+
+    if (!isValid) {
       return;
     }
 
@@ -129,23 +161,29 @@ const EmailPopUp = ({ currentUser, onClose, onSuccess }: EmailPopUpProps) => {
               >
                 New Email Address
               </label>
+              <p className="my-1 text-xs text-gray-500 italic">
+                This will become your new login email. Password stays the same.
+              </p>
               <input
                 id="newEmail"
                 type="text"
                 pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
                 ref={emailInputRef}
                 value={newEmail}
-                onChange={(e) => {
-                  setNewEmail(e.target.value);
-                }}
+                onChange={handleChange}
                 placeholder="Enter your new email"
                 className={`w-full ${isEmailError ? "border-red-500" : "border-gray-700"} bg-gray-800 border  rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition`}
                 required
                 autoFocus
               />
-              <p className="mt-1.5 text-xs text-gray-500 italic">
-                This will become your new login email. Password stays the same.
-              </p>
+
+              {validationError && (
+                <p className="text-red-400 text-sm mt-1.5">{validationError}</p>
+              )}
+
+              <div className="text-right text-xs mt-1.5 text-gray-500">
+                {newEmail.trim().length} / 255 characters
+              </div>
             </div>
 
             {isEmailChanging && (

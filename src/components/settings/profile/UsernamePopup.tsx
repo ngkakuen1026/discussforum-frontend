@@ -54,7 +54,7 @@ const UsernamePopup = ({
     } catch (err) {
       if (err instanceof z.ZodError) {
         const firstError =
-          err.errors?.[0]?.message ?? "Invalid username format";
+          err.issues?.[0]?.message ?? "Invalid username format";
         setValidationError(firstError);
         toast.error(firstError);
         return false;
@@ -65,7 +65,7 @@ const UsernamePopup = ({
     }
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setNewUsername(value);
 
@@ -127,7 +127,7 @@ const UsernamePopup = ({
                 id="newUsername"
                 type="text"
                 value={newUsername}
-                onChange={handleChange}
+                onChange={handleOnChange}
                 placeholder="Enter your new username"
                 disabled={isPending}
                 className={`w-full px-4 py-3 bg-gray-800 border ${
@@ -138,14 +138,12 @@ const UsernamePopup = ({
                 autoFocus
               />
 
-              {/* Error message – ONLY shown after submit attempt */}
               {validationError && (
-                <p className="text-red-400 text-xs mt-1.5">{validationError}</p>
+                <p className="text-red-400 text-sm mt-1.5">{validationError}</p>
               )}
 
-              {/* Character counter */}
-              <div className="text-right text-xs mt-1 text-gray-500">
-                {newUsername.trim().length} / 20
+              <div className="text-right text-xs mt-1.5 text-gray-500">
+                {newUsername.trim().length} / 20 characters
               </div>
             </div>
 

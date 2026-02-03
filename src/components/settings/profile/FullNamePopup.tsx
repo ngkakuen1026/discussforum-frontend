@@ -6,6 +6,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
 import { usersAPI } from "../../../services/http-api";
 import { toast } from "sonner";
+import { nameSchema } from "../../../schema/userDataSchema";
+import z from "zod";
 
 interface FullNamePopupProps {
   currentUser: UserType | null;
@@ -18,17 +20,52 @@ const FullNamePopup = ({ currentUser, onClose }: FullNamePopupProps) => {
     first_name: currentUser?.first_name || "",
     last_name: currentUser?.last_name || "",
   });
+  const [firstNameValidationError, setFirstNameValidationError] = useState<
+    string | null
+  >(null);
+  const [lastNameValidationError, setLastNameValidationError] = useState<
+    string | null
+  >(null);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
     setInput((prev) => ({ ...prev, [id]: value }));
+
+    if (id === "first_name") setFirstNameValidationError(null);
+    if (id === "last_name") setLastNameValidationError(null);
+  };
+
+  const validateField = (field: "first" | "last", value: string) => {
+    const trimmed = value.trim();
+    const setter =
+      field === "first"
+        ? setFirstNameValidationError
+        : setLastNameValidationError;
+
+    if (!trimmed) {
+      setter(null);
+      return true;
+    }
+
+    try {
+      nameSchema.parse(trimmed);
+      setter(null);
+      return true;
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        setter(err.issues[0]?.message ?? "Invalid name");
+        return false;
+      }
+      setter("Invalid name");
+      return false;
+    }
   };
 
   const updateNameMutation = useMutation({
     mutationFn: () =>
       authAxios.patch(`${usersAPI.url}/profile/me`, {
-        first_name: input.first_name,
-        last_name: input.last_name,
+        first_name: input.first_name.trim() || "",
+        last_name: input.last_name.trim() || "",
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["auth-user"] });
@@ -57,6 +94,15 @@ const FullNamePopup = ({ currentUser, onClose }: FullNamePopupProps) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const isFirstNameValid = validateField("first", input.first_name);
+    const isLastNameValid = validateField("last", input.last_name);
+
+    if (!isFirstNameValid || !isLastNameValid) {
+      toast.error("Please fix the name fields");
+      return;
+    }
+
     updateNameMutation.mutate();
   };
 
@@ -85,7 +131,9 @@ const FullNamePopup = ({ currentUser, onClose }: FullNamePopupProps) => {
                 Current Fullname
               </label>
               <div className="bg-gray-800 border border-gray-700 rounded-lg px-4 py-3 text-gray-300">
-                {currentUser?.first_name} {currentUser?.last_name}
+                {currentUser?.first_name && currentUser.last_name
+                  ? currentUser.first_name + currentUser.last_name
+                  : "Not Provided"}
               </div>
             </div>
 
@@ -101,10 +149,25 @@ const FullNamePopup = ({ currentUser, onClose }: FullNamePopupProps) => {
                 type="text"
                 value={input.first_name}
                 onChange={handleOnChange}
-                placeholder="Enter your new username"
+                placeholder={
+                  currentUser?.first_name
+                    ? "Update First Name"
+                    : "Enter First Name"
+                }
                 className={`w-full border-gray-700 bg-gray-800 border  rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition`}
                 autoFocus
               />
+
+              {firstNameValidationError && (
+                <p className="text-red-400 text-sm mt-1.5">
+                  {firstNameValidationError}
+                </p>
+              )}
+
+              {/* Character counter */}
+              <div className="text-right text-xs mt-1.5 text-gray-500">
+                {input.first_name.trim().length} / 50 characters
+              </div>
             </div>
 
             <div>
@@ -119,9 +182,24 @@ const FullNamePopup = ({ currentUser, onClose }: FullNamePopupProps) => {
                 type="text"
                 value={input.last_name}
                 onChange={handleOnChange}
-                placeholder="Enter your new username"
+                placeholder={
+                  currentUser?.last_name
+                    ? "Update Last Name"
+                    : "Enter Last Name"
+                }
                 className={`w-full border-gray-700 bg-gray-800 border  rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition`}
               />
+
+              {lastNameValidationError && (
+                <p className="text-red-400 text-sm mt-1.5">
+                  {lastNameValidationError}
+                </p>
+              )}
+
+              {/* Character counter */}
+              <div className="text-right text-xs mt-1.5 text-gray-500">
+                {input.last_name.trim().length} / 50 characters
+              </div>
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t border-gray-800">
@@ -143,7 +221,7 @@ const FullNamePopup = ({ currentUser, onClose }: FullNamePopupProps) => {
                     Updating...
                   </>
                 ) : (
-                  "Update Username"
+                  "Update Name"
                 )}
               </button>
             </div>

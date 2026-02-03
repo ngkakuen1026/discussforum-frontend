@@ -6,6 +6,8 @@ import authAxios from "../../../services/authAxios";
 import { usersAPI } from "../../../services/http-api";
 import { toast } from "sonner";
 import { Pencil, X } from "lucide-react";
+import { phoneSchema } from "../../../schema/userDataSchema";
+import z from "zod";
 
 interface PhonePopupProps {
   currentUser: UserType | null;
@@ -15,6 +17,7 @@ interface PhonePopupProps {
 const PhonePopup = ({ currentUser, onClose }: PhonePopupProps) => {
   const queryClient = useQueryClient();
   const [phone, setPhone] = useState(currentUser?.phone || "");
+  const [validationError, setValidationError] = useState<string | null>(null);
 
   const updateUsernameMutation = useMutation({
     mutationFn: () =>
@@ -46,8 +49,44 @@ const PhonePopup = ({ currentUser, onClose }: PhonePopupProps) => {
     },
   });
 
+  const validatePhone = (value: string): boolean => {
+    const trimmed = value.trim();
+    try {
+      phoneSchema.parse(trimmed);
+      setValidationError(null);
+      return true;
+    } catch (err) {
+      if (err instanceof z.ZodError) {
+        const firstError =
+          err.issues?.[0]?.message ?? "Invalid username format";
+        setValidationError(firstError);
+        toast.error(firstError);
+        return false;
+      }
+      setValidationError("Invalid username");
+      toast.error("Invalid username");
+      return false;
+    }
+  };
+
+  const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setPhone(value);
+
+    if (validationError) {
+      setValidationError(null);
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const isValid = validatePhone(phone);
+
+    if (!isValid) {
+      return;
+    }
+
     updateUsernameMutation.mutate();
   };
 
@@ -91,14 +130,24 @@ const PhonePopup = ({ currentUser, onClose }: PhonePopupProps) => {
                 id="phone"
                 type="text"
                 value={phone}
-                onChange={(e) => {
-                  setPhone(e.target.value);
-                }}
+                onChange={handleOnChange}
                 placeholder="Enter your new phone"
-                className={`w-full border-gray-700 bg-gray-800 border  rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition`}
+                className={`w-full px-4 py-3 bg-gray-800 border ${
+                  validationError
+                    ? "border-red-500 focus:border-red-500"
+                    : "border-gray-700 focus:border-cyan-500"
+                } rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-1 focus:ring-cyan-500 transition`}
                 required
                 autoFocus
               />
+
+              {validationError && (
+                <p className="text-red-400 text-sm mt-1.5">{validationError}</p>
+              )}
+
+              <div className="text-right text-xs mt-1.5 text-gray-500">
+                {phone.trim().length} / 15 characters
+              </div>
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t border-gray-800">
