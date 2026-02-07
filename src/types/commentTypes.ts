@@ -15,6 +15,9 @@ export interface CommentType {
   commenter_registration_date: string;
   commenter_gender: GenderType;
 
+  commenter_visibility_mode: "public" | "private";
+  commenter_show_registration_date?: boolean;
+
   floor_number: string;
   parent_floor_number: string | null;
   parent_comment_content: string | null;

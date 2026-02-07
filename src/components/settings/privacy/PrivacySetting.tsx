@@ -1,9 +1,11 @@
-import React from "react";
+import VisibilitySetting from "./VisibilitySetting";
+import DiscoverabilitySetting from "./DiscoverabilitySetting";
 
 const PrivacySetting = () => {
   return (
-    <div className="">
-      <h1 className="text-white">Privacy Setting</h1>
+    <div className="space-y-8">
+      <VisibilitySetting />
+      <DiscoverabilitySetting />
     </div>
   );
 };

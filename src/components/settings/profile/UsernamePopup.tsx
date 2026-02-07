@@ -99,10 +99,10 @@ const UsernamePopup = ({
             </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white transition"
+              className="text-gray-400 hover:text-gray-600 transition"
               aria-label="Close"
             >
-              <X size={18} />
+              <X size={18} className="cursor-pointer" />
             </button>
           </div>
 

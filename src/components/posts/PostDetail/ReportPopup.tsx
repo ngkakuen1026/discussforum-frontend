@@ -7,7 +7,6 @@ import authAxios from "../../../services/authAxios";
 import { reportsAPI } from "../../../services/http-api";
 import ClickOutside from "../../../hooks/useClickOutside";
 
-
 interface ReportPopupProps {
   contentId: string | number;
   contentType: "post" | "comment";
@@ -85,7 +84,8 @@ export default function ReportPopup({
             </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-white transition"
+              className="text-gray-400 hover:text-gray-600 transition"
+              aria-label="Close"
             >
               <X size={18} className="cursor-pointer" />
             </button>

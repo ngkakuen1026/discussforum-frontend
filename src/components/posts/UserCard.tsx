@@ -27,18 +27,37 @@ const UserCard = ({
   onShowBlockPopup,
   unBlockMutation,
 }: UserCardProps) => {
-  const userId = (userData.author_id ?? userData.commenter_id)!;
-  const username = (userData.author_username ?? userData.commenter_username)!;
+  const userId = userData.commenter_id ?? userData.author_id;
+  const username = userData.commenter_username ?? userData.author_username;
+  const profileImage =
+    userData.commenter_profile_image ?? userData.author_profile_image;
   const registrationDate =
-    userData.author_registration_date ??
-    userData.commenter_registration_date ??
-    "";
+    userData.commenter_registration_date ?? userData.author_registration_date;
+
+  const visibilityMode =
+    userData.commenter_visibility_mode ??
+    userData.author_visibility_mode ??
+    "public";
+
+  const showRegistrationDate =
+    (userData.commenter_show_registration_date ??
+      userData.author_show_registration_date ??
+      true) &&
+    visibilityMode !== "private";
+
+  if (!userId) {
+    return (
+      <div className="col-span-3 text-gray-500">
+        User information unavailable
+      </div>
+    );
+  }
 
   return (
     <div className="col-span-3">
       <div className="flex flex-col items-center py-6">
         <img
-          src={getUserAvatar(userData)}
+          src={getUserAvatar({ profile_image: profileImage })}
           alt={username}
           className="w-36 h-36 rounded-full object-cover border-4 border-gray-700 shadow-lg"
         />
@@ -62,7 +81,10 @@ const UserCard = ({
           </Link>
 
           <p className="text-gray-400 text-sm mt-2">
-            Registered: {formatUserRegistrationDate(registrationDate)}
+            Registered:{" "}
+            {showRegistrationDate && registrationDate
+              ? formatUserRegistrationDate(registrationDate)
+              : "Hidden"}
           </p>
 
           <UserAction

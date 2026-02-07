@@ -2,6 +2,7 @@ import { Calendar } from "lucide-react";
 import type { PostType } from "../../../../types/postTypes";
 import type { UserType } from "../../../../types/userTypes";
 import { formatUserLastLoginDate } from "../../../../utils/dateUtils";
+import { useAuth } from "../../../../context/AuthContext";
 
 interface UserActivityCardProps {
   publicUser: UserType;
@@ -14,6 +15,9 @@ const UserActivityCard = ({
   publicUserPosts,
   publicUserCommentCount,
 }: UserActivityCardProps) => {
+  const { user: currentUser } = useAuth();
+  const isOwnProfile = currentUser?.id === publicUser.id;
+
   return (
     <div className="mt-8 rounded-2xl bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 shadow-2xl">
       <div className="px-8 py-4 border-b border-gray-700/50">
@@ -41,20 +45,24 @@ const UserActivityCard = ({
           </div>
         </div>
 
-        <div className="flex items-center justify-center gap-4 group">
-          <div className="p-3 bg-gray-700/50 rounded-xl">
-            <Calendar size={18} className="text-green-400" />
-          </div>
+        {publicUser.last_login_at && (
+          <div className="flex items-center justify-center gap-4 group">
+            <div className="p-3 bg-gray-700/50 rounded-xl">
+              <Calendar size={18} className="text-green-400" />
+            </div>
 
-          <div className="flex flex-col">
-            <p className="text-sm text-gray-400 h-0 overflow-hidden group-hover:h-auto group-hover:mb-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
-              Last Login
-            </p>
-            <time className="text-xl text-gray-200 transition-all duration-300 group-hover:mt-1">
-              {formatUserLastLoginDate(publicUser.last_login_at)}
-            </time>
+            <div className="flex flex-col">
+              <p className="text-sm text-gray-400 h-0 overflow-hidden group-hover:h-auto group-hover:mb-1 opacity-0 group-hover:opacity-100 transition-all duration-300">
+                Last Login
+              </p>
+              <time className="text-xl text-gray-200 transition-all duration-300 group-hover:mt-1">
+                {publicUser.visibility_mode === "private" && !isOwnProfile
+                  ? "Private"
+                  : formatUserLastLoginDate(publicUser.last_login_at)}
+              </time>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

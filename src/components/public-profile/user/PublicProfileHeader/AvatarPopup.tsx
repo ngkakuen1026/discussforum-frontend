@@ -166,7 +166,7 @@ const AvatarPopup = ({ onClose, publicUser }: AvatarPopupProps) => {
               </div>
               <button
                 onClick={onClose}
-                className="text-gray-400 hover:text-white"
+                className="text-gray-400 hover:text-gray-600 transition"
                 disabled={uploadMutation.isPending || deleteMutation.isPending}
               >
                 <X size={18} className="cursor-pointer" />
