@@ -94,7 +94,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Full Name</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your full name in profile, everyone can now see your full name.
+            Show your full name in profile.
           </p>
         </div>
 
@@ -132,7 +132,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Email</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your email in profile, everyone can now see your email.
+            Show your email in profile.
           </p>
         </div>
 
@@ -170,8 +170,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Phone</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your phone number in profile, everyone can now see your phone
-            number.
+            Show your phone number in profile. number.
           </p>
         </div>
 
