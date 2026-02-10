@@ -1,9 +1,11 @@
-import React from "react";
+import ExperienceSetting from "./ExperienceSetting";
+import LanguageSetting from "./LanguageSetting";
 
 const PreferencesSetting = () => {
   return (
     <div className="">
-      <h1 className="text-white">Preferences Setting</h1>
+      <LanguageSetting />
+      <ExperienceSetting />
     </div>
   );
 };

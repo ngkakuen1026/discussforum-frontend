@@ -1,6 +1,6 @@
 import { LanguagesIcon } from "lucide-react";
 import { type RefObject } from "react";
-import { US, JP, CN, HK, KR } from "country-flag-icons/react/3x2";
+import { US, JP, CN, HK, KR, TW } from "country-flag-icons/react/3x2";
 import { motion } from "framer-motion"; // Import Framer Motion
 
 interface TranslationMenuProps {
@@ -17,11 +17,12 @@ const TranslationMenu = ({
   toggleTranslationMenu,
 }: TranslationMenuProps) => {
   const languageOptions = [
-    { code: "US", name: "English", flag: US },
-    { code: "ZH-HK", name: "Traditional Chinese", flag: HK },
-    { code: "ZH-CN", name: "Simplified Chinese", flag: CN },
-    { code: "JP", name: "Japanese", flag: JP },
-    { code: "KR", name: "Korean", flag: KR },
+    { code: "US", name: "English", flag: US, value: "US" },
+    { code: "ZH-HK", name: "Cantonese", flag: HK, value: "ZH-HK" },
+    { code: "ZH-TW", name: "Traditional Chinese", flag: TW, value: "ZH-TW" },
+    { code: "ZH-CN", name: "Simplified Chinese", flag: CN, value: "ZH-CN" },
+    { code: "JP", name: "Japanese", flag: JP, value: "JP" },
+    { code: "KR", name: "Korean", flag: KR, value: "KR" },
   ];
 
   return (

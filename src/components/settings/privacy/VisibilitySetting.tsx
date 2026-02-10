@@ -57,7 +57,7 @@ const VisibilitySetting = () => {
       <h1 className="text-white text-2xl pb-4 font-semibold">Visibility</h1>
 
       <div
-        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/username"
+        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/visibility-mode"
         onClick={() => setShowVisibilityModePopup(true)}
       >
         <div className="flex gap-1 items-start">
@@ -80,7 +80,7 @@ const VisibilitySetting = () => {
             {visibility.visibility_mode === "private" && "Private"}
           </p>
 
-          <button className="group-hover/username:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
+          <button className="group-hover/visibility-mode:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>
@@ -94,7 +94,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Full Name</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your full name in profile.
+            Show your full name in profile
           </p>
         </div>
 
@@ -132,7 +132,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Email</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your email in profile.
+            Show your email in profile
           </p>
         </div>
 
@@ -170,7 +170,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Phone</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your phone number in profile. number.
+            Show your phone number in profile
           </p>
         </div>
 
@@ -208,7 +208,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Gender</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your gender in profile.
+            Show your gender in profile
           </p>
         </div>
 
@@ -246,7 +246,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Bio</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your bio in profile.
+            Show your bio in profile
           </p>
         </div>
 
@@ -284,7 +284,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Registration Date</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show when you joined the platform.
+            Show when you joined the platform
           </p>
         </div>
 
@@ -322,7 +322,7 @@ const VisibilitySetting = () => {
         <div className="flex flex-col items-start">
           <p>Last Login Date</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Show your last login time in profile.
+            Show your last login time in profile
           </p>
         </div>
 
