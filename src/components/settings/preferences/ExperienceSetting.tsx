@@ -3,11 +3,15 @@ import { Check, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import ThemePopup from "./ThemePopup";
 import PostViewPopup from "./PostViewPopup";
+import { useTranslation } from "react-i18next";
+import { useTheme } from "../../../context/ThemeContext";
 
 const ExperienceSetting = () => {
+  const { t } = useTranslation();
   const [isTabOpen, setIsTabOpen] = useState(false);
   const [showThemePopup, setShowThemePopup] = useState(false);
   const [showPostViewPopup, setShowPostViewPopup] = useState(false);
+  const { theme } = useTheme();
 
   const toggleIsTabOpen = () => {
     setIsTabOpen(!isTabOpen);
@@ -16,21 +20,25 @@ const ExperienceSetting = () => {
 
   return (
     <div className="mt-4">
-      <h1 className="text-white text-2xl pb-4 font-semibold">Experience</h1>
+      <h1 className="text-white text-2xl pb-4 font-semibold">
+        {t("settings.preferences.experienceSetting.experience")}
+      </h1>
 
       <div
         className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/language"
         onClick={() => setShowThemePopup(true)}
       >
         <div className="flex flex-col items-start ">
-          <p>Display Theme</p>
+          <p> {t("settings.preferences.experienceSetting.displayTheme")}</p>
           <p className="text-sm text-gray-400 transition duration-200">
-            Switch between Light and Dark modes (or use system default).
+            {t(
+              "settings.preferences.experienceSetting.displayThemeDescription",
+            )}
           </p>
         </div>
 
         <div className="flex items-center justify-around ">
-          <p className="mr-2">Theme</p>
+          <p className="mr-2">{theme}</p>
           <button className="group-hover/language:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
@@ -42,7 +50,7 @@ const ExperienceSetting = () => {
         onClick={() => setShowPostViewPopup(true)}
       >
         <div className="flex flex-col items-start ">
-          <p>Display Post View</p>
+          <p> {t("settings.preferences.experienceSetting.displayPostView")}</p>
         </div>
 
         <div className="flex items-center justify-around ">
@@ -58,7 +66,10 @@ const ExperienceSetting = () => {
         onClick={toggleIsTabOpen}
       >
         <div className="flex flex-col items-start">
-          <p>Open posts in new tab</p>
+          <p>
+            {" "}
+            {t("settings.preferences.experienceSetting.openPostsInNewTab")}
+          </p>
         </div>
 
         <div className="flex items-center">

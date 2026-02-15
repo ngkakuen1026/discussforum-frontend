@@ -10,7 +10,7 @@ const NavTitle = () => {
         className="flex items-center text-3xl"
       >
         <img src="/src/assets/icon.svg" className="w-20 h-20" />
-        <span className="text-orange-600 dark:text-white font-extrabold">
+        <span className="text-orange-600 dark:text-white font-extrabold tracking-tight">
           ChatterNest
         </span>
       </Link>

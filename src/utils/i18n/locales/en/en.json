@@ -1,0 +1,58 @@
+{
+  "languages": {
+    "english": "English",
+    "cantonese": "Cantonese",
+    "traditionalChinese": "Traditional Chinese",
+    "simplifiedChinese": "Simplified Chinese",
+    "japanese": "Japanese",
+    "korean": "Korean"
+  },
+  "theme": {
+    "system": "Auto (Follow System Default)",
+    "light": "Light Theme",
+    "dark": "Dark Theme"
+  },
+  "postView": {
+    "compact": "Compact",
+    "card": "Card"
+  },
+  "topNavbar": {
+    "translationMenu": {
+      "s-title": "Language Translation",
+      "title": "Language",
+      "available_one": "{{count}} language available",
+      "available_other": "{{count}} languages available"
+    }
+  },
+  "settings": {
+    "preferences": {
+      "languageSetting": {
+        "language": "Language",
+        "displayLanguage": "Display Language",
+        "languagePopup": {
+          "title": "Display Language",
+          "description": "Choose your preferred language for the site."
+        }
+      },
+      "experienceSetting": {
+        "experience": "Experience",
+        "displayTheme": "Display Theme",
+        "displayThemeDescription": "Switch between Light and Dark modes (or use system default)",
+        "displayPopup": {
+          "title": "Display Theme",
+          "description": "Select your preferred theme"
+        },
+        "displayPostView": "Display Post View",
+        "displayPostViewPopup": {
+          "title": "Display Post View",
+          "description": "Select your post view"
+        },
+        "openPostsInNewTab": "Open posts in new tab"
+      }
+    }
+  },
+  "common": {
+    "cancel": "Cancel",
+    "save": "Save"
+  }
+}

@@ -1,19 +1,25 @@
 import { CardSim, Check, Rows3, StickyNote, X } from "lucide-react";
 import ClickOutside from "../../../hooks/useClickOutside";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 interface PostViewPopupProps {
   onClose: () => void;
 }
 
 const PostViewPopup = ({ onClose }: PostViewPopupProps) => {
+  const { t } = useTranslation();
   const [postView, setPostview] = useState("Compact");
 
   const postViewOptions = [
-    { value: "Compact", label: "Compact", icon: <Rows3 size={18} /> },
+    {
+      value: "Compact",
+      label: t("postView.compact"),
+      icon: <Rows3 size={18} />,
+    },
     {
       value: "Card",
-      label: "Card",
+      label: t("postView.card"),
       icon: <CardSim size={18} />,
     },
   ];
@@ -26,7 +32,11 @@ const PostViewPopup = ({ onClose }: PostViewPopupProps) => {
           <div className="flex items-center justify-between px-6 py-5 border-b border-gray-800">
             <div className="flex items-center gap-3 text-white">
               <StickyNote size={18} />
-              <h2 className="text-lg font-bold">Display Post View</h2>
+              <h2 className="text-lg font-bold">
+                {t(
+                  "settings.preferences.experienceSetting.displayPostViewPopup.title",
+                )}
+              </h2>
             </div>
             <button
               onClick={onClose}
@@ -38,7 +48,11 @@ const PostViewPopup = ({ onClose }: PostViewPopupProps) => {
           </div>
 
           <form className="p-6 space-y-6">
-            <p className="text-white leading-relaxed">Select your post view</p>
+            <p className="text-white leading-relaxed">
+              {t(
+                "settings.preferences.experienceSetting.displayPostViewPopup.description",
+              )}
+            </p>
 
             <div className="space-y-3">
               {" "}
@@ -71,7 +85,7 @@ const PostViewPopup = ({ onClose }: PostViewPopupProps) => {
 
                     <input
                       type="radio"
-                      name="theme"
+                      name="postview"
                       value={option.value}
                       checked={isSelected}
                       onChange={() => setPostview(option.value)}

@@ -20,7 +20,7 @@ const CategoryList = ({ selectedCategoryId }: CategoryListProps) => {
         queryKey: ["parent-categories"],
         queryFn: async (): Promise<parentCategoryType[]> => {
           const res = await authAxios.get(
-            `${parentCategoriesAPI.url}/all-parent-categories`
+            `${parentCategoriesAPI.url}/all-parent-categories`,
           );
           return res.data.parentCategories;
         },
@@ -30,7 +30,7 @@ const CategoryList = ({ selectedCategoryId }: CategoryListProps) => {
         queryKey: ["categories"],
         queryFn: async (): Promise<categoryType[]> => {
           const res = await authAxios.get(
-            `${categoriesAPI.url}/all-categories`
+            `${categoriesAPI.url}/all-categories`,
           );
           return res.data.categories;
         },
@@ -53,7 +53,7 @@ const CategoryList = ({ selectedCategoryId }: CategoryListProps) => {
         name: parent.name,
         children,
       };
-    }
+    },
   );
 
   const handleCategoryClick = (categoryId: number | 0) => {
@@ -86,7 +86,9 @@ const CategoryList = ({ selectedCategoryId }: CategoryListProps) => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex flex-col justify-between p-6 border-b border-gray-700">
-        <h2 className="text-white text-lg font-semibold">All Categories</h2>
+        <h2 className=" text-lg font-semibold dark:text-foreground-dark text-foreground">
+          All Categories
+        </h2>
         <p className="text-gray-500 text-sm">
           Select the category's post you like!
         </p>
@@ -116,7 +118,7 @@ const CategoryList = ({ selectedCategoryId }: CategoryListProps) => {
                   <div
                     key={child.id}
                     onClick={() => handleCategoryClick(child.id)}
-                    className={`p-2.5 cursor-pointer rounded-xl text-left text-sm transition-all ${
+                    className={`p-2.5 cursor-pointer rounded-xl text-left text-sm transition-all dark:text-foreground-dark text-foreground ${
                       selectedCategoryId === child.id
                         ? "bg-cyan-700 text-white"
                         : "hover:bg-cyan-700 hover:text-gray-300"

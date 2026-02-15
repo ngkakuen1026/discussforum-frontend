@@ -50,7 +50,7 @@ export default function UserDropdown({
             <img
               src={getUserAvatar(user!)}
               alt="user-icon"
-              className="w-12 h-12 rounded-full object-cover border-white border-2"
+              className="w-12 h-12 rounded-full object-cover border-2 dark:border-white border-gray-800"
             />
           </Menu.Button>
         </div>
@@ -79,7 +79,7 @@ export default function UserDropdown({
                         <img
                           src={getUserAvatar(user!)}
                           alt="user-icon"
-                          className="w-12 h-12 mr-2 rounded-full object-cover border-2"
+                          className="w-12 h-12 mr-2 rounded-full object-cover border-2 dark:border-white border-gray-800"
                         />
                         <div className="grid text-left">
                           <span>Edit Profile</span>

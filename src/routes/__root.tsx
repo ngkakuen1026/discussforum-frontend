@@ -13,7 +13,7 @@ const RootLayout = () => {
       {!hideNavbarPaths.includes(pathname) && <TopNavbar />}
 
       <hr />
-      <div className="bg-[#0E1113] min-h-screen">
+      <div className="min-h-screen bg-background dark:bg-background-dark text-foreground dark:text-foreground-dark">
         <Outlet />
         <Toaster
           position="top-right"

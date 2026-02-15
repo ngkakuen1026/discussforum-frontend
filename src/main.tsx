@@ -9,6 +9,8 @@ import { BlockedUsersProvider } from "./context/BlockedUserContext";
 import { FollowingUsersProvider } from "./context/FollowingUserContext";
 import { FocusUserProvider } from "./context/FocusUserContext";
 import { BookmarkProvider } from "./context/BookmarkContext";
+import "./utils/i18n/i18n";
+import { ThemeProvider } from "./context/ThemeContext";
 
 const router = createRouter({ routeTree });
 
@@ -33,18 +35,20 @@ if (!rootElement.innerHTML) {
   root.render(
     <StrictMode>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <BlockedUsersProvider>
-            <FollowingUsersProvider>
-              <FocusUserProvider>
-                <BookmarkProvider>
-                  <RouterProvider router={router} />
-                </BookmarkProvider>
-              </FocusUserProvider>
-            </FollowingUsersProvider>
-          </BlockedUsersProvider>
-        </AuthProvider>
+        <ThemeProvider>
+          <AuthProvider>
+            <BlockedUsersProvider>
+              <FollowingUsersProvider>
+                <FocusUserProvider>
+                  <BookmarkProvider>
+                    <RouterProvider router={router} />
+                  </BookmarkProvider>
+                </FocusUserProvider>
+              </FollowingUsersProvider>
+            </BlockedUsersProvider>
+          </AuthProvider>
+        </ThemeProvider>
       </QueryClientProvider>
-    </StrictMode>
+    </StrictMode>,
   );
 }

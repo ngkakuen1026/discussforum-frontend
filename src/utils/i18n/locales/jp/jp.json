@@ -1,0 +1,58 @@
+{
+  "languages": {
+    "english": "英語",
+    "cantonese": "広東語",
+    "traditionalChinese": "繁体字中国語",
+    "simplifiedChinese": "簡体字中国語",
+    "japanese": "日本語",
+    "korean": "韓国語"
+  },
+  "theme": {
+    "system": "自動（システム設定に従う）",
+    "light": "ライトテーマ",
+    "dark": "ダークテーマ"
+  },
+  "postView": {
+    "compact": "コンパクト",
+    "card": "カード"
+  },
+  "topNavbar": {
+    "translationMenu": {
+      "s-title": "言語翻訳",
+      "title": "言語",
+      "available_one": "{{count}} 言語が利用可能",
+      "available_other": "{{count}} 言語が利用可能"
+    }
+  },
+  "settings": {
+    "preferences": {
+      "languageSetting": {
+        "language": "言語",
+        "displayLanguage": "表示言語",
+        "languagePopup": {
+          "title": "表示言語",
+          "description": "サイトで使用する言語を選択してください。"
+        }
+      },
+      "experienceSetting": {
+        "experience": "表示設定",
+        "displayTheme": "表示テーマ",
+        "displayThemeDescription": "ライトモード、ダークモード、またはシステム設定を選択できます",
+        "displayPopup": {
+          "title": "表示テーマ",
+          "description": "希望のテーマを選択してください"
+        },
+        "displayPostView": "投稿の表示方法",
+        "displayPostViewPopup": {
+          "title": "投稿の表示方法",
+          "description": "投稿の表示形式を選択してください"
+        },
+        "openPostsInNewTab": "新しいタブで投稿を開く"
+      }
+    }
+  },
+  "common": {
+    "cancel": "キャンセル",
+    "save": "保存"
+  }
+}

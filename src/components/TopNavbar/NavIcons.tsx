@@ -1,24 +1,27 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { CirclePlus, Moon, Sun, User } from "lucide-react";
+import { CirclePlus, User } from "lucide-react";
 import UserDropdown from "./UserDropdown";
 import type { RefObject } from "react";
 import NotiMenu from "./NotiMenu/NotiMenu";
 import TranslationMenu from "./TranslationMenu/TranslationMenu";
 import type { UserType } from "../../types/userTypes";
+import ThemeMenu from "./ThemeMenu/ThemeMenu";
 
 interface NavIconProps {
   handleSideNavToggle: () => void;
-  handleToggle: () => void;
-  isOn: boolean;
   notiMenuRef: RefObject<HTMLDivElement | null>;
   translationMenuRef: RefObject<HTMLDivElement | null>;
+  themeMenuRef: RefObject<HTMLDivElement | null>;
   userMenuRef: RefObject<HTMLDivElement | null>;
   toggleNotiMenu: () => void;
   toggleTranslationMenu: () => void;
+  toggleThemeMenu: () => void;
   toggleUserMenu: () => void;
   showNotiMenu: boolean;
+  showThemeMenu: boolean;
   showTranslationMenu: boolean;
   setShowNotiMenu: (value: boolean) => void;
+  setShowThemeMenu: (value: boolean) => void;
   setShowTranslationMenu: (value: boolean) => void;
   isLoggedIn: boolean;
   user: UserType | null;
@@ -26,17 +29,19 @@ interface NavIconProps {
 }
 
 const NavIcons = ({
-  handleToggle,
-  isOn,
   notiMenuRef,
   translationMenuRef,
+  themeMenuRef,
   userMenuRef,
   toggleNotiMenu,
   toggleTranslationMenu,
+  toggleThemeMenu,
   toggleUserMenu,
   showNotiMenu,
+  showThemeMenu,
   showTranslationMenu,
   setShowNotiMenu,
+  setShowThemeMenu,
   setShowTranslationMenu,
   isLoggedIn,
   user,
@@ -50,7 +55,7 @@ const NavIcons = ({
         <>
           <button title="Add New Post">
             <Link to="/add-post" target="_blank">
-              <CirclePlus className="text-white w-7 h-7 cursor-pointer hover:opacity-75" />
+              <CirclePlus className=" w-7 h-7 cursor-pointer hover:opacity-75" />
             </Link>
           </button>
           <NotiMenu
@@ -69,22 +74,12 @@ const NavIcons = ({
         toggleTranslationMenu={toggleTranslationMenu}
       />
 
-      <button
-        onClick={handleToggle}
-        title={isOn ? "Switch to light mode" : "Switch to dark mode"}
-      >
-        {isOn ? (
-          <Sun
-            size={24}
-            className="text-white cursor-pointer hover:opacity-75"
-          />
-        ) : (
-          <Moon
-            size={24}
-            className="text-white cursor-pointer hover:opacity-75"
-          />
-        )}
-      </button>
+      <ThemeMenu
+        showThemeMenu={showThemeMenu}
+        setShowThemeMenu={setShowThemeMenu}
+        themeMenuRef={themeMenuRef}
+        toggleThemeMenu={toggleThemeMenu}
+      />
 
       {isLoggedIn ? (
         <UserDropdown
@@ -98,10 +93,7 @@ const NavIcons = ({
           onClick={() => navigate({ to: "/login" })}
           className="flex items-center justify-center focus:outline-none"
         >
-          <User
-            size={24}
-            className="text-white cursor-pointer hover:opacity-75 "
-          />
+          <User size={24} className="cursor-pointer hover:opacity-75 " />
         </button>
       )}
     </div>

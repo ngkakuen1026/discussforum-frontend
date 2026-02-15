@@ -38,18 +38,18 @@ const SearchBar = () => {
     >
       <label
         htmlFor="default-search"
-        className="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white"
+        className="mb-2 text-sm font-medium sr-only"
       >
         Search
       </label>
       <div className="relative">
         <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
-          <Search size={12} className="text-gray-500 dark:text-gray-400" />
+          <Search size={12} className="text-gray-600 dark:text-gray-400" />
         </div>
         <input
           type="search"
           id="default-search"
-          className="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-2xl bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-white dark:focus:border-white"
+          className="block w-full p-4 ps-10 text-gray-900 border border-orange-600 rounded-2xl bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-background-dark dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-white dark:focus:border-white"
           placeholder="Search Posts... (Enter to process)"
           value={query}
           onChange={(e) => setQuery(e.target.value)}

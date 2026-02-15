@@ -1,0 +1,58 @@
+{
+  "languages": {
+    "english": "英文",
+    "cantonese": "廣東話",
+    "traditionalChinese": "繁體中文",
+    "simplifiedChinese": "簡體中文",
+    "japanese": "日文",
+    "korean": "韓文"
+  },
+  "theme": {
+    "system": "自動（依照系統預設）",
+    "light": "淺色主題",
+    "dark": "深色主題"
+  },
+  "postView": {
+    "compact": "簡潔",
+    "card": "卡片"
+  },
+  "topNavbar": {
+    "translationMenu": {
+      "s-title": "語言翻譯",
+      "title": "語言",
+      "available_one": "{{count}} 種語言可用",
+      "available_other": "{{count}} 種語言可用"
+    }
+  },
+  "settings": {
+    "preferences": {
+      "languageSetting": {
+        "language": "語言",
+        "displayLanguage": "顯示語言",
+        "languagePopup": {
+          "title": "顯示語言",
+          "description": "選擇你喜歡的網站語言"
+        }
+      },
+      "experienceSetting": {
+        "experience": "體驗",
+        "displayTheme": "顯示主題",
+        "displayThemeDescription": "可切換淺色、深色或系統預設模式",
+        "displayPopup": {
+          "title": "顯示主題",
+          "description": "選擇你喜歡的主題"
+        },
+        "displayPostView": "顯示文章檢視",
+        "displayPostViewPopup": {
+          "title": "顯示文章檢視",
+          "description": "選擇文章檢視方式"
+        },
+        "openPostsInNewTab": "在新分頁開啟文章"
+      }
+    }
+  },
+  "common": {
+    "cancel": "取消",
+    "save": "儲存"
+  }
+}

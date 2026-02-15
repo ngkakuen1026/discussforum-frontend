@@ -28,7 +28,7 @@ const NotiMenu = ({
     queryKey: ["notifications", "unread-count"],
     queryFn: async () => {
       const res = await authAxios.get(
-        `${notificationsAPI.url}/all-notifications/unread-count`
+        `${notificationsAPI.url}/all-notifications/unread-count`,
       );
       return res.data.unreadCount as number;
     },
@@ -46,7 +46,7 @@ const NotiMenu = ({
     queryKey: ["notifications", "list"],
     queryFn: async (): Promise<notificationType[]> => {
       const res = await authAxios.get(
-        `${notificationsAPI.url}/all-notifications/me`
+        `${notificationsAPI.url}/all-notifications/me`,
       );
       return res.data.notifications;
     },
@@ -63,7 +63,8 @@ const NotiMenu = ({
       queryClient.setQueryData(["notifications", "unread-count"], 0);
       queryClient.setQueryData(
         ["notifications", "list"],
-        (old: notificationType[] = []) => old.map((n) => ({ ...n, read: true }))
+        (old: notificationType[] = []) =>
+          old.map((n) => ({ ...n, read: true })),
       );
     },
     onSuccess: () => {
@@ -83,14 +84,14 @@ const NotiMenu = ({
 
       queryClient.setQueryData(
         ["notifications", "list"],
-        (old: notificationType[] = []) => old.filter((n) => n.id !== id)
+        (old: notificationType[] = []) => old.filter((n) => n.id !== id),
       );
 
       const noti = notifications.find((n) => n.id === id);
       if (noti && !noti.read) {
         queryClient.setQueryData(
           ["notifications", "unread-count"],
-          (old: number = 0) => Math.max(0, old - 1)
+          (old: number = 0) => Math.max(0, old - 1),
         );
       }
     },
@@ -110,13 +111,10 @@ const NotiMenu = ({
         className="relative py-2 rounded-full hover:bg-white/10 transition-colors duration-200"
         title="Notifications"
       >
-        <Bell
-          size={24}
-          className="text-white cursor-pointer hover:opacity-75"
-        />
+        <Bell size={24} className=" cursor-pointer hover:opacity-75" />
         {unreadCount > 0 && (
           <span
-            className={`absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg ${showNotiMenu ? null : "animate-pulse"}`}
+            className={`absolute -top-1 -right-1 bg-red-500  text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg ${showNotiMenu ? null : "animate-pulse"}`}
           >
             {unreadCount > 99 ? "99+" : unreadCount}
           </span>
@@ -129,7 +127,7 @@ const NotiMenu = ({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="absolute right-0 top-full mt-3 w-96 bg-[#181C1F] border border-gray-800 rounded-xl shadow-2xl overflow-hidden z-50"
+          className="absolute right-0 top-full mt-3 w-96 dark:bg-icon-menu-dark bg-icon-menu border border-gray-800 rounded-xl shadow-2xl overflow-hidden z-50"
         >
           {/* Header */}
           <div className="p-4 border-b border-gray-800">
@@ -160,7 +158,7 @@ const NotiMenu = ({
           </div>
 
           {/* List */}
-          <div className="max-h-96 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
+          <div className="max-h-96 overflow-y-auto overflow-x-hidden scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-900">
             {isLoading ? (
               <div className="p-12 text-center">
                 <div className="animate-pulse text-gray-500">
@@ -208,7 +206,7 @@ const NotiMenu = ({
                               day: "numeric",
                               hour: "numeric",
                               minute: "2-digit",
-                            }
+                            },
                           )}
                         </time>
                       </div>
