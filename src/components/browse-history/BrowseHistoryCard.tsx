@@ -1,12 +1,12 @@
 import { useState, type ReactNode } from "react";
 import type { BrowseHistoryType } from "../../types/browseHistoryTypes";
-import { useNavigate } from "@tanstack/react-router";
 import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
 import { Eye, MessageCircle, ThumbsDown, ThumbsUp } from "lucide-react";
 import { formatDate } from "../../utils/dateUtils";
 import { formatDistanceToNow } from "date-fns";
 import PostTags from "../posts/PostDetail/PostTags";
 import { UserRoleTag } from "../UserRoleTag";
+import { Link } from "@tanstack/react-router";
 
 interface BrowseHistoryCardProps {
   browseHistory: BrowseHistoryType;
@@ -33,21 +33,20 @@ const BrowseHistoryCard = ({
   isSelected,
   toggleSelection,
 }: BrowseHistoryCardProps) => {
-  const navigate = useNavigate();
   const [showTooltip, setShowTooltip] = useState<
     null | "upvotes" | "downvotes" | "views" | "comments"
   >(null);
 
+  const openInNewTab = localStorage.getItem("openPostsInNewTab") === "true";
+
   return (
-    <div
-      className="group relative border-b border-gray-800/80 last:border-b-0 hover:bg-white/5 transition-all duration-200 cursor-pointer"
-      onClick={() =>
-        navigate({
-          to: "/posts/$postId",
-          params: { postId: browseHistory.post_id.toString() },
-          search: { page: undefined },
-        })
-      }
+    <Link
+      to="/posts/$postId"
+      search={{ page: 1 }}
+      params={{ postId: browseHistory.post_id.toString() }}
+      target={openInNewTab ? "_blank" : undefined}
+      rel={openInNewTab ? "noopener noreferrer" : undefined}
+      className="group relative border-b border-gray-800/80 last:border-b-0 hover:bg-white/5 transition-all duration-200 cursor-pointer block"
     >
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-cyan-500 to-purple-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300" />
 
@@ -192,7 +191,7 @@ const BrowseHistoryCard = ({
           {rightAction && <div className="mt-6">{rightAction}</div>}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

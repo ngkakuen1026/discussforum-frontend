@@ -1,5 +1,4 @@
 import { useState, type ReactNode } from "react";
-import { useNavigate } from "@tanstack/react-router";
 import { ThumbsUp, ThumbsDown, MessageCircle, Eye } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { formatDate } from "../../utils/dateUtils";
@@ -7,6 +6,7 @@ import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
 import PostTags from "./PostDetail/PostTags";
 import type { PostType } from "../../types/postTypes";
 import { UserRoleTag } from "../UserRoleTag";
+import { Link } from "@tanstack/react-router";
 
 interface PostListCardProps {
   post: PostType;
@@ -27,21 +27,20 @@ const PostListCard = ({
   handleCategoryClick,
   rightAction,
 }: PostListCardProps) => {
-  const navigate = useNavigate();
   const [showTooltip, setShowTooltip] = useState<
     null | "upvotes" | "downvotes" | "views" | "comments"
   >(null);
 
+  const openInNewTab = localStorage.getItem("openPostsInNewTab") === "true";
+
   return (
-    <div
-      className="group relative border-b border-gray-800/80 last:border-b-0 hover:bg-white/5 transition-all duration-200 cursor-pointer"
-      onClick={() =>
-        navigate({
-          to: "/posts/$postId",
-          params: { postId: post.id.toString() },
-          search: { page: undefined },
-        })
-      }
+    <Link
+      to="/posts/$postId"
+      search={{ page: 1 }}
+      params={{ postId: post.id.toString() }}
+      target={openInNewTab ? "_blank" : undefined}
+      rel={openInNewTab ? "noopener noreferrer" : undefined}
+      className="group relative border-b border-gray-800/80 last:border-b-0 hover:bg-white/5 transition-all duration-200 cursor-pointer block"
     >
       <div className="absolute left-0 top-0 bottom-0 w-1 bg-linear-to-b from-cyan-500 to-purple-500 scale-y-0 group-hover:scale-y-100 transition-transform duration-300" />
 
@@ -172,7 +171,7 @@ const PostListCard = ({
           {rightAction && <div className="mt-6">{rightAction}</div>}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -5,7 +5,7 @@ import { getUserAvatar } from "../../../../utils/userUtils";
 import SafeHTML from "../../../SafeHTML";
 import PostTags from "../../../posts/PostDetail/PostTags";
 import { Eye, MessageCircle, ThumbsDown, ThumbsUp } from "lucide-react";
-import { useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 
 interface UserPostCardProps {
@@ -29,18 +29,16 @@ const UserPostCard = ({
   const [showTooltip, setShowTooltip] = useState<
     null | "upvotes" | "downvotes" | "views" | "comments"
   >(null);
+  const openInNewTab = localStorage.getItem("openPostsInNewTab") === "true";
 
   return (
     <div className="rounded-2xl bg-gray-800/60 border border-gray-800/80 shadow-lg p-6 hover:bg-white/5 transition-all duration-300">
-      {/* Header */}
-      <div
-        onClick={() =>
-          navigate({
-            to: "/posts/$postId",
-            params: { postId: publicUserPost.id.toString() },
-            search: { page: undefined },
-          })
-        }
+      <Link
+        to="/posts/$postId"
+        search={{ page: 1 }}
+        params={{ postId: publicUserPost.id.toString() }}
+        target={openInNewTab ? "_blank" : undefined}
+        rel={openInNewTab ? "noopener noreferrer" : undefined}
         className="cursor-pointer"
       >
         <div className="flex flex-row justify-between border-b border-gray-700/70 pb-4">
@@ -101,7 +99,7 @@ const UserPostCard = ({
             className="text-gray-300 py-4 border-b border-gray-700/70 mb-4 cursor-pointer whitespace-pre-wrap break-all"
           />
         </div>
-      </div>
+      </Link>
 
       {/* Stats */}
       <div className="flex items-center justify-between gap-6 text-sm text-gray-400">
