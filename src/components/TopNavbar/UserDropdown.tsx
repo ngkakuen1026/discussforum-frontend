@@ -96,7 +96,6 @@ export default function UserDropdown({
                 </Menu.Item>
               </div>
             </div>
-            <div></div>
             <div>
               <div className="px-2 py-4">
                 <Menu.Item>

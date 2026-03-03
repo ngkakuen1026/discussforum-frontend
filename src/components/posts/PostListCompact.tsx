@@ -3,31 +3,31 @@ import { ThumbsUp, ThumbsDown, MessageCircle, Eye } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { formatDate } from "../../utils/dateUtils";
 import { getUserAvatar, getUsernameColor } from "../../utils/userUtils";
+import PostTags from "./PostDetail/PostTags";
 import type { PostType } from "../../types/postTypes";
 import { UserRoleTag } from "../UserRoleTag";
-import PostTags from "../posts/PostDetail/PostTags";
-import { usePostOpenPreference } from "../../context/PostOpenPreferenceContext";
 import { Link } from "@tanstack/react-router";
+import { usePostOpenPreference } from "../../context/PostOpenPreferenceContext";
 
-interface FollowingFeedPostCardProps {
+interface PostListCompactProps {
   post: PostType;
+  upvotes: number;
+  downvotes: number;
   commentLength: number;
-  upvotes?: number;
-  downvotes?: number;
-  categoryName?: string;
-  handleCategoryClick?: (categoryId: number) => void;
+  categoryName: string;
+  handleCategoryClick: (categoryId: number) => void;
   rightAction?: ReactNode;
 }
 
-const FollowingFeedPostCard = ({
+const PostListCompact = ({
   post,
+  upvotes,
+  downvotes,
   commentLength,
-  upvotes = 0,
-  downvotes = 0,
   categoryName,
-  handleCategoryClick = () => {},
+  handleCategoryClick,
   rightAction,
-}: FollowingFeedPostCardProps) => {
+}: PostListCompactProps) => {
   const [showTooltip, setShowTooltip] = useState<
     null | "upvotes" | "downvotes" | "views" | "comments"
   >(null);
@@ -152,7 +152,7 @@ const FollowingFeedPostCard = ({
           <PostTags postId={post.id} pendingTagName={post.pending_tag_name} />
 
           {/* Title */}
-          <h3 className={`text-xl font-semibold text-white line-clamp-3 `}>
+          <h3 className={`text-xl font-semibold text-white line-clamp-3`}>
             {post.title}
           </h3>
         </div>
@@ -176,4 +176,4 @@ const FollowingFeedPostCard = ({
   );
 };
 
-export default FollowingFeedPostCard;
+export default PostListCompact;

@@ -1,7 +1,8 @@
 import { CardSim, Check, Rows3, StickyNote, X } from "lucide-react";
 import ClickOutside from "../../../hooks/useClickOutside";
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
 import { useTranslation } from "react-i18next";
+import { usePostViewPreference } from "../../../context/PostViewPreferenceContext";
 
 interface PostViewPopupProps {
   onClose: () => void;
@@ -9,20 +10,34 @@ interface PostViewPopupProps {
 
 const PostViewPopup = ({ onClose }: PostViewPopupProps) => {
   const { t } = useTranslation();
-  const [postView, setPostview] = useState("Compact");
+  const { postViewMode, setPostViewMode } = usePostViewPreference();
+
+  // Start with current saved preference (for preview)
+  const [selectedMode, setSelectedMode] = useState(postViewMode);
 
   const postViewOptions = [
     {
-      value: "Compact",
+      value: "compact",
       label: t("postView.compact"),
       icon: <Rows3 size={18} />,
     },
     {
-      value: "Card",
+      value: "card",
       label: t("postView.card"),
       icon: <CardSim size={18} />,
     },
   ];
+
+  const handleSelect = (value: string) => {
+    setSelectedMode(value as typeof postViewMode);
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    // Apply the selected mode only when user clicks Save
+    setPostViewMode(selectedMode);
+    onClose();
+  };
 
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -40,24 +55,23 @@ const PostViewPopup = ({ onClose }: PostViewPopupProps) => {
             </div>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600 transition"
+              className="text-gray-400 hover:text-white transition"
               aria-label="Close"
             >
               <X size={18} className="cursor-pointer" />
             </button>
           </div>
 
-          <form className="p-6 space-y-6">
-            <p className="text-white leading-relaxed">
+          <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <p className="text-gray-300 leading-relaxed">
               {t(
                 "settings.preferences.experienceSetting.displayPostViewPopup.description",
               )}
             </p>
 
             <div className="space-y-3">
-              {" "}
               {postViewOptions.map((option) => {
-                const isSelected = postView === option.value;
+                const isSelected = selectedMode === option.value;
 
                 return (
                   <label
@@ -67,6 +81,7 @@ const PostViewPopup = ({ onClose }: PostViewPopupProps) => {
                         ? "border-cyan-500 bg-cyan-950/40"
                         : "border-gray-700 hover:border-gray-600 bg-gray-800/50"
                     }`}
+                    onClick={() => handleSelect(option.value)}
                   >
                     <div className="flex items-center">
                       {option.icon}
@@ -88,13 +103,14 @@ const PostViewPopup = ({ onClose }: PostViewPopupProps) => {
                       name="postview"
                       value={option.value}
                       checked={isSelected}
-                      onChange={() => setPostview(option.value)}
+                      readOnly
                       className="sr-only"
                     />
                   </label>
                 );
               })}
             </div>
+
             <div className="flex justify-end gap-3 pt-4 border-t border-gray-800">
               <button
                 type="button"

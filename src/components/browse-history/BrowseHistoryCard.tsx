@@ -7,6 +7,7 @@ import { formatDistanceToNow } from "date-fns";
 import PostTags from "../posts/PostDetail/PostTags";
 import { UserRoleTag } from "../UserRoleTag";
 import { Link } from "@tanstack/react-router";
+import { usePostOpenPreference } from "../../context/PostOpenPreferenceContext";
 
 interface BrowseHistoryCardProps {
   browseHistory: BrowseHistoryType;
@@ -37,7 +38,7 @@ const BrowseHistoryCard = ({
     null | "upvotes" | "downvotes" | "views" | "comments"
   >(null);
 
-  const openInNewTab = localStorage.getItem("openPostsInNewTab") === "true";
+  const { openInNewTab } = usePostOpenPreference();
 
   return (
     <Link

@@ -1,28 +1,20 @@
 import { Switch } from "@headlessui/react";
 import { Check, ChevronRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ThemePopup from "./ThemePopup";
 import PostViewPopup from "./PostViewPopup";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "../../../context/ThemeContext";
+import { usePostOpenPreference } from "../../../context/PostOpenPreferenceContext";
+import { usePostViewPreference } from "../../../context/PostViewPreferenceContext";
 
 const ExperienceSetting = () => {
   const { t } = useTranslation();
+  const { openInNewTab, toggleOpenInNewTab } = usePostOpenPreference();
+  const { theme } = useTheme();
+  const { postViewMode } = usePostViewPreference();
   const [showThemePopup, setShowThemePopup] = useState(false);
   const [showPostViewPopup, setShowPostViewPopup] = useState(false);
-  const { theme } = useTheme();
-
-  const [openInNewTab, setOpenInNewTab] = useState(() => {
-    return localStorage.getItem("openPostsInNewTab") === "true";
-  });
-
-  useEffect(() => {
-    localStorage.setItem("openPostsInNewTab", openInNewTab.toString());
-  }, [openInNewTab]);
-
-  const toggleOpenInNewTab = () => {
-    setOpenInNewTab((prev) => !prev);
-  };
 
   return (
     <div className="mt-4">
@@ -32,7 +24,7 @@ const ExperienceSetting = () => {
 
       {/* Theme row */}
       <div
-        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/language   transition"
+        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/language transition"
         onClick={() => setShowThemePopup(true)}
       >
         <div className="flex flex-col items-start">
@@ -45,7 +37,7 @@ const ExperienceSetting = () => {
         </div>
 
         <div className="flex items-center justify-around">
-          <p className="mr-2 capitalize font-medium ">{theme}</p>
+          <p className="mr-2 capitalize">{theme}</p>
           <button className="group-hover/language:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
@@ -54,7 +46,7 @@ const ExperienceSetting = () => {
 
       {/* Post view row */}
       <div
-        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/language   transition"
+        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/language transition"
         onClick={() => setShowPostViewPopup(true)}
       >
         <div className="flex flex-col items-start">
@@ -62,7 +54,7 @@ const ExperienceSetting = () => {
         </div>
 
         <div className="flex items-center justify-around">
-          <p className="mr-2">Post View</p>
+          <p className="mr-2 capitalize">{postViewMode}</p>
           <button className="group-hover/language:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>

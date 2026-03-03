@@ -11,6 +11,8 @@ import { FocusUserProvider } from "./context/FocusUserContext";
 import { BookmarkProvider } from "./context/BookmarkContext";
 import "./utils/i18n/i18n";
 import { ThemeProvider } from "./context/ThemeContext";
+import { PostOpenPreferenceProvider } from "./context/PostOpenPreferenceContext";
+import { PostViewPreferenceProvider } from "./context/PostViewPreferenceContext";
 
 const router = createRouter({ routeTree });
 
@@ -36,17 +38,21 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <AuthProvider>
-            <BlockedUsersProvider>
-              <FollowingUsersProvider>
-                <FocusUserProvider>
-                  <BookmarkProvider>
-                    <RouterProvider router={router} />
-                  </BookmarkProvider>
-                </FocusUserProvider>
-              </FollowingUsersProvider>
-            </BlockedUsersProvider>
-          </AuthProvider>
+          <PostOpenPreferenceProvider>
+            <PostViewPreferenceProvider>
+              <AuthProvider>
+                <BlockedUsersProvider>
+                  <FollowingUsersProvider>
+                    <FocusUserProvider>
+                      <BookmarkProvider>
+                        <RouterProvider router={router} />
+                      </BookmarkProvider>
+                    </FocusUserProvider>
+                  </FollowingUsersProvider>
+                </BlockedUsersProvider>
+              </AuthProvider>
+            </PostViewPreferenceProvider>
+          </PostOpenPreferenceProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </StrictMode>,

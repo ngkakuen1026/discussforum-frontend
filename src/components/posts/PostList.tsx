@@ -9,14 +9,26 @@ import type { VoteType } from "../../types/voteType";
 import type { PostRouteSearch } from "../../types/routeTypes";
 import { useState, useEffect } from "react";
 import PostListPagination from "./PostListPagination";
+import PostListCompact from "./PostListCompact";
+import { usePostViewPreference } from "../../context/PostViewPreferenceContext";
+import PostViewDropdown from "./PostDetail/PostViewDropdown";
 
 const PostList = ({ categoryId }: { categoryId: number | null }) => {
   const navigate = useNavigate();
+  const { postViewMode } = usePostViewPreference();
   const search = useSearch({ from: "/" }) as PostRouteSearch;
   const currentPage = Number(search.page) || 1;
-  const POSTS_PER_PAGE = 15;
+  const POSTS_PER_PAGE = postViewMode === "compact" ? 15 : 10;
   const [inputPage, setInputPage] = useState(currentPage.toString());
   const searchQuery = search.query || "";
+
+  const [showPostViewDropDown, setShowPostViewDropDown] = useState(false);
+  const togglePostViewDropdown = () => {
+    setShowPostViewDropDown((prev) => {
+      const newState = !prev;
+      return newState;
+    });
+  };
 
   const queryKey = searchQuery
     ? ["search-post", searchQuery]
@@ -52,7 +64,7 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
   });
 
   const categoryMap = Object.fromEntries(
-    categories.map((cat) => [cat.id, cat.name])
+    categories.map((cat) => [cat.id, cat.name]),
   );
 
   const voteQueries =
@@ -73,7 +85,7 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
       queryKey: ["comment-length", post.id],
       queryFn: async () => {
         const res = await authAxios.get(
-          `${commentsAPI.url}/${post.id}/all-comments`
+          `${commentsAPI.url}/${post.id}/all-comments`,
         );
         return res.data.comments;
       },
@@ -96,7 +108,7 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
   const paginatedPosts =
     posts?.slice(
       (currentPage - 1) * POSTS_PER_PAGE,
-      currentPage * POSTS_PER_PAGE
+      currentPage * POSTS_PER_PAGE,
     ) || [];
 
   const handlePageChange = (page: number) => {
@@ -125,13 +137,21 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
   return (
     <div className="h-full flex flex-col">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between p-7 border-b border-gray-700 gap-4">
-        <h2 className="text-white text-2xl font-bold mb-2">
-          {searchQuery
-            ? `Search results for "${searchQuery}"`
-            : categoryId
-              ? `Posts in ${categoryMap[categoryId] || "Loading..."}`
-              : "All Posts"}{" "}
-        </h2>
+        <div className="flex flex-row items-center gap-2">
+          <h2 className="text-white text-2xl font-bold mb-2">
+            {searchQuery
+              ? `Search results for "${searchQuery}"`
+              : categoryId
+                ? `Posts in ${categoryMap[categoryId] || "Loading..."}`
+                : "All Posts"}{" "}
+          </h2>
+
+          <PostViewDropdown
+            showPostViewDropDown={showPostViewDropDown}
+            setShowPostViewDropDown={setShowPostViewDropDown}
+            togglePostViewDropdown={togglePostViewDropdown}
+          />
+        </div>
 
         <PostListPagination
           currentPage={currentPage}
@@ -142,28 +162,62 @@ const PostList = ({ categoryId }: { categoryId: number | null }) => {
         />
       </div>
 
-      {paginatedPosts.map((post, index) => {
-        const votes =
-          voteResults[(currentPage - 1) * POSTS_PER_PAGE + index]?.data || [];
-        const upvotes = votes.find((v) => v.vote_type === 1)?.count || 0;
-        const downvotes = votes.find((v) => v.vote_type === -1)?.count || 0;
-        const categoryName = categoryMap[post.category_id] || "Uncategorized";
-        const commentLength =
-          (commentResults[(currentPage - 1) * POSTS_PER_PAGE + index]?.data
-            ?.length || 0) + 1;
+      {/* Conditional rendering based on postViewMode */}
+      {postViewMode === "compact" ? (
+        <div>
+          {paginatedPosts.map((post, index) => {
+            const votes =
+              voteResults[(currentPage - 1) * POSTS_PER_PAGE + index]?.data ||
+              [];
+            const upvotes = votes.find((v) => v.vote_type === 1)?.count || 0;
+            const downvotes = votes.find((v) => v.vote_type === -1)?.count || 0;
+            const categoryName =
+              categoryMap[post.category_id] || "Uncategorized";
+            const commentLength =
+              (commentResults[(currentPage - 1) * POSTS_PER_PAGE + index]?.data
+                ?.length || 0) + 1;
 
-        return (
-          <PostListCard
-            key={post.id}
-            post={post}
-            upvotes={upvotes}
-            downvotes={downvotes}
-            commentLength={commentLength}
-            categoryName={categoryName}
-            handleCategoryClick={handleCategoryClick}
-          />
-        );
-      })}
+            return (
+              <PostListCompact
+                key={post.id}
+                post={post}
+                upvotes={upvotes}
+                downvotes={downvotes}
+                commentLength={commentLength}
+                categoryName={categoryName}
+                handleCategoryClick={handleCategoryClick}
+              />
+            );
+          })}
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {paginatedPosts.map((post, index) => {
+            const votes =
+              voteResults[(currentPage - 1) * POSTS_PER_PAGE + index]?.data ||
+              [];
+            const upvotes = votes.find((v) => v.vote_type === 1)?.count || 0;
+            const downvotes = votes.find((v) => v.vote_type === -1)?.count || 0;
+            const categoryName =
+              categoryMap[post.category_id] || "Uncategorized";
+            const commentLength =
+              (commentResults[(currentPage - 1) * POSTS_PER_PAGE + index]?.data
+                ?.length || 0) + 1;
+
+            return (
+              <PostListCard
+                key={post.id}
+                post={post}
+                upvotes={upvotes}
+                downvotes={downvotes}
+                commentLength={commentLength}
+                categoryName={categoryName}
+                handleCategoryClick={handleCategoryClick}
+              />
+            );
+          })}
+        </div>
+      )}
 
       {posts?.length === 0 && (
         <div className="text-center mt-12">

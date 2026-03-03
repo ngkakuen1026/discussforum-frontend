@@ -7,6 +7,7 @@ import { useState } from "react";
 import type { BookmarkType } from "../../types/bookmarkTypes";
 import { UserRoleTag } from "../UserRoleTag";
 import { Link } from "@tanstack/react-router";
+import { usePostOpenPreference } from "../../context/PostOpenPreferenceContext";
 
 interface PinnedPostCardProps {
   bookmark: BookmarkType;
@@ -39,7 +40,7 @@ const PinnedPostCard = ({
     null | "upvotes" | "downvotes" | "views" | "comments"
   >(null);
 
-  const openInNewTab = localStorage.getItem("openPostsInNewTab") === "true";
+  const { openInNewTab } = usePostOpenPreference();
 
   return (
     <Link

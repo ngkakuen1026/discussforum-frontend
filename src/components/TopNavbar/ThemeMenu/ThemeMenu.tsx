@@ -1,11 +1,5 @@
 import { useNavigate } from "@tanstack/react-router";
-import {
-  Check,
-  MonitorCog,
-  Moon,
-  Settings,
-  Sun,
-} from "lucide-react";
+import { Check, MonitorCog, Moon, Settings, Sun } from "lucide-react";
 import { useState, type RefObject } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "../../../context/ThemeContext";
@@ -68,7 +62,7 @@ const ThemeMenu = ({
           animate={{ opacity: 1, y: 0, scale: 1 }}
           exit={{ opacity: 0, y: -20, scale: 0.95 }}
           transition={{ duration: 0.25, ease: "easeOut" }}
-          className="absolute right-0 top-full mt-3 w-96 dark:bg-icon-menu-dark bg-icon-menu border border-gray-800 rounded-xl shadow-2xl overflow-hidden z-50"
+          className="absolute right-0 top-full mt-6 w-96 dark:bg-icon-menu-dark bg-icon-menu border border-gray-800 rounded-xl shadow-2xl overflow-hidden z-50"
         >
           {/* Header */}
           <div className="p-4 border-b border-gray-800">
@@ -86,7 +80,9 @@ const ThemeMenu = ({
                 <Settings className="w-5 h-5 text-gray-400" />
               </button>
             </div>
-            <p className="text-sm text-gray-400 mt-1">Switch theme between light, dark and system default</p>
+            <p className="text-sm text-gray-400 mt-1">
+              Switch theme between light, dark and system default
+            </p>
           </div>
 
           {/* List */}
