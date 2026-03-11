@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import type { UserType, GenderType } from "../../../types/userTypes";
 import ClickOutside from "../../../hooks/useClickOutside";
-import { Pencil, X, Check } from "lucide-react"; // ← Add Check icon
+import { Pencil, X, Check } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
 import { usersAPI } from "../../../services/http-api";

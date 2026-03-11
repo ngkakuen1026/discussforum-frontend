@@ -13,6 +13,7 @@ import "./utils/i18n/i18n";
 import { ThemeProvider } from "./context/ThemeContext";
 import { PostOpenPreferenceProvider } from "./context/PostOpenPreferenceContext";
 import { PostViewPreferenceProvider } from "./context/PostViewPreferenceContext";
+import { UserNotiPreferenceProvider } from "./context/UserNotiPreferenceContext";
 
 const router = createRouter({ routeTree });
 
@@ -40,17 +41,19 @@ if (!rootElement.innerHTML) {
         <ThemeProvider>
           <PostOpenPreferenceProvider>
             <PostViewPreferenceProvider>
-              <AuthProvider>
-                <BlockedUsersProvider>
-                  <FollowingUsersProvider>
-                    <FocusUserProvider>
-                      <BookmarkProvider>
-                        <RouterProvider router={router} />
-                      </BookmarkProvider>
-                    </FocusUserProvider>
-                  </FollowingUsersProvider>
-                </BlockedUsersProvider>
-              </AuthProvider>
+              <UserNotiPreferenceProvider>
+                <AuthProvider>
+                  <BlockedUsersProvider>
+                    <FollowingUsersProvider>
+                      <FocusUserProvider>
+                        <BookmarkProvider>
+                          <RouterProvider router={router} />
+                        </BookmarkProvider>
+                      </FocusUserProvider>
+                    </FollowingUsersProvider>
+                  </BlockedUsersProvider>
+                </AuthProvider>
+              </UserNotiPreferenceProvider>
             </PostViewPreferenceProvider>
           </PostOpenPreferenceProvider>
         </ThemeProvider>

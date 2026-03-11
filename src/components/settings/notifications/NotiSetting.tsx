@@ -1,9 +1,13 @@
-import React from "react";
+import GeneralNotiSetting from "./GeneralNotiSetting";
+import ActivityNotiSetting from "./ActivityNotiSetting";
+import MessgaeNotiSetting from "./MessgaeNotiSetting";
 
 const NotiSetting = () => {
   return (
-    <div className="">
-      <h1 className="text-white">Notifications Setting</h1>
+    <div className="space-y-8">
+      <GeneralNotiSetting />
+      <ActivityNotiSetting />
+      <MessgaeNotiSetting />
     </div>
   );
 };

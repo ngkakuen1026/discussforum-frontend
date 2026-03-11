@@ -24,7 +24,7 @@ const ExperienceSetting = () => {
 
       {/* Theme row */}
       <div
-        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/language transition"
+        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/theme transition"
         onClick={() => setShowThemePopup(true)}
       >
         <div className="flex flex-col items-start">
@@ -38,7 +38,7 @@ const ExperienceSetting = () => {
 
         <div className="flex items-center justify-around">
           <p className="mr-2 capitalize">{theme}</p>
-          <button className="group-hover/language:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
+          <button className="group-hover/theme:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>
@@ -46,7 +46,7 @@ const ExperienceSetting = () => {
 
       {/* Post view row */}
       <div
-        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/language transition"
+        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/postView transition"
         onClick={() => setShowPostViewPopup(true)}
       >
         <div className="flex flex-col items-start">
@@ -55,7 +55,7 @@ const ExperienceSetting = () => {
 
         <div className="flex items-center justify-around">
           <p className="mr-2 capitalize">{postViewMode}</p>
-          <button className="group-hover/language:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
+          <button className="group-hover/postView:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
             <ChevronRight size={16} />
           </button>
         </div>
@@ -63,7 +63,7 @@ const ExperienceSetting = () => {
 
       {/* Open posts in new tab toggle */}
       <div
-        className="flex items-center justify-between text-lg cursor-pointer py-5 transition  "
+        className="flex items-center justify-between text-lg cursor-pointer py-5 transition"
         onClick={toggleOpenInNewTab}
       >
         <div className="flex flex-col items-start">
