@@ -42,6 +42,7 @@ interface UserNotiPreferenceContextType {
     key: keyof NotificationPreferences,
     value: boolean,
   ) => void;
+  setPreferences: (updates: Partial<NotificationPreferences>) => Promise<void>;
   isToggling: boolean;
 }
 
@@ -68,17 +69,17 @@ export function UserNotiPreferenceProvider({
   });
 
   const updateMutation = useMutation({
-    mutationFn: async ({
-      key,
-      value,
-    }: {
-      key: keyof NotificationPreferences;
-      value: boolean;
-    }) => {
-      const payload = { [key]: value === true };
+    mutationFn: async (
+      payload:
+        | Partial<NotificationPreferences>
+        | { key: keyof NotificationPreferences; value: boolean },
+    ) => {
+      // Normalize to partial payload
+      const updates =
+        "key" in payload ? { [payload.key]: payload.value } : payload;
       const res = await authAxios.patch(
         `${usersAPI.url}/notification-preferences`,
-        payload,
+        updates,
       );
       return res.data;
     },
@@ -86,9 +87,10 @@ export function UserNotiPreferenceProvider({
       queryClient.invalidateQueries({
         queryKey: ["auth-user-notification-preferences"],
       });
+      toast.success("Notification preferences updated");
     },
     onError: (error) => {
-      let message = "Failed to update preference";
+      let message = "Failed to update preferences";
       if (isAxiosError(error) && error.response?.data?.message) {
         message = error.response.data.message;
       }
@@ -96,10 +98,16 @@ export function UserNotiPreferenceProvider({
     },
   });
 
-  // Memoize the toggle function
   const togglePreference = useCallback(
     (key: keyof NotificationPreferences, value: boolean) => {
       updateMutation.mutate({ key, value });
+    },
+    [updateMutation],
+  );
+
+  const setPreferences = useCallback(
+    async (updates: Partial<NotificationPreferences>) => {
+      await updateMutation.mutateAsync(updates);
     },
     [updateMutation],
   );
@@ -109,9 +117,16 @@ export function UserNotiPreferenceProvider({
       preferences,
       isLoading,
       togglePreference,
+      setPreferences,
       isToggling: updateMutation.isPending,
     }),
-    [preferences, isLoading, togglePreference, updateMutation.isPending],
+    [
+      preferences,
+      isLoading,
+      togglePreference,
+      setPreferences,
+      updateMutation.isPending,
+    ],
   );
 
   return (

@@ -14,6 +14,7 @@ import { ThemeProvider } from "./context/ThemeContext";
 import { PostOpenPreferenceProvider } from "./context/PostOpenPreferenceContext";
 import { PostViewPreferenceProvider } from "./context/PostViewPreferenceContext";
 import { UserNotiPreferenceProvider } from "./context/UserNotiPreferenceContext";
+import { NotificationProvider } from "./context/NotificationContext";
 
 const router = createRouter({ routeTree });
 
@@ -43,15 +44,17 @@ if (!rootElement.innerHTML) {
             <PostViewPreferenceProvider>
               <UserNotiPreferenceProvider>
                 <AuthProvider>
-                  <BlockedUsersProvider>
-                    <FollowingUsersProvider>
-                      <FocusUserProvider>
-                        <BookmarkProvider>
-                          <RouterProvider router={router} />
-                        </BookmarkProvider>
-                      </FocusUserProvider>
-                    </FollowingUsersProvider>
-                  </BlockedUsersProvider>
+                  <NotificationProvider>
+                    <BlockedUsersProvider>
+                      <FollowingUsersProvider>
+                        <FocusUserProvider>
+                          <BookmarkProvider>
+                            <RouterProvider router={router} />
+                          </BookmarkProvider>
+                        </FocusUserProvider>
+                      </FollowingUsersProvider>
+                    </BlockedUsersProvider>
+                  </NotificationProvider>
                 </AuthProvider>
               </UserNotiPreferenceProvider>
             </PostViewPreferenceProvider>

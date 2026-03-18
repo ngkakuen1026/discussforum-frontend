@@ -2,11 +2,7 @@ import { useNavigate } from "@tanstack/react-router";
 import { Bell, MoveUpRight, Settings, X } from "lucide-react";
 import { type RefObject } from "react";
 import { motion } from "framer-motion";
-import { notificationsAPI } from "../../../services/http-api";
-import authAxios from "../../../services/authAxios";
-import type { notificationType } from "../../../types/notiTypes";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { toast } from "sonner";
+import { useNotifications } from "../../../context/NotificationContext";
 
 interface NotiMenuProps {
   showNotiMenu: boolean;
@@ -22,87 +18,16 @@ const NotiMenu = ({
   toggleNotiMenu,
 }: NotiMenuProps) => {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-
-  const { data: unreadCount = 0 } = useQuery({
-    queryKey: ["notifications", "unread-count"],
-    queryFn: async () => {
-      const res = await authAxios.get(
-        `${notificationsAPI.url}/all-notifications/unread-count`,
-      );
-      return res.data.unreadCount as number;
-    },
-    staleTime: 1000 * 60,
-    refetchOnWindowFocus: true,
-    refetchOnReconnect: true,
-    refetchInterval: showNotiMenu ? 1000 * 30 : false,
-  });
-
   const {
-    data: notifications = [],
+    notifications,
+    unreadCount,
     isLoading,
-    error,
-  } = useQuery({
-    queryKey: ["notifications", "list"],
-    queryFn: async (): Promise<notificationType[]> => {
-      const res = await authAxios.get(
-        `${notificationsAPI.url}/all-notifications/me`,
-      );
-      return res.data.notifications;
-    },
-    enabled: showNotiMenu,
-    staleTime: 1000 * 60 * 5,
-  });
-
-  const markAllReadMutation = useMutation({
-    mutationFn: () =>
-      authAxios.post(`${notificationsAPI.url}/notifications/read`),
-    onMutate: async () => {
-      await queryClient.cancelQueries({ queryKey: ["notifications"] });
-
-      queryClient.setQueryData(["notifications", "unread-count"], 0);
-      queryClient.setQueryData(
-        ["notifications", "list"],
-        (old: notificationType[] = []) =>
-          old.map((n) => ({ ...n, read: true })),
-      );
-    },
-    onSuccess: () => {
-      toast.success("All notifications marked as read");
-    },
-    onError: (err) => {
-      toast.error(`Failed to mark as read: ${err}`);
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
-    },
-  });
-
-  const deleteNotificationMutation = useMutation({
-    mutationFn: (id: number) =>
-      authAxios.delete(`${notificationsAPI.url}/all-notifications/${id}`),
-    onMutate: async (id) => {
-      await queryClient.cancelQueries({ queryKey: ["notifications"] });
-
-      queryClient.setQueryData(
-        ["notifications", "list"],
-        (old: notificationType[] = []) => old.filter((n) => n.id !== id),
-      );
-
-      const noti = notifications.find((n) => n.id === id);
-      if (noti && !noti.read) {
-        queryClient.setQueryData(
-          ["notifications", "unread-count"],
-          (old: number = 0) => Math.max(0, old - 1),
-        );
-      }
-    },
-    onSuccess: () => {
-      toast.success("Notification deleted");
-    },
-    onError: () => {
-      toast.error("Failed to delete");
-      queryClient.invalidateQueries({ queryKey: ["notifications"] });
-    },
-  });
+    isError,
+    markAllAsRead,
+    deleteNotification,
+    isMarkingAll,
+    isDeleting,
+  } = useNotifications();
 
   return (
     <div className="relative" ref={notiMenuRef}>
@@ -165,7 +90,7 @@ const NotiMenu = ({
                   Loading notifications...
                 </div>
               </div>
-            ) : error ? (
+            ) : isError ? (
               <div className="p-12 text-center text-red-400">
                 Failed to load
               </div>
@@ -214,10 +139,10 @@ const NotiMenu = ({
                       <button
                         onClick={(e) => {
                           e.stopPropagation();
-                          deleteNotificationMutation.mutate(noti.id);
+                          deleteNotification(noti.id);
                         }}
                         className="opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer mr-2"
-                        disabled={deleteNotificationMutation.isPending}
+                        disabled={isDeleting}
                       >
                         <X
                           size={14}
@@ -233,17 +158,11 @@ const NotiMenu = ({
 
           <div className="p-3 border-t border-gray-800 flex justify-between text-sm bg-gray-900/50">
             <button
-              onClick={() => {
-                markAllReadMutation.mutate();
-              }}
-              disabled={unreadCount === 0 || markAllReadMutation.isPending}
+              onClick={() => markAllAsRead()}
+              disabled={unreadCount === 0 || isMarkingAll}
               className="px-3 py-2 rounded text-gray-300 transition disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed flex items-center gap-2"
             >
-              {markAllReadMutation.isPending ? (
-                <>Marking...</>
-              ) : (
-                <>Mark all as read</>
-              )}
+              {isMarkingAll ? "Marking..." : "Mark all as read"}
             </button>
 
             <button

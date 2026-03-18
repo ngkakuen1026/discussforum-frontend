@@ -3,11 +3,14 @@ import { Check, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import AdminNotiPopup from "./AdminNotiPopup";
 import { useUserNotiPreference } from "../../../context/UserNotiPreferenceContext";
+import DefaultNotificationsPopup from "./DefaultNotificationsPopup";
 
 const ActivityNotiSetting = () => {
   const { preferences, togglePreference, isToggling, isLoading } =
     useUserNotiPreference();
   const [showAdminNotiPopup, setShowAdminNotiPopup] = useState(false);
+  const [showDefaultNotificationPopup, setShowDefaultVisibilityPopup] =
+    useState(false);
 
   return (
     <div className="mt-4">
@@ -32,7 +35,7 @@ const ActivityNotiSetting = () => {
       </div>
 
       {/* Mention of your username */}
-      <div className="flex items-center justify-between text-lg cursor-pointer py-5 transition ">
+      <div className="flex items-center justify-between text-lg cursor-pointer py-3 transition ">
         <div>
           <p className="text-lg">Mention of your username</p>
           <p className="text-sm text-gray-400">In posts or comments</p>
@@ -241,7 +244,6 @@ const ActivityNotiSetting = () => {
       </div>
 
       {/* Activity from user you follow */}
-
       <div className="flex items-center justify-between text-lg cursor-pointer py-3 transition ">
         <div>
           <p>Activity from user you follow</p>
@@ -276,8 +278,26 @@ const ActivityNotiSetting = () => {
         </Switch>
       </div>
 
+      <div
+        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/delete-account"
+        onClick={() => setShowDefaultVisibilityPopup(true)}
+      >
+        <p className="text-red-400">Reset to Default Notification Settings</p>
+        <div className="flex items-center justify-around">
+          <button className="group-hover/delete-account:bg-red-800 text-red-400 rounded-full p-4 cursor-pointer transition duration-200">
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
+
       {showAdminNotiPopup && (
         <AdminNotiPopup onClose={() => setShowAdminNotiPopup(false)} />
+      )}
+
+      {showDefaultNotificationPopup && (
+        <DefaultNotificationsPopup
+          onClose={() => setShowDefaultVisibilityPopup(false)}
+        />
       )}
     </div>
   );
