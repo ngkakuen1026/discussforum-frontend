@@ -31,7 +31,6 @@ import { Route as SettingsUpdatePasswordRouteImport } from './routes/settings/up
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsPrivacyRouteImport } from './routes/settings/privacy'
 import { Route as SettingsPreferencesRouteImport } from './routes/settings/preferences'
-import { Route as SettingsPostsRouteImport } from './routes/settings/posts'
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as SettingsAccountRouteImport } from './routes/settings/account'
 import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
@@ -153,11 +152,6 @@ const SettingsPreferencesRoute = SettingsPreferencesRouteImport.update({
   path: '/preferences',
   getParentRoute: () => SettingsRouteRoute,
 } as any)
-const SettingsPostsRoute = SettingsPostsRouteImport.update({
-  id: '/posts',
-  path: '/posts',
-  getParentRoute: () => SettingsRouteRoute,
-} as any)
 const SettingsNotificationsRoute = SettingsNotificationsRouteImport.update({
   id: '/notifications',
   path: '/notifications',
@@ -236,7 +230,6 @@ export interface FileRoutesByFullPath {
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/posts': typeof SettingsPostsRoute
   '/settings/preferences': typeof SettingsPreferencesRoute
   '/settings/privacy': typeof SettingsPrivacyRoute
   '/settings/profile': typeof SettingsProfileRoute
@@ -270,7 +263,6 @@ export interface FileRoutesByTo {
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/posts': typeof SettingsPostsRoute
   '/settings/preferences': typeof SettingsPreferencesRoute
   '/settings/privacy': typeof SettingsPrivacyRoute
   '/settings/profile': typeof SettingsProfileRoute
@@ -305,7 +297,6 @@ export interface FileRoutesById {
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
-  '/settings/posts': typeof SettingsPostsRoute
   '/settings/preferences': typeof SettingsPreferencesRoute
   '/settings/privacy': typeof SettingsPrivacyRoute
   '/settings/profile': typeof SettingsProfileRoute
@@ -342,7 +333,6 @@ export interface FileRouteTypes {
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
-    | '/settings/posts'
     | '/settings/preferences'
     | '/settings/privacy'
     | '/settings/profile'
@@ -376,7 +366,6 @@ export interface FileRouteTypes {
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
-    | '/settings/posts'
     | '/settings/preferences'
     | '/settings/privacy'
     | '/settings/profile'
@@ -410,7 +399,6 @@ export interface FileRouteTypes {
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
-    | '/settings/posts'
     | '/settings/preferences'
     | '/settings/privacy'
     | '/settings/profile'
@@ -604,13 +592,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsPreferencesRouteImport
       parentRoute: typeof SettingsRouteRoute
     }
-    '/settings/posts': {
-      id: '/settings/posts'
-      path: '/posts'
-      fullPath: '/settings/posts'
-      preLoaderRoute: typeof SettingsPostsRouteImport
-      parentRoute: typeof SettingsRouteRoute
-    }
     '/settings/notifications': {
       id: '/settings/notifications'
       path: '/notifications'
@@ -687,7 +668,6 @@ declare module '@tanstack/react-router' {
 interface SettingsRouteRouteChildren {
   SettingsAccountRoute: typeof SettingsAccountRoute
   SettingsNotificationsRoute: typeof SettingsNotificationsRoute
-  SettingsPostsRoute: typeof SettingsPostsRoute
   SettingsPreferencesRoute: typeof SettingsPreferencesRoute
   SettingsPrivacyRoute: typeof SettingsPrivacyRoute
   SettingsProfileRoute: typeof SettingsProfileRoute
@@ -698,7 +678,6 @@ interface SettingsRouteRouteChildren {
 const SettingsRouteRouteChildren: SettingsRouteRouteChildren = {
   SettingsAccountRoute: SettingsAccountRoute,
   SettingsNotificationsRoute: SettingsNotificationsRoute,
-  SettingsPostsRoute: SettingsPostsRoute,
   SettingsPreferencesRoute: SettingsPreferencesRoute,
   SettingsPrivacyRoute: SettingsPrivacyRoute,
   SettingsProfileRoute: SettingsProfileRoute,

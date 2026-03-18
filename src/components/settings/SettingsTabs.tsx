@@ -6,7 +6,6 @@ const tabs = [
   { label: "Privacy", to: "/settings/privacy" },
   { label: "Preferences", to: "/settings/preferences" },
   { label: "Notifications", to: "/settings/notifications" },
-  { label: "Posts", to: "/settings/posts" },
 ];
 
 export default function SettingsTabs() {
