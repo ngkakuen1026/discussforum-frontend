@@ -114,6 +114,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       refetch: () => {
         listQuery.refetch();
         unreadQuery.refetch();
+        toast.success("Notifications refreshed!");
       },
       markAllAsRead: markAllMutation.mutateAsync,
       deleteNotification: deleteMutation.mutateAsync,

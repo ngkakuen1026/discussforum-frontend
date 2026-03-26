@@ -67,7 +67,7 @@ const NotiMenu = ({
                 }}
                 className="p-1 hover:bg-gray-800 rounded transition"
               >
-                <Settings className="w-5 h-5 text-gray-400" />
+                <Settings className="w-5 h-5 text-gray-400 hover:text-white" />
               </button>
             </div>
             <p className="text-sm text-gray-400 mt-1">

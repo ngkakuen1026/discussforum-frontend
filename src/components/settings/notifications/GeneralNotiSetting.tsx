@@ -1,13 +1,15 @@
 import { Switch } from "@headlessui/react";
-import { Check } from "lucide-react";
+import { Check, ChevronRight } from "lucide-react";
 import { toast } from "sonner";
 import { useUserNotiPreference } from "../../../context/UserNotiPreferenceContext";
 import { useNotifications } from "../../../context/NotificationContext";
+import { useNavigate } from "@tanstack/react-router";
 
 const GeneralNotiSetting = () => {
   const { preferences, setPreferences, isToggling, isLoading } =
     useUserNotiPreference();
   const { unreadCount, markAllAsRead, isMarkingAll } = useNotifications();
+  const navigate = useNavigate();
 
   const isMasterEnabled = preferences
     ? Object.values({
@@ -46,6 +48,21 @@ const GeneralNotiSetting = () => {
       <h1 className="text-white text-2xl pb-4 font-semibold">
         General Settings
       </h1>
+
+      <div
+        className="flex items-center justify-between text-lg cursor-pointer py-3 rounded-md group/adminAction transition"
+        onClick={() => navigate({ to: "/notifications" })}
+      >
+        <div className="flex flex-col items-start">
+          <p>View notifications</p>
+        </div>
+
+        <div className="flex items-center">
+          <button className="group-hover/adminAction:bg-gray-700 rounded-full p-4 cursor-pointer transition duration-200">
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      </div>
 
       <div
         className="flex items-center justify-between text-lg cursor-pointer py-5 transition "
