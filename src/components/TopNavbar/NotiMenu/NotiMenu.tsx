@@ -3,6 +3,8 @@ import { Bell, MoveUpRight, Settings, X } from "lucide-react";
 import { type RefObject } from "react";
 import { motion } from "framer-motion";
 import { useNotifications } from "../../../context/NotificationContext";
+import { toast } from "sonner";
+import type { notificationType } from "../../../types/notiTypes";
 
 interface NotiMenuProps {
   showNotiMenu: boolean;
@@ -28,6 +30,53 @@ const NotiMenu = ({
     isMarkingAll,
     isDeleting,
   } = useNotifications();
+
+  const handleNotificationClick = (noti: notificationType) => {
+    if (!noti.related_id) {
+      toast.info("This notification has no linked content");
+      return;
+    }
+
+    setShowNotiMenu(false); 
+
+    switch (noti.type) {
+      case "follow":
+      case "unfollow":
+        navigate({
+          to: "/public-profile/user/$userId",
+          params: { userId: noti.related_id.toString() },
+        });
+        break;
+
+      case "post":
+      case "mention":
+      case "like":
+      case "dislike":
+        navigate({
+          to: "/posts/$postId",
+          params: { postId: noti.related_id.toString() },
+          search: { page: undefined },
+        });
+        break;
+
+      case "comment":
+      case "comment_reply":
+        navigate({
+          to: "/posts/$postId",
+          params: { postId: noti.related_id.toString() },
+          search: { page: undefined },
+        });
+        break;
+
+      case "admin_post_delete":
+      case "admin_comment_delete":
+        toast.info("This content was deleted by admin");
+        break;
+
+      default:
+        toast.info("Cannot navigate to this notification");
+    }
+  };
 
   return (
     <div className="relative" ref={notiMenuRef}>
@@ -104,6 +153,7 @@ const NotiMenu = ({
                 {notifications.slice(0, 10).map((noti) => (
                   <li
                     key={noti.id}
+                    onClick={() => handleNotificationClick(noti)}
                     className="group relative py-4 px-4 -mx-4 hover:bg-gray-800/70 transition-colors border-b border-gray-800 last:border-0 cursor-pointer"
                   >
                     <div className="absolute inset-0 bg-gray-800/70 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />

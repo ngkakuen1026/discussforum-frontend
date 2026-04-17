@@ -121,9 +121,9 @@ const Notification = () => {
             {visibleCount < notifications.length && (
               <div
                 ref={observerRef}
-                className="text-lg flex items-center justify-center text-gray-400"
+                className="text-lg flex items-center justify-center text-gray-400 p-4"
               >
-                Loading more...
+                Loading more notifications...
               </div>
             )}
           </>
