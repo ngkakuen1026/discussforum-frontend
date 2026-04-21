@@ -4,7 +4,7 @@ import type { notificationType } from "../types/notiTypes";
 
 export const handleNotificationClick = (
     noti: notificationType,
-    navigate: (options: NavigateOptions<any>) => void,
+    navigate: (options: NavigateOptions) => void,
     setShowNotiMenu?: (value: boolean) => void
 ) => {
     if (!noti.related_id) {
