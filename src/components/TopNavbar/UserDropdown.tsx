@@ -6,6 +6,7 @@ import {
   EqualApproximately,
   History,
   House,
+  LayoutDashboard,
   LogOut,
   Newspaper,
   PencilLine,
@@ -32,6 +33,7 @@ export default function UserDropdown({
   logout,
 }: UserDropdownProps) {
   const navigate = useNavigate();
+  const isAdmin = user?.is_admin;
 
   const iconStyle = {
     iconSize: 16,
@@ -254,6 +256,30 @@ export default function UserDropdown({
                   )}
                 </Menu.Item>
               </div>
+              {isAdmin && (
+                <div className="px-2 py-4">
+                  <Menu.Item>
+                    {({ active }) => (
+                      <Link to="/admin-panel">
+                        <button
+                          className={`${
+                            active
+                              ? "opacity-75 cursor-pointer text-white"
+                              : "text-white"
+                          } group flex w-full items-center rounded-md px-2 py-2 `}
+                        >
+                          <LayoutDashboard
+                            size={iconStyle.iconSize}
+                            className={`${iconStyle.iconBaseClassName} rotate-45`}
+                            aria-hidden="true"
+                          />
+                          Admin Panel
+                        </button>
+                      </Link>
+                    )}
+                  </Menu.Item>
+                </div>
+              )}
             </div>
             <div>
               <div className="px-2 py-4">

@@ -8,9 +8,12 @@ const RootLayout = () => {
 
   const hideNavbarPaths = ["/register", "/login"];
 
+  const shouldHideNavbar =
+    hideNavbarPaths.includes(pathname) || pathname.startsWith("/admin-panel/");
+
   return (
     <>
-      {!hideNavbarPaths.includes(pathname) && <TopNavbar />}
+      {!shouldHideNavbar && <TopNavbar />}
 
       <hr />
       <div className="min-h-screen bg-background dark:bg-background-dark text-foreground dark:text-foreground-dark">

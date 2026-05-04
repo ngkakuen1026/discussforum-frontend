@@ -15,6 +15,7 @@ import { PostOpenPreferenceProvider } from "./context/PostOpenPreferenceContext"
 import { PostViewPreferenceProvider } from "./context/PostViewPreferenceContext";
 import { UserNotiPreferenceProvider } from "./context/UserNotiPreferenceContext";
 import { NotificationProvider } from "./context/NotificationContext";
+import { UserBanProvider } from "./context/BanUserContext";
 
 const router = createRouter({ routeTree });
 
@@ -40,25 +41,27 @@ if (!rootElement.innerHTML) {
     <StrictMode>
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
-          <PostOpenPreferenceProvider>
-            <PostViewPreferenceProvider>
-              <UserNotiPreferenceProvider>
-                <AuthProvider>
-                  <NotificationProvider>
-                    <BlockedUsersProvider>
-                      <FollowingUsersProvider>
-                        <FocusUserProvider>
-                          <BookmarkProvider>
-                            <RouterProvider router={router} />
-                          </BookmarkProvider>
-                        </FocusUserProvider>
-                      </FollowingUsersProvider>
-                    </BlockedUsersProvider>
-                  </NotificationProvider>
-                </AuthProvider>
-              </UserNotiPreferenceProvider>
-            </PostViewPreferenceProvider>
-          </PostOpenPreferenceProvider>
+          <UserBanProvider>
+            <PostOpenPreferenceProvider>
+              <PostViewPreferenceProvider>
+                <UserNotiPreferenceProvider>
+                  <AuthProvider>
+                    <NotificationProvider>
+                      <BlockedUsersProvider>
+                        <FollowingUsersProvider>
+                          <FocusUserProvider>
+                            <BookmarkProvider>
+                              <RouterProvider router={router} />
+                            </BookmarkProvider>
+                          </FocusUserProvider>
+                        </FollowingUsersProvider>
+                      </BlockedUsersProvider>
+                    </NotificationProvider>
+                  </AuthProvider>
+                </UserNotiPreferenceProvider>
+              </PostViewPreferenceProvider>
+            </PostOpenPreferenceProvider>
+          </UserBanProvider>
         </ThemeProvider>
       </QueryClientProvider>
     </StrictMode>,

@@ -60,6 +60,10 @@ input[type="search"]::-webkit-search-results-decoration {
     list-style-type: decimal;
     padding-left: 20px;
   }
+
+  .adminHeading {
+    font-family: "Archivo Black", sans-serif;
+  }
 }
 
 /* Custom utilities (if needed) */

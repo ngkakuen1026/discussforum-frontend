@@ -25,8 +25,10 @@ import { Route as BlockedUserListRouteImport } from './routes/blocked-user-list'
 import { Route as AddPostRouteImport } from './routes/add-post'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as SettingsRouteRouteImport } from './routes/settings/route'
+import { Route as AdminPanelRouteRouteImport } from './routes/admin-panel/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
+import { Route as AdminPanelIndexRouteImport } from './routes/admin-panel/index'
 import { Route as SettingsUpdatePasswordRouteImport } from './routes/settings/update-password'
 import { Route as SettingsProfileRouteImport } from './routes/settings/profile'
 import { Route as SettingsPrivacyRouteImport } from './routes/settings/privacy'
@@ -34,10 +36,15 @@ import { Route as SettingsPreferencesRouteImport } from './routes/settings/prefe
 import { Route as SettingsNotificationsRouteImport } from './routes/settings/notifications'
 import { Route as SettingsAccountRouteImport } from './routes/settings/account'
 import { Route as PostsPostIdRouteImport } from './routes/posts/$postId'
+import { Route as AdminPanelTagsManagementRouteImport } from './routes/admin-panel/tags-management'
+import { Route as AdminPanelReportsManagementRouteImport } from './routes/admin-panel/reports-management'
+import { Route as AdminPanelPostsManagementRouteImport } from './routes/admin-panel/posts-management'
 import { Route as AdminPanelDashboardRouteImport } from './routes/admin-panel/dashboard'
-import { Route as AdminPanelAllPendingTagsRouteImport } from './routes/admin-panel/all-pending-tags'
+import { Route as AdminPanelCategoriesManagementRouteImport } from './routes/admin-panel/categories-management'
+import { Route as AdminPanelUsersManagementIndexRouteImport } from './routes/admin-panel/users-management/index'
 import { Route as PublicProfileUserUserIdRouteImport } from './routes/public-profile/user/$userId'
 import { Route as PostsTagTagNameRouteImport } from './routes/posts/tag/$tagName'
+import { Route as AdminPanelUsersManagementUserIdRouteImport } from './routes/admin-panel/users-management/$userId'
 import { Route as PublicProfileUserUserIdIndexRouteImport } from './routes/public-profile/user/$userId/index'
 import { Route as PublicProfileUserUserIdUserFollowingRouteImport } from './routes/public-profile/user/$userId/user-following'
 import { Route as PublicProfileUserUserIdUserFollowerRouteImport } from './routes/public-profile/user/$userId/user-follower'
@@ -122,6 +129,11 @@ const SettingsRouteRoute = SettingsRouteRouteImport.update({
   path: '/settings',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPanelRouteRoute = AdminPanelRouteRouteImport.update({
+  id: '/admin-panel',
+  path: '/admin-panel',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -131,6 +143,11 @@ const SettingsIndexRoute = SettingsIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => SettingsRouteRoute,
+} as any)
+const AdminPanelIndexRoute = AdminPanelIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminPanelRouteRoute,
 } as any)
 const SettingsUpdatePasswordRoute = SettingsUpdatePasswordRouteImport.update({
   id: '/update-password',
@@ -167,16 +184,40 @@ const PostsPostIdRoute = PostsPostIdRouteImport.update({
   path: '/posts/$postId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPanelTagsManagementRoute =
+  AdminPanelTagsManagementRouteImport.update({
+    id: '/tags-management',
+    path: '/tags-management',
+    getParentRoute: () => AdminPanelRouteRoute,
+  } as any)
+const AdminPanelReportsManagementRoute =
+  AdminPanelReportsManagementRouteImport.update({
+    id: '/reports-management',
+    path: '/reports-management',
+    getParentRoute: () => AdminPanelRouteRoute,
+  } as any)
+const AdminPanelPostsManagementRoute =
+  AdminPanelPostsManagementRouteImport.update({
+    id: '/posts-management',
+    path: '/posts-management',
+    getParentRoute: () => AdminPanelRouteRoute,
+  } as any)
 const AdminPanelDashboardRoute = AdminPanelDashboardRouteImport.update({
-  id: '/admin-panel/dashboard',
-  path: '/admin-panel/dashboard',
-  getParentRoute: () => rootRouteImport,
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminPanelRouteRoute,
 } as any)
-const AdminPanelAllPendingTagsRoute =
-  AdminPanelAllPendingTagsRouteImport.update({
-    id: '/admin-panel/all-pending-tags',
-    path: '/admin-panel/all-pending-tags',
-    getParentRoute: () => rootRouteImport,
+const AdminPanelCategoriesManagementRoute =
+  AdminPanelCategoriesManagementRouteImport.update({
+    id: '/categories-management',
+    path: '/categories-management',
+    getParentRoute: () => AdminPanelRouteRoute,
+  } as any)
+const AdminPanelUsersManagementIndexRoute =
+  AdminPanelUsersManagementIndexRouteImport.update({
+    id: '/users-management/',
+    path: '/users-management/',
+    getParentRoute: () => AdminPanelRouteRoute,
   } as any)
 const PublicProfileUserUserIdRoute = PublicProfileUserUserIdRouteImport.update({
   id: '/public-profile/user/$userId',
@@ -188,6 +229,12 @@ const PostsTagTagNameRoute = PostsTagTagNameRouteImport.update({
   path: '/posts/tag/$tagName',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminPanelUsersManagementUserIdRoute =
+  AdminPanelUsersManagementUserIdRouteImport.update({
+    id: '/users-management/$userId',
+    path: '/users-management/$userId',
+    getParentRoute: () => AdminPanelRouteRoute,
+  } as any)
 const PublicProfileUserUserIdIndexRoute =
   PublicProfileUserUserIdIndexRouteImport.update({
     id: '/',
@@ -209,6 +256,7 @@ const PublicProfileUserUserIdUserFollowerRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin-panel': typeof AdminPanelRouteRouteWithChildren
   '/settings': typeof SettingsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
@@ -225,8 +273,11 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
   '/terms': typeof TermsRoute
-  '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
+  '/admin-panel/categories-management': typeof AdminPanelCategoriesManagementRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
+  '/admin-panel/posts-management': typeof AdminPanelPostsManagementRoute
+  '/admin-panel/reports-management': typeof AdminPanelReportsManagementRoute
+  '/admin-panel/tags-management': typeof AdminPanelTagsManagementRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
@@ -234,9 +285,12 @@ export interface FileRoutesByFullPath {
   '/settings/privacy': typeof SettingsPrivacyRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/settings/update-password': typeof SettingsUpdatePasswordRoute
+  '/admin-panel/': typeof AdminPanelIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/admin-panel/users-management/$userId': typeof AdminPanelUsersManagementUserIdRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdRouteWithChildren
+  '/admin-panel/users-management': typeof AdminPanelUsersManagementIndexRoute
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
   '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
   '/public-profile/user/$userId/': typeof PublicProfileUserUserIdIndexRoute
@@ -258,8 +312,11 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
   '/terms': typeof TermsRoute
-  '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
+  '/admin-panel/categories-management': typeof AdminPanelCategoriesManagementRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
+  '/admin-panel/posts-management': typeof AdminPanelPostsManagementRoute
+  '/admin-panel/reports-management': typeof AdminPanelReportsManagementRoute
+  '/admin-panel/tags-management': typeof AdminPanelTagsManagementRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
@@ -267,8 +324,11 @@ export interface FileRoutesByTo {
   '/settings/privacy': typeof SettingsPrivacyRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/settings/update-password': typeof SettingsUpdatePasswordRoute
+  '/admin-panel': typeof AdminPanelIndexRoute
   '/settings': typeof SettingsIndexRoute
+  '/admin-panel/users-management/$userId': typeof AdminPanelUsersManagementUserIdRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
+  '/admin-panel/users-management': typeof AdminPanelUsersManagementIndexRoute
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
   '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdIndexRoute
@@ -276,6 +336,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin-panel': typeof AdminPanelRouteRouteWithChildren
   '/settings': typeof SettingsRouteRouteWithChildren
   '/about': typeof AboutRoute
   '/add-post': typeof AddPostRoute
@@ -292,8 +353,11 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/register': typeof RegisterRoute
   '/terms': typeof TermsRoute
-  '/admin-panel/all-pending-tags': typeof AdminPanelAllPendingTagsRoute
+  '/admin-panel/categories-management': typeof AdminPanelCategoriesManagementRoute
   '/admin-panel/dashboard': typeof AdminPanelDashboardRoute
+  '/admin-panel/posts-management': typeof AdminPanelPostsManagementRoute
+  '/admin-panel/reports-management': typeof AdminPanelReportsManagementRoute
+  '/admin-panel/tags-management': typeof AdminPanelTagsManagementRoute
   '/posts/$postId': typeof PostsPostIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/notifications': typeof SettingsNotificationsRoute
@@ -301,9 +365,12 @@ export interface FileRoutesById {
   '/settings/privacy': typeof SettingsPrivacyRoute
   '/settings/profile': typeof SettingsProfileRoute
   '/settings/update-password': typeof SettingsUpdatePasswordRoute
+  '/admin-panel/': typeof AdminPanelIndexRoute
   '/settings/': typeof SettingsIndexRoute
+  '/admin-panel/users-management/$userId': typeof AdminPanelUsersManagementUserIdRoute
   '/posts/tag/$tagName': typeof PostsTagTagNameRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdRouteWithChildren
+  '/admin-panel/users-management/': typeof AdminPanelUsersManagementIndexRoute
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
   '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
   '/public-profile/user/$userId/': typeof PublicProfileUserUserIdIndexRoute
@@ -312,6 +379,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin-panel'
     | '/settings'
     | '/about'
     | '/add-post'
@@ -328,8 +396,11 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/terms'
-    | '/admin-panel/all-pending-tags'
+    | '/admin-panel/categories-management'
     | '/admin-panel/dashboard'
+    | '/admin-panel/posts-management'
+    | '/admin-panel/reports-management'
+    | '/admin-panel/tags-management'
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
@@ -337,9 +408,12 @@ export interface FileRouteTypes {
     | '/settings/privacy'
     | '/settings/profile'
     | '/settings/update-password'
+    | '/admin-panel/'
     | '/settings/'
+    | '/admin-panel/users-management/$userId'
     | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
+    | '/admin-panel/users-management'
     | '/public-profile/user/$userId/user-follower'
     | '/public-profile/user/$userId/user-following'
     | '/public-profile/user/$userId/'
@@ -361,8 +435,11 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/terms'
-    | '/admin-panel/all-pending-tags'
+    | '/admin-panel/categories-management'
     | '/admin-panel/dashboard'
+    | '/admin-panel/posts-management'
+    | '/admin-panel/reports-management'
+    | '/admin-panel/tags-management'
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
@@ -370,14 +447,18 @@ export interface FileRouteTypes {
     | '/settings/privacy'
     | '/settings/profile'
     | '/settings/update-password'
+    | '/admin-panel'
     | '/settings'
+    | '/admin-panel/users-management/$userId'
     | '/posts/tag/$tagName'
+    | '/admin-panel/users-management'
     | '/public-profile/user/$userId/user-follower'
     | '/public-profile/user/$userId/user-following'
     | '/public-profile/user/$userId'
   id:
     | '__root__'
     | '/'
+    | '/admin-panel'
     | '/settings'
     | '/about'
     | '/add-post'
@@ -394,8 +475,11 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/register'
     | '/terms'
-    | '/admin-panel/all-pending-tags'
+    | '/admin-panel/categories-management'
     | '/admin-panel/dashboard'
+    | '/admin-panel/posts-management'
+    | '/admin-panel/reports-management'
+    | '/admin-panel/tags-management'
     | '/posts/$postId'
     | '/settings/account'
     | '/settings/notifications'
@@ -403,9 +487,12 @@ export interface FileRouteTypes {
     | '/settings/privacy'
     | '/settings/profile'
     | '/settings/update-password'
+    | '/admin-panel/'
     | '/settings/'
+    | '/admin-panel/users-management/$userId'
     | '/posts/tag/$tagName'
     | '/public-profile/user/$userId'
+    | '/admin-panel/users-management/'
     | '/public-profile/user/$userId/user-follower'
     | '/public-profile/user/$userId/user-following'
     | '/public-profile/user/$userId/'
@@ -413,6 +500,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminPanelRouteRoute: typeof AdminPanelRouteRouteWithChildren
   SettingsRouteRoute: typeof SettingsRouteRouteWithChildren
   AboutRoute: typeof AboutRoute
   AddPostRoute: typeof AddPostRoute
@@ -429,8 +517,6 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   RegisterRoute: typeof RegisterRoute
   TermsRoute: typeof TermsRoute
-  AdminPanelAllPendingTagsRoute: typeof AdminPanelAllPendingTagsRoute
-  AdminPanelDashboardRoute: typeof AdminPanelDashboardRoute
   PostsPostIdRoute: typeof PostsPostIdRoute
   PostsTagTagNameRoute: typeof PostsTagTagNameRoute
   PublicProfileUserUserIdRoute: typeof PublicProfileUserUserIdRouteWithChildren
@@ -550,6 +636,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SettingsRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin-panel': {
+      id: '/admin-panel'
+      path: '/admin-panel'
+      fullPath: '/admin-panel'
+      preLoaderRoute: typeof AdminPanelRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -563,6 +656,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/'
       preLoaderRoute: typeof SettingsIndexRouteImport
       parentRoute: typeof SettingsRouteRoute
+    }
+    '/admin-panel/': {
+      id: '/admin-panel/'
+      path: '/'
+      fullPath: '/admin-panel/'
+      preLoaderRoute: typeof AdminPanelIndexRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
     }
     '/settings/update-password': {
       id: '/settings/update-password'
@@ -613,19 +713,47 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsPostIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin-panel/tags-management': {
+      id: '/admin-panel/tags-management'
+      path: '/tags-management'
+      fullPath: '/admin-panel/tags-management'
+      preLoaderRoute: typeof AdminPanelTagsManagementRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
+    }
+    '/admin-panel/reports-management': {
+      id: '/admin-panel/reports-management'
+      path: '/reports-management'
+      fullPath: '/admin-panel/reports-management'
+      preLoaderRoute: typeof AdminPanelReportsManagementRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
+    }
+    '/admin-panel/posts-management': {
+      id: '/admin-panel/posts-management'
+      path: '/posts-management'
+      fullPath: '/admin-panel/posts-management'
+      preLoaderRoute: typeof AdminPanelPostsManagementRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
+    }
     '/admin-panel/dashboard': {
       id: '/admin-panel/dashboard'
-      path: '/admin-panel/dashboard'
+      path: '/dashboard'
       fullPath: '/admin-panel/dashboard'
       preLoaderRoute: typeof AdminPanelDashboardRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
     }
-    '/admin-panel/all-pending-tags': {
-      id: '/admin-panel/all-pending-tags'
-      path: '/admin-panel/all-pending-tags'
-      fullPath: '/admin-panel/all-pending-tags'
-      preLoaderRoute: typeof AdminPanelAllPendingTagsRouteImport
-      parentRoute: typeof rootRouteImport
+    '/admin-panel/categories-management': {
+      id: '/admin-panel/categories-management'
+      path: '/categories-management'
+      fullPath: '/admin-panel/categories-management'
+      preLoaderRoute: typeof AdminPanelCategoriesManagementRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
+    }
+    '/admin-panel/users-management/': {
+      id: '/admin-panel/users-management/'
+      path: '/users-management'
+      fullPath: '/admin-panel/users-management'
+      preLoaderRoute: typeof AdminPanelUsersManagementIndexRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
     }
     '/public-profile/user/$userId': {
       id: '/public-profile/user/$userId'
@@ -640,6 +768,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/posts/tag/$tagName'
       preLoaderRoute: typeof PostsTagTagNameRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin-panel/users-management/$userId': {
+      id: '/admin-panel/users-management/$userId'
+      path: '/users-management/$userId'
+      fullPath: '/admin-panel/users-management/$userId'
+      preLoaderRoute: typeof AdminPanelUsersManagementUserIdRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
     }
     '/public-profile/user/$userId/': {
       id: '/public-profile/user/$userId/'
@@ -664,6 +799,32 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminPanelRouteRouteChildren {
+  AdminPanelCategoriesManagementRoute: typeof AdminPanelCategoriesManagementRoute
+  AdminPanelDashboardRoute: typeof AdminPanelDashboardRoute
+  AdminPanelPostsManagementRoute: typeof AdminPanelPostsManagementRoute
+  AdminPanelReportsManagementRoute: typeof AdminPanelReportsManagementRoute
+  AdminPanelTagsManagementRoute: typeof AdminPanelTagsManagementRoute
+  AdminPanelIndexRoute: typeof AdminPanelIndexRoute
+  AdminPanelUsersManagementUserIdRoute: typeof AdminPanelUsersManagementUserIdRoute
+  AdminPanelUsersManagementIndexRoute: typeof AdminPanelUsersManagementIndexRoute
+}
+
+const AdminPanelRouteRouteChildren: AdminPanelRouteRouteChildren = {
+  AdminPanelCategoriesManagementRoute: AdminPanelCategoriesManagementRoute,
+  AdminPanelDashboardRoute: AdminPanelDashboardRoute,
+  AdminPanelPostsManagementRoute: AdminPanelPostsManagementRoute,
+  AdminPanelReportsManagementRoute: AdminPanelReportsManagementRoute,
+  AdminPanelTagsManagementRoute: AdminPanelTagsManagementRoute,
+  AdminPanelIndexRoute: AdminPanelIndexRoute,
+  AdminPanelUsersManagementUserIdRoute: AdminPanelUsersManagementUserIdRoute,
+  AdminPanelUsersManagementIndexRoute: AdminPanelUsersManagementIndexRoute,
+}
+
+const AdminPanelRouteRouteWithChildren = AdminPanelRouteRoute._addFileChildren(
+  AdminPanelRouteRouteChildren,
+)
 
 interface SettingsRouteRouteChildren {
   SettingsAccountRoute: typeof SettingsAccountRoute
@@ -711,6 +872,7 @@ const PublicProfileUserUserIdRouteWithChildren =
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminPanelRouteRoute: AdminPanelRouteRouteWithChildren,
   SettingsRouteRoute: SettingsRouteRouteWithChildren,
   AboutRoute: AboutRoute,
   AddPostRoute: AddPostRoute,
@@ -727,8 +889,6 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   RegisterRoute: RegisterRoute,
   TermsRoute: TermsRoute,
-  AdminPanelAllPendingTagsRoute: AdminPanelAllPendingTagsRoute,
-  AdminPanelDashboardRoute: AdminPanelDashboardRoute,
   PostsPostIdRoute: PostsPostIdRoute,
   PostsTagTagNameRoute: PostsTagTagNameRoute,
   PublicProfileUserUserIdRoute: PublicProfileUserUserIdRouteWithChildren,
