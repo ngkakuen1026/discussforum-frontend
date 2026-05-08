@@ -6,6 +6,7 @@ const UserDetail = () => {
   return (
     <div>
       User detail for user id: {userId}
+      Username: {}
     </div>
   )
 }

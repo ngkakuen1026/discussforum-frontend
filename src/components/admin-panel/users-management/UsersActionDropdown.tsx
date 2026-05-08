@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { EllipsisVertical, Ban, Trash2, Clock, Unlock } from "lucide-react";
+import {
+  EllipsisVertical,
+  Ban,
+  Trash2,
+  Clock,
+  Unlock,
+  Navigation,
+} from "lucide-react";
 import ClickOutside from "../../../hooks/useClickOutside";
 import { useUserBan } from "../../../context/BanUserContext";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
@@ -9,6 +16,7 @@ import { formatDate } from "../../../utils/dateUtils";
 import DeleteUserPopup from "./DeleteUserPopup";
 import type { UserType } from "../../../types/userTypes";
 import UnbanUserPopup from "./UnbanUserPopup";
+import { Link } from "@tanstack/react-router";
 
 interface UsersActionDropdownProps {
   user: UserType;
@@ -86,9 +94,9 @@ const UsersActionDropdown = ({ user }: UsersActionDropdownProps) => {
 
                 <button
                   onClick={() => setShowUnbanUserPopup(true)}
-                  className="w-full px-4 py-3 text-left hover:bg-gray-800 flex items-center  gap-3  transition-colors cursor-pointer"
+                  className="w-full px-4 py-3 text-left hover:bg-green-900/50 flex items-center text-green-400 gap-3  transition-colors cursor-pointer"
                 >
-                  <Unlock size={16} className="text-red-400" />
+                  <Unlock size={16} />
                   Unban User
                 </button>
               </>
@@ -112,6 +120,15 @@ const UsersActionDropdown = ({ user }: UsersActionDropdownProps) => {
             )}
 
             <div className="border-t border-gray-700 my-1" />
+
+            <Link
+              to="/public-profile/user/$userId"
+              params={{ userId: user.id.toString() }}
+              className="w-full px-4 py-2.5 text-left hover:bg-gray-800 flex items-center gap-3 text-sm transition-colors cursor-pointer"
+            >
+              <Navigation size={16} />
+              Go to User Profile
+            </Link>
 
             <button
               onClick={() => setShowDeleteUserPopup(true)}

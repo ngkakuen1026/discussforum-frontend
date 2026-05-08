@@ -32,7 +32,13 @@ const UserRow = ({ user }: { user: UserType }) => {
         </Link>
       </td>
       <td className="px-6 py-4 text-gray-300">
-        {user.first_name} {user.last_name}
+        {user?.first_name && user.last_name ? (
+          <span>
+            {user.first_name} {user.last_name}
+          </span>
+        ) : (
+          <span className="font-extrabold">&lt;Blank&gt;</span>
+        )}
       </td>
       <td className="px-6 py-4 text-gray-300">{user.email}</td>
       <td className="px-6 py-4">

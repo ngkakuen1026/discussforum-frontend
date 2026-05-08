@@ -5,7 +5,7 @@ import authAxios from "../../../services/authAxios";
 import { adminAPI } from "../../../services/http-api";
 import { toast } from "sonner";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { User, X } from "lucide-react";
+import { Trash2, X } from "lucide-react";
 import { getUserAvatar, getUsernameColor } from "../../../utils/userUtils";
 
 interface DeleteUserPopupProps {
@@ -42,7 +42,7 @@ const DeleteUserPopup = ({ user, onClose }: DeleteUserPopupProps) => {
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-5 border-b border-gray-800">
             <div className="flex items-center gap-3 text-white">
-              <User size={18} />
+              <Trash2 size={18} />
               <h2 className="text-lg font-bold">Delete User</h2>
             </div>
             <button
@@ -56,6 +56,14 @@ const DeleteUserPopup = ({ user, onClose }: DeleteUserPopupProps) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
+            <p className="text-sm text-gray-400 leading-relaxed">
+              This will delete user{" "}
+              <span className={`${getUsernameColor(user)} font-semibold`}>
+                {user.username}
+              </span>{" "}
+              and remove their associated data from the platform. This action
+              cannot be undone. Are you sure you want to proceed?
+            </p>
             <div className="flex justify-center">
               <img
                 src={getUserAvatar(user)}
@@ -64,9 +72,10 @@ const DeleteUserPopup = ({ user, onClose }: DeleteUserPopupProps) => {
               />
             </div>
             <div>
-              <p className="font-semibold">User ID:{" "}{user.id}</p>
-              <p className={`font-semibold ${getUsernameColor(user)}`}>
-                {user.username}
+              <p className="font-semibold">User ID: {user.id}</p>
+              <p className={`font-semibold`}>
+                Username:{" "}
+                <span className={getUsernameColor(user)}>{user.username}</span>
               </p>
             </div>
 

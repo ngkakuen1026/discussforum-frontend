@@ -21,6 +21,8 @@ export interface UserType {
     show_bio?: boolean;
     show_registration_date?: boolean;
     show_last_login_at?: boolean;
+
+    is_banned?: boolean;
 };
 
 export type GenderType = "Male" | "Female" | "Prefer Not to Say";
