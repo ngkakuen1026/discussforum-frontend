@@ -1,9 +1,11 @@
 import React from "react";
 import type { UserType } from "../../../types/userTypes";
 import ClickOutside from "../../../hooks/useClickOutside";
-import { User, X } from "lucide-react";
+import { Ban, User, X } from "lucide-react";
 import { getUserAvatar, getUsernameColor } from "../../../utils/userUtils";
 import { useUserBan } from "../../../context/BanUserContext";
+import { useUserBanStatus } from "../../../hooks/useUserBanStatus";
+import { formatDate } from "../../../utils/dateUtils";
 
 interface UnbanUserPopupProps {
   user: UserType;
@@ -11,8 +13,11 @@ interface UnbanUserPopupProps {
 }
 
 const UnbanUserPopup = ({ user, onClose }: UnbanUserPopupProps) => {
-
   const { unbanUser, isUnbanning } = useUserBan();
+  const { data: banInfo, isLoading: isBanLoading } = useUserBanStatus(user.id);
+
+  console.log("Unbanpopup - Ban Info:", banInfo);
+  const ban = banInfo?.ban;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -23,7 +28,7 @@ const UnbanUserPopup = ({ user, onClose }: UnbanUserPopupProps) => {
   return (
     <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
       <ClickOutside onClickOutside={onClose}>
-        <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-lg">
+        <div className="bg-gray-900 border border-gray-700 rounded-xl shadow-2xl w-full max-w-xl">
           {/* Header */}
           <div className="flex items-center justify-between px-6 py-5 border-b border-gray-800">
             <div className="flex items-center gap-3 text-white">
@@ -41,21 +46,64 @@ const UnbanUserPopup = ({ user, onClose }: UnbanUserPopupProps) => {
 
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
-            <p className="text-sm text-gray-400 leading-relaxed">
-              This will unban user <span className="font-semibold">{user.username}</span> and restore their access to the platform. Are you sure you want to proceed?
-            </p>
-            <div className="flex justify-center">
+            {/* User Info */}
+            <div className="flex items-center gap-4">
               <img
                 src={getUserAvatar(user)}
-                alt="user avatar"
-                className="w-24 h-24 rounded-full object-cover"
+                alt={user.username}
+                className="w-20 h-20 rounded-full object-cover border-2 border-gray-600"
               />
+              <div>
+                <p className={`text-2xl font-bold ${getUsernameColor(user)}`}>
+                  {user.username}
+                </p>
+                <p className="text-gray-400">ID: {user.id}</p>
+              </div>
             </div>
-            <div>
-              <p className="font-semibold">User ID: {user.id}</p>
-              <p className={`font-semibold ${getUsernameColor(user)}`}>
-                {user.username}
-              </p>
+
+            {/* Current Ban Information */}
+            <div className="bg-gray-800/50 border border-gray-700 rounded-xl p-5 space-y-4">
+              <div className="flex items-center gap-2">
+                <Ban size={18} />
+                <span className="font-semibold">Current Ban Details</span>
+              </div>
+
+              {isBanLoading ? (
+                <p className="text-gray-400">Loading ban details...</p>
+              ) : ban ? (
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Ban Type:</span>
+                    <span className="font-medium capitalize">
+                      {ban.ban_type}
+                    </span>
+                  </div>
+
+                  <div className="flex justify-between">
+                    <span className="text-gray-400">Banned Until:</span>
+                    <span className="font-medium">
+                      {formatDate(ban.banned_until)}
+                    </span>
+                  </div>
+
+                  {ban.reason && (
+                    <div>
+                      <span className="text-gray-400 block mb-1">Reason:</span>
+                      <p className="text-gray-300 bg-gray-900 p-3 rounded-lg">
+                        {ban.reason}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-green-400">User is not currently banned.</p>
+              )}
+            </div>
+
+            <div className=" text-gray-400 text-sm py-2">
+              Are you sure you want to proceed? This will unban user{" "}
+              <span className="font-semibold">{user.username}</span> and restore
+              their access to the platform. Are you sure you want to proceed?
             </div>
 
             <div className="flex justify-end gap-3 pt-4 border-t border-gray-800">

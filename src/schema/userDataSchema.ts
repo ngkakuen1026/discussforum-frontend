@@ -27,13 +27,11 @@ export const nameSchema = z
 
 export const phoneSchema = z
     .string()
-    .min(8, "Phone number is too short")
-    .max(15, "Phone number is too long")
-    .regex(
-        /^\+?[1-9]\d{1,14}$/,
-        "Please enter a valid phone number (e.g., +85212345678 or 12345678)"
-    )
     .trim()
+    .regex(
+        /^[2-9]\d{7}$/,
+        "Please enter a valid 8-digit Hong Kong phone number (e.g. 91234567)"
+    )
     .optional();
 
 export const editProfileSchema = z.object({

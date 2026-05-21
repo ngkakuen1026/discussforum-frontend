@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import RequireAdmin from "../../../utils/adminCheckUtils";
-import UserDetail from "../../../components/admin-panel/users-management/UserDetail";
+import UserDetail from "../../../components/admin-panel/users-management/$userId/UserDetail";
 
 const AdminProtectedUserDetail = () => (
   <RequireAdmin>

@@ -89,7 +89,7 @@ const BlockPopup = ({
               })} flex items-center gap-2`}
             >
               <span className="text-2xl mb-1">{userName}</span>
-              <UserRoleTag user={{ is_admin: userIsAdmin }} />
+              <UserRoleTag user={{ is_admin: userIsAdmin, gender: userGender }} />
             </p>
             <p className="text-sm font-medium text-red-400">
               After blocking a user, you will no longer be able to see that

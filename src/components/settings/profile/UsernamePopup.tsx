@@ -6,9 +6,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import authAxios from "../../../services/authAxios";
 import { usersAPI } from "../../../services/http-api";
 import { toast } from "sonner";
-import { usernameSchema } from "../../../schema/userDataSchema";
-import { z } from "zod";
 import axios from "axios";
+import { validateUsername } from "../../../utils/validationUtils";
 
 interface UsernamePopupProps {
   currentUser: UserType | null;
@@ -45,26 +44,6 @@ const UsernamePopup = ({
     },
   });
 
-  const validateUsername = (value: string): boolean => {
-    const trimmed = value.trim();
-    try {
-      usernameSchema.parse(trimmed);
-      setValidationError(null);
-      return true;
-    } catch (err) {
-      if (err instanceof z.ZodError) {
-        const firstError =
-          err.issues?.[0]?.message ?? "Invalid username format";
-        setValidationError(firstError);
-        toast.error(firstError);
-        return false;
-      }
-      setValidationError("Invalid username");
-      toast.error("Invalid username");
-      return false;
-    }
-  };
-
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setNewUsername(value);
@@ -77,9 +56,11 @@ const UsernamePopup = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const isValid = validateUsername(newUsername);
+    const { isValid, error } = validateUsername(newUsername);
 
     if (!isValid) {
+      setValidationError(error || "Invalid username");
+      toast.error(error || "Invalid username");
       return;
     }
 

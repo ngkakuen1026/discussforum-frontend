@@ -9,6 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 import UserSortingDropdown from "./UserSortingDropdown";
 import ItemsPerPageDropdown from "./ItemsPerPageDropdown";
 import TablePagination from "./TablePagination";
+import ExportUsersButton from "./ExportUsersButton";
 
 type FilterType = "all" | "normal" | "suspended" | "new" | "admin" | "member";
 
@@ -205,8 +206,14 @@ const UsersManagement = () => {
     <div className="">
       <AdminPanelBreadCrumb>Users Management</AdminPanelBreadCrumb>
 
-      <div className="my-12">
-        <h1 className="text-4xl font-black adminHeading mb-4">Users</h1>
+      <div className="my-12 flex flex-col gap-4">
+        <div className="flex justify-between items-center mb-4">
+          <h1 className="text-4xl font-black adminHeading">Users</h1>
+          <ExportUsersButton
+            users={filteredAndSortedUsers}
+            activeFilter={activeFilter}
+          />
+        </div>
 
         <p className="text-lg text-gray-400">
           View, manage users and export user data
@@ -236,7 +243,7 @@ const UsersManagement = () => {
 
       <div className="mb-8 flex flex-col justify-center">
         <div className="flex items-center mb-4 justify-between">
-          <h2 className="text-3xl font-bold">User List</h2>
+          <h2 className="text-3xl font-bold adminHeading">User List</h2>
 
           <div className="flex items-center gap-4">
             <label className="text-lg text-gray-200 whitespace-nowrap">
