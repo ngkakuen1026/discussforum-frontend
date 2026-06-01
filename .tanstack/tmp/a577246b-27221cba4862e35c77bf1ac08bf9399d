@@ -46,14 +46,10 @@ import { Route as PublicProfileUserUserIdRouteImport } from './routes/public-pro
 import { Route as PostsTagTagNameRouteImport } from './routes/posts/tag/$tagName'
 import { Route as AdminPanelUsersManagementUserIdRouteImport } from './routes/admin-panel/users-management/$userId'
 import { Route as PublicProfileUserUserIdIndexRouteImport } from './routes/public-profile/user/$userId/index'
+import { Route as AdminPanelUsersManagementPostsIndexRouteImport } from './routes/admin-panel/users-management/posts/index'
 import { Route as AdminPanelUsersManagementUserIdIndexRouteImport } from './routes/admin-panel/users-management/$userId/index'
 import { Route as PublicProfileUserUserIdUserFollowingRouteImport } from './routes/public-profile/user/$userId/user-following'
 import { Route as PublicProfileUserUserIdUserFollowerRouteImport } from './routes/public-profile/user/$userId/user-follower'
-import { Route as AdminPanelUsersManagementUserIdPostsIndexRouteImport } from './routes/admin-panel/users-management/$userId/posts/index'
-import { Route as AdminPanelUsersManagementUserIdFollowingIndexRouteImport } from './routes/admin-panel/users-management/$userId/following/index'
-import { Route as AdminPanelUsersManagementUserIdFollowersIndexRouteImport } from './routes/admin-panel/users-management/$userId/followers/index'
-import { Route as AdminPanelUsersManagementUserIdBlockerIndexRouteImport } from './routes/admin-panel/users-management/$userId/blocker/index'
-import { Route as AdminPanelUsersManagementUserIdBlockedIndexRouteImport } from './routes/admin-panel/users-management/$userId/blocked/index'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -247,6 +243,12 @@ const PublicProfileUserUserIdIndexRoute =
     path: '/',
     getParentRoute: () => PublicProfileUserUserIdRoute,
   } as any)
+const AdminPanelUsersManagementPostsIndexRoute =
+  AdminPanelUsersManagementPostsIndexRouteImport.update({
+    id: '/users-management/posts/',
+    path: '/users-management/posts/',
+    getParentRoute: () => AdminPanelRouteRoute,
+  } as any)
 const AdminPanelUsersManagementUserIdIndexRoute =
   AdminPanelUsersManagementUserIdIndexRouteImport.update({
     id: '/',
@@ -264,36 +266,6 @@ const PublicProfileUserUserIdUserFollowerRoute =
     id: '/user-follower',
     path: '/user-follower',
     getParentRoute: () => PublicProfileUserUserIdRoute,
-  } as any)
-const AdminPanelUsersManagementUserIdPostsIndexRoute =
-  AdminPanelUsersManagementUserIdPostsIndexRouteImport.update({
-    id: '/posts/',
-    path: '/posts/',
-    getParentRoute: () => AdminPanelUsersManagementUserIdRoute,
-  } as any)
-const AdminPanelUsersManagementUserIdFollowingIndexRoute =
-  AdminPanelUsersManagementUserIdFollowingIndexRouteImport.update({
-    id: '/following/',
-    path: '/following/',
-    getParentRoute: () => AdminPanelUsersManagementUserIdRoute,
-  } as any)
-const AdminPanelUsersManagementUserIdFollowersIndexRoute =
-  AdminPanelUsersManagementUserIdFollowersIndexRouteImport.update({
-    id: '/followers/',
-    path: '/followers/',
-    getParentRoute: () => AdminPanelUsersManagementUserIdRoute,
-  } as any)
-const AdminPanelUsersManagementUserIdBlockerIndexRoute =
-  AdminPanelUsersManagementUserIdBlockerIndexRouteImport.update({
-    id: '/blocker/',
-    path: '/blocker/',
-    getParentRoute: () => AdminPanelUsersManagementUserIdRoute,
-  } as any)
-const AdminPanelUsersManagementUserIdBlockedIndexRoute =
-  AdminPanelUsersManagementUserIdBlockedIndexRouteImport.update({
-    id: '/blocked/',
-    path: '/blocked/',
-    getParentRoute: () => AdminPanelUsersManagementUserIdRoute,
   } as any)
 
 export interface FileRoutesByFullPath {
@@ -336,12 +308,8 @@ export interface FileRoutesByFullPath {
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
   '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
   '/admin-panel/users-management/$userId/': typeof AdminPanelUsersManagementUserIdIndexRoute
+  '/admin-panel/users-management/posts': typeof AdminPanelUsersManagementPostsIndexRoute
   '/public-profile/user/$userId/': typeof PublicProfileUserUserIdIndexRoute
-  '/admin-panel/users-management/$userId/blocked': typeof AdminPanelUsersManagementUserIdBlockedIndexRoute
-  '/admin-panel/users-management/$userId/blocker': typeof AdminPanelUsersManagementUserIdBlockerIndexRoute
-  '/admin-panel/users-management/$userId/followers': typeof AdminPanelUsersManagementUserIdFollowersIndexRoute
-  '/admin-panel/users-management/$userId/following': typeof AdminPanelUsersManagementUserIdFollowingIndexRoute
-  '/admin-panel/users-management/$userId/posts': typeof AdminPanelUsersManagementUserIdPostsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -379,12 +347,8 @@ export interface FileRoutesByTo {
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
   '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
   '/admin-panel/users-management/$userId': typeof AdminPanelUsersManagementUserIdIndexRoute
+  '/admin-panel/users-management/posts': typeof AdminPanelUsersManagementPostsIndexRoute
   '/public-profile/user/$userId': typeof PublicProfileUserUserIdIndexRoute
-  '/admin-panel/users-management/$userId/blocked': typeof AdminPanelUsersManagementUserIdBlockedIndexRoute
-  '/admin-panel/users-management/$userId/blocker': typeof AdminPanelUsersManagementUserIdBlockerIndexRoute
-  '/admin-panel/users-management/$userId/followers': typeof AdminPanelUsersManagementUserIdFollowersIndexRoute
-  '/admin-panel/users-management/$userId/following': typeof AdminPanelUsersManagementUserIdFollowingIndexRoute
-  '/admin-panel/users-management/$userId/posts': typeof AdminPanelUsersManagementUserIdPostsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -427,12 +391,8 @@ export interface FileRoutesById {
   '/public-profile/user/$userId/user-follower': typeof PublicProfileUserUserIdUserFollowerRoute
   '/public-profile/user/$userId/user-following': typeof PublicProfileUserUserIdUserFollowingRoute
   '/admin-panel/users-management/$userId/': typeof AdminPanelUsersManagementUserIdIndexRoute
+  '/admin-panel/users-management/posts/': typeof AdminPanelUsersManagementPostsIndexRoute
   '/public-profile/user/$userId/': typeof PublicProfileUserUserIdIndexRoute
-  '/admin-panel/users-management/$userId/blocked/': typeof AdminPanelUsersManagementUserIdBlockedIndexRoute
-  '/admin-panel/users-management/$userId/blocker/': typeof AdminPanelUsersManagementUserIdBlockerIndexRoute
-  '/admin-panel/users-management/$userId/followers/': typeof AdminPanelUsersManagementUserIdFollowersIndexRoute
-  '/admin-panel/users-management/$userId/following/': typeof AdminPanelUsersManagementUserIdFollowingIndexRoute
-  '/admin-panel/users-management/$userId/posts/': typeof AdminPanelUsersManagementUserIdPostsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -476,12 +436,8 @@ export interface FileRouteTypes {
     | '/public-profile/user/$userId/user-follower'
     | '/public-profile/user/$userId/user-following'
     | '/admin-panel/users-management/$userId/'
+    | '/admin-panel/users-management/posts'
     | '/public-profile/user/$userId/'
-    | '/admin-panel/users-management/$userId/blocked'
-    | '/admin-panel/users-management/$userId/blocker'
-    | '/admin-panel/users-management/$userId/followers'
-    | '/admin-panel/users-management/$userId/following'
-    | '/admin-panel/users-management/$userId/posts'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -519,12 +475,8 @@ export interface FileRouteTypes {
     | '/public-profile/user/$userId/user-follower'
     | '/public-profile/user/$userId/user-following'
     | '/admin-panel/users-management/$userId'
+    | '/admin-panel/users-management/posts'
     | '/public-profile/user/$userId'
-    | '/admin-panel/users-management/$userId/blocked'
-    | '/admin-panel/users-management/$userId/blocker'
-    | '/admin-panel/users-management/$userId/followers'
-    | '/admin-panel/users-management/$userId/following'
-    | '/admin-panel/users-management/$userId/posts'
   id:
     | '__root__'
     | '/'
@@ -566,12 +518,8 @@ export interface FileRouteTypes {
     | '/public-profile/user/$userId/user-follower'
     | '/public-profile/user/$userId/user-following'
     | '/admin-panel/users-management/$userId/'
+    | '/admin-panel/users-management/posts/'
     | '/public-profile/user/$userId/'
-    | '/admin-panel/users-management/$userId/blocked/'
-    | '/admin-panel/users-management/$userId/blocker/'
-    | '/admin-panel/users-management/$userId/followers/'
-    | '/admin-panel/users-management/$userId/following/'
-    | '/admin-panel/users-management/$userId/posts/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -859,6 +807,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicProfileUserUserIdIndexRouteImport
       parentRoute: typeof PublicProfileUserUserIdRoute
     }
+    '/admin-panel/users-management/posts/': {
+      id: '/admin-panel/users-management/posts/'
+      path: '/users-management/posts'
+      fullPath: '/admin-panel/users-management/posts'
+      preLoaderRoute: typeof AdminPanelUsersManagementPostsIndexRouteImport
+      parentRoute: typeof AdminPanelRouteRoute
+    }
     '/admin-panel/users-management/$userId/': {
       id: '/admin-panel/users-management/$userId/'
       path: '/'
@@ -880,67 +835,17 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicProfileUserUserIdUserFollowerRouteImport
       parentRoute: typeof PublicProfileUserUserIdRoute
     }
-    '/admin-panel/users-management/$userId/posts/': {
-      id: '/admin-panel/users-management/$userId/posts/'
-      path: '/posts'
-      fullPath: '/admin-panel/users-management/$userId/posts'
-      preLoaderRoute: typeof AdminPanelUsersManagementUserIdPostsIndexRouteImport
-      parentRoute: typeof AdminPanelUsersManagementUserIdRoute
-    }
-    '/admin-panel/users-management/$userId/following/': {
-      id: '/admin-panel/users-management/$userId/following/'
-      path: '/following'
-      fullPath: '/admin-panel/users-management/$userId/following'
-      preLoaderRoute: typeof AdminPanelUsersManagementUserIdFollowingIndexRouteImport
-      parentRoute: typeof AdminPanelUsersManagementUserIdRoute
-    }
-    '/admin-panel/users-management/$userId/followers/': {
-      id: '/admin-panel/users-management/$userId/followers/'
-      path: '/followers'
-      fullPath: '/admin-panel/users-management/$userId/followers'
-      preLoaderRoute: typeof AdminPanelUsersManagementUserIdFollowersIndexRouteImport
-      parentRoute: typeof AdminPanelUsersManagementUserIdRoute
-    }
-    '/admin-panel/users-management/$userId/blocker/': {
-      id: '/admin-panel/users-management/$userId/blocker/'
-      path: '/blocker'
-      fullPath: '/admin-panel/users-management/$userId/blocker'
-      preLoaderRoute: typeof AdminPanelUsersManagementUserIdBlockerIndexRouteImport
-      parentRoute: typeof AdminPanelUsersManagementUserIdRoute
-    }
-    '/admin-panel/users-management/$userId/blocked/': {
-      id: '/admin-panel/users-management/$userId/blocked/'
-      path: '/blocked'
-      fullPath: '/admin-panel/users-management/$userId/blocked'
-      preLoaderRoute: typeof AdminPanelUsersManagementUserIdBlockedIndexRouteImport
-      parentRoute: typeof AdminPanelUsersManagementUserIdRoute
-    }
   }
 }
 
 interface AdminPanelUsersManagementUserIdRouteChildren {
   AdminPanelUsersManagementUserIdIndexRoute: typeof AdminPanelUsersManagementUserIdIndexRoute
-  AdminPanelUsersManagementUserIdBlockedIndexRoute: typeof AdminPanelUsersManagementUserIdBlockedIndexRoute
-  AdminPanelUsersManagementUserIdBlockerIndexRoute: typeof AdminPanelUsersManagementUserIdBlockerIndexRoute
-  AdminPanelUsersManagementUserIdFollowersIndexRoute: typeof AdminPanelUsersManagementUserIdFollowersIndexRoute
-  AdminPanelUsersManagementUserIdFollowingIndexRoute: typeof AdminPanelUsersManagementUserIdFollowingIndexRoute
-  AdminPanelUsersManagementUserIdPostsIndexRoute: typeof AdminPanelUsersManagementUserIdPostsIndexRoute
 }
 
 const AdminPanelUsersManagementUserIdRouteChildren: AdminPanelUsersManagementUserIdRouteChildren =
   {
     AdminPanelUsersManagementUserIdIndexRoute:
       AdminPanelUsersManagementUserIdIndexRoute,
-    AdminPanelUsersManagementUserIdBlockedIndexRoute:
-      AdminPanelUsersManagementUserIdBlockedIndexRoute,
-    AdminPanelUsersManagementUserIdBlockerIndexRoute:
-      AdminPanelUsersManagementUserIdBlockerIndexRoute,
-    AdminPanelUsersManagementUserIdFollowersIndexRoute:
-      AdminPanelUsersManagementUserIdFollowersIndexRoute,
-    AdminPanelUsersManagementUserIdFollowingIndexRoute:
-      AdminPanelUsersManagementUserIdFollowingIndexRoute,
-    AdminPanelUsersManagementUserIdPostsIndexRoute:
-      AdminPanelUsersManagementUserIdPostsIndexRoute,
   }
 
 const AdminPanelUsersManagementUserIdRouteWithChildren =
@@ -957,6 +862,7 @@ interface AdminPanelRouteRouteChildren {
   AdminPanelIndexRoute: typeof AdminPanelIndexRoute
   AdminPanelUsersManagementUserIdRoute: typeof AdminPanelUsersManagementUserIdRouteWithChildren
   AdminPanelUsersManagementIndexRoute: typeof AdminPanelUsersManagementIndexRoute
+  AdminPanelUsersManagementPostsIndexRoute: typeof AdminPanelUsersManagementPostsIndexRoute
 }
 
 const AdminPanelRouteRouteChildren: AdminPanelRouteRouteChildren = {
@@ -969,6 +875,8 @@ const AdminPanelRouteRouteChildren: AdminPanelRouteRouteChildren = {
   AdminPanelUsersManagementUserIdRoute:
     AdminPanelUsersManagementUserIdRouteWithChildren,
   AdminPanelUsersManagementIndexRoute: AdminPanelUsersManagementIndexRoute,
+  AdminPanelUsersManagementPostsIndexRoute:
+    AdminPanelUsersManagementPostsIndexRoute,
 }
 
 const AdminPanelRouteRouteWithChildren = AdminPanelRouteRoute._addFileChildren(

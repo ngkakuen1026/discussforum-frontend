@@ -1,4 +1,4 @@
-import { useParams } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import authAxios from "../../../../../services/authAxios";
 import {
   adminAPI,
@@ -26,7 +26,9 @@ const UserActivity = () => {
   const { data: user } = useQuery({
     queryKey: ["admin-user-profile", userId],
     queryFn: async () => {
-      const res = await authAxios.get(`${adminAPI.url}/users/user/profile/${userId}`);
+      const res = await authAxios.get(
+        `${adminAPI.url}/users/user/profile/${userId}`,
+      );
       return res.data.user;
     },
     refetchOnWindowFocus: false,
@@ -114,7 +116,11 @@ const UserActivity = () => {
       {/* First Row */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8">
         {/* Posts */}
-        <div className="bg-linear-to-br from-orange-900/30 to-gray-900 border border-orange-500/30 rounded-2xl p-6 hover:border-orange-500/50 transition-all group">
+        <Link
+          className="bg-linear-to-br from-orange-900/30 to-gray-900 border border-orange-500/30 rounded-2xl p-6 hover:border-orange-500/50 transition-all group"
+          to="/admin-panel/users-management/$userId/posts"
+          params={{ userId: user?.id.toString() }}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 group-hover:text-white group-hover:text-lg transition-all duration-150">
@@ -129,7 +135,7 @@ const UserActivity = () => {
               className="text-orange-400/80 group-hover:text-orange-400 transition"
             />
           </div>
-        </div>
+        </Link>
 
         {/* Comments */}
         <div className="bg-linear-to-br from-cyan-900/30 to-gray-900 border border-cyan-500/30 rounded-2xl p-6 hover:border-cyan-500/50 transition-all group">
@@ -171,7 +177,11 @@ const UserActivity = () => {
       {/* Second Row */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mt-8">
         {/* Followers */}
-        <div className="bg-linear-to-br from-emerald-900/30 to-gray-900 border border-emerald-500/30 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group">
+        <Link
+          className="bg-linear-to-br from-emerald-900/30 to-gray-900 border border-emerald-500/30 rounded-2xl p-6 hover:border-emerald-500/50 transition-all group"
+          to="/admin-panel/users-management/$userId/followers"
+          params={{ userId: user?.id.toString() }}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 group-hover:text-white group-hover:text-lg transition-all duration-150">
@@ -186,10 +196,14 @@ const UserActivity = () => {
               className="text-emerald-400/80 group-hover:text-emerald-400 transition"
             />
           </div>
-        </div>
+        </Link>
 
         {/* Following */}
-        <div className="bg-linear-to-br from-sky-900/30 to-gray-900 border border-sky-500/30 rounded-2xl p-6 hover:border-sky-500/50 transition-all group">
+        <Link
+          className="bg-linear-to-br from-sky-900/30 to-gray-900 border border-sky-500/30 rounded-2xl p-6 hover:border-sky-500/50 transition-all group"
+          to="/admin-panel/users-management/$userId/following"
+          params={{ userId: user?.id.toString() }}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 group-hover:text-white group-hover:text-lg transition-all duration-150">
@@ -204,10 +218,14 @@ const UserActivity = () => {
               className="text-sky-400/80 group-hover:text-sky-400 transition"
             />
           </div>
-        </div>
+        </Link>
 
         {/* Blocker (This user is blocked by others) */}
-        <div className="bg-linear-to-br from-rose-950/40 to-gray-900 border border-rose-500/30 rounded-2xl p-6 hover:border-rose-500/50 transition-all group">
+        <Link
+          className="bg-linear-to-br from-rose-950/40 to-gray-900 border border-rose-500/30 rounded-2xl p-6 hover:border-rose-500/50 transition-all group"
+          to="/admin-panel/users-management/$userId/blocker"
+          params={{ userId: user?.id.toString() }}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 group-hover:text-white group-hover:text-lg transition-all duration-150">
@@ -222,10 +240,14 @@ const UserActivity = () => {
               className="text-rose-400/80 group-hover:text-rose-400 transition"
             />
           </div>
-        </div>
+        </Link>
 
         {/* Blocked User (This user blocked others) */}
-        <div className="bg-linear-to-br from-red-950/40 to-gray-900 border border-red-500/30 rounded-2xl p-6 hover:border-red-500/50 transition-all group">
+        <Link
+          className="bg-linear-to-br from-red-950/40 to-gray-900 border border-red-500/30 rounded-2xl p-6 hover:border-red-500/50 transition-all group"
+          to="/admin-panel/users-management/$userId/blocked"
+          params={{ userId: user?.id.toString() }}
+        >
           <div className="flex items-center justify-between">
             <div>
               <p className="text-gray-400 group-hover:text-white group-hover:text-lg transition-all duration-150">
@@ -240,7 +262,7 @@ const UserActivity = () => {
               className="text-red-400/80 group-hover:text-red-400 transition"
             />
           </div>
-        </div>
+        </Link>
       </div>
     </div>
   );

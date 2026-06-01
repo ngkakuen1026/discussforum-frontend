@@ -95,6 +95,18 @@ const UserPermission = ({ user }: UserPermissionProps) => {
           <div className="flex items-center gap-2">
             <Ban size={18} />
             <span className="font-semibold">Current Ban Details</span>
+            <button
+              className={` relative group transition-all`}
+            >
+              <Ban
+                size={18}
+                className="text-red-400 hover:text-red-200 cursor-pointer"
+              />
+
+              <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-10">
+                Ban User
+              </span>
+            </button>
           </div>
 
           <div className="space-y-3">

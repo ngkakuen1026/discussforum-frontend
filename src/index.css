@@ -1,4 +1,6 @@
 @import "tailwindcss";
+@import "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
 @plugin 'tailwind-scrollbar';
 @import "flowbite/src/themes/default";
 @plugin "flowbite/plugin";
@@ -11,6 +13,12 @@ input[type="search"]::-webkit-search-cancel-button,
 input[type="search"]::-webkit-search-results-button,
 input[type="search"]::-webkit-search-results-decoration {
   display: none;
+}
+/* Remove webkit number input arrow for input type = "number" */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 @theme {
@@ -71,4 +79,45 @@ input[type="search"]::-webkit-search-results-decoration {
   .scrollbar-thin {
     @apply scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800;
   }
+}
+
+/* React Datepicker Tailwind Overrides */
+.react-datepicker {
+  background-color: #1f2937 !important;
+  border: 1px solid #374151 !important;
+  border-radius: 12px !important;
+}
+
+.react-datepicker__header {
+  background-color: #374151 !important;
+  border-bottom: 1px solid #4b5563 !important;
+}
+
+.react-datepicker__current-month {
+  color: white !important;
+}
+
+.react-datepicker__day-name,
+.react-datepicker__day {
+  color: #e5e7eb !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: #4b5563 !important;
+}
+
+.react-datepicker__day--selected {
+  background-color: #22d3ee !important;
+  color: black !important;
+  font-weight: bold;
+}
+
+.react-datepicker__day--keyboard-selected {
+  background-color: #67e8f9 !important;
+  color: black !important;
+}
+
+.react-datepicker__day--disabled {
+  pointer-events: auto !important;
+  cursor: not-allowed !important;
 }

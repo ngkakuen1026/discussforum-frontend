@@ -5,6 +5,7 @@ export interface PostType {
     content: string;
     created_at: string;
     category_id: number;
+    category_name?: string;
     pending_tag_name: string | null;
     views: number;
     author_id: number;
@@ -13,6 +14,17 @@ export interface PostType {
     author_is_admin: boolean;
     author_registration_date: string;
     author_gender: "Male" | "Female" | "Prefer Not to Say";
+}
+
+export interface ExtendedPostType extends PostType {
+    category_name: string;
+    votes: number;
+    upvote_count: number;
+    downvote_count: number;
+    vote_count: number;
+    comment_count: number;
+    share_count: number;
+    report_count: number;
 }
 
 export interface PostDraftType {

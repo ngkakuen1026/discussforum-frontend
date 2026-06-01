@@ -272,9 +272,10 @@ const UsersManagement = () => {
           <TablePagination
             currentPage={currentPage}
             totalPages={totalPages}
-            totalUsers={filteredAndSortedUsers.length}
+            totalItems={filteredAndSortedUsers.length}
             onPageChange={setCurrentPage}
             itemsPerPage={itemsPerPage}
+            itemsName="users"
           />
         </div>
       </div>

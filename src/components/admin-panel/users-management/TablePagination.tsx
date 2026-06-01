@@ -1,24 +1,26 @@
 interface TablePaginationProps {
   currentPage: number;
   totalPages: number;
-  totalUsers: number;
+  totalItems: number;
   onPageChange: (page: number) => void;
   itemsPerPage: number;
+  itemsName: string;
 }
 
 const TablePagination = ({
   currentPage,
   totalPages,
-  totalUsers,
+  totalItems,
   onPageChange,
   itemsPerPage,
+  itemsName,
 }: TablePaginationProps) => {
   return (
     <div className="flex items-center justify-between mt-4">
       <div className="text-gray-400 font-medium text-lg mr-4">
         Page <span className="text-white">{currentPage}</span> •{" "}
-        <span className="text-white">{totalUsers}</span> users total • Showing{" "}
-        <span className="text-white">{itemsPerPage}</span> per page
+        <span className="text-white">{totalItems}</span> {itemsName} total •
+        Showing <span className="text-white">{itemsPerPage}</span> per page
       </div>
 
       <div className="flex items-center gap-3">

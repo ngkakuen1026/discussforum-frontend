@@ -41,7 +41,7 @@ const UsersActionDropdown = ({ user }: UsersActionDropdownProps) => {
 
   const { data: banInfo } = useUserBanStatus(userId);
 
-  const banDurationOptions = [
+  const banOptions = [
     { label: "1 Hour", hours: 1 },
     { label: "6 Hours", hours: 6 },
     { label: "1 Day", hours: 24 },
@@ -100,7 +100,7 @@ const UsersActionDropdown = ({ user }: UsersActionDropdownProps) => {
                 <div className="px-4 py-2 text-gray-400 font-medium text-left">
                   Ban User for:
                 </div>
-                {banDurationOptions.map((option) => (
+                {banOptions.map((option) => (
                   <button
                     key={option.hours}
                     onClick={() => handleBan(option.hours)}

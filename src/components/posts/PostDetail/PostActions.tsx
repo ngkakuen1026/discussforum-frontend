@@ -1,5 +1,8 @@
 import { Flag, MessageCircle, Pin, Share2 } from "lucide-react";
 import { useBookmark } from "../../../context/BookmarkContext";
+import authAxios from "../../../services/authAxios";
+import { toast } from "sonner";
+import { postsAPI } from "../../../services/http-api";
 
 interface PostActionProps {
   withAuth: (action: () => void) => () => void;
@@ -15,6 +18,27 @@ const PostActions = ({
   onShowReportPopup,
 }: PostActionProps) => {
   const { isBookmarked, toggleBookmark, isPending } = useBookmark();
+
+  const handleShare = async (postId: number) => {
+    const postUrl = `${window.location.origin}/posts/${postId}`;
+
+    try {
+      await navigator.clipboard.writeText(postUrl);
+
+      try {
+        await authAxios.post(`${postsAPI.url}/${postId}/share`);
+      } catch (error) {
+        console.log(
+          "Share recorded locally, error inserting record to server: " + error,
+        );
+      }
+
+      toast.success("Link copied to clipboard!");
+    } catch (error) {
+      toast.error("Failed to copy link" + error);
+    }
+  };
+
   return (
     <div className="flex gap-2 text-gray-400">
       <button
@@ -46,7 +70,10 @@ const PostActions = ({
           Add a comment
         </span>
       </button>
-      <button className="relative group cursor-pointer">
+      <button
+        className="relative group cursor-pointer"
+        onClick={() => handleShare(postId)}
+      >
         <Share2 size={18} className="hover:text-white transition" />
         <span className="absolute -top-10 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-xs px-3 py-1.5 rounded-lg opacity-0 group-hover:opacity-100 transition-all duration-200 pointer-events-none whitespace-nowrap border border-gray-700 shadow-xl z-50">
           Share Post
