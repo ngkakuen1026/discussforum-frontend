@@ -4,11 +4,14 @@ import { Download } from "lucide-react";
 import { toast } from "sonner";
 import authAxios from "../../../../../services/authAxios";
 import { adminAPI } from "../../../../../services/http-api";
-import type { UserFollowerType } from "../../../../../types/userFollowTypes";
-import { formatDate, formatUserRegistrationDate } from "../../../../../utils/dateUtils";
+import type { UserFollowType } from "../../../../../types/userFollowTypes";
+import {
+  formatDate,
+  formatUserRegistrationDate,
+} from "../../../../../utils/dateUtils";
 
-interface ExportUserFollowersButtonProps {
-  followers: UserFollowerType[];
+interface ExportUserFollowingsButtonProps {
+  followings: UserFollowType[];
   username?: string;
   userId: string;
   search: string;
@@ -17,21 +20,22 @@ interface ExportUserFollowersButtonProps {
   sort: string;
 }
 
-const ExporUserFollowerButton = ({
-  followers,
+const ExportUserFollowingButton = ({
+  followings,
   username = "UnknownUser",
   userId,
   search,
   registrationStartDate,
   registrationEndDate,
   sort,
-}: ExportUserFollowersButtonProps) => {
+}: ExportUserFollowingsButtonProps) => {
   const [isExporting, setIsExporting] = useState(false);
 
   const buildSearchParams = () => {
     const params = new URLSearchParams();
     if (search) params.append("query", search);
-    if (registrationStartDate) params.append("start_date", registrationStartDate);
+    if (registrationStartDate)
+      params.append("start_date", registrationStartDate);
     if (registrationEndDate) params.append("end_date", registrationEndDate);
     if (sort) params.append("sort", sort);
     if (userId) params.append("author_id", userId);
@@ -39,33 +43,30 @@ const ExporUserFollowerButton = ({
   };
 
   const fetchPage = async (page: number, limit = 100) => {
-    const isAdvanced = !!search || !!registrationStartDate || !!registrationEndDate || !!sort;
     const params = buildSearchParams();
     params.set("page", page.toString());
     params.set("limit", limit.toString());
 
-    const url = isAdvanced
-      ? `${adminAPI.url}/user-following/followers/${userId}/search?${params.toString()}`
-      : `${adminAPI.url}/user-following/followers/${userId}?${params.toString()}`;
+    const url = `${adminAPI.url}/user-following/followings/${userId}/search?${params.toString()}`;
 
     const response = await authAxios.get(url);
     const data = response.data;
-    const pageFollowers = data?.userFollowerList ?? [];
+    const pageFollowings = data?.userFollowingList ?? [];
     const pagination = data?.pagination ?? null;
 
-    return { followers: pageFollowers as UserFollowerType[], pagination };
+    return { followings: pageFollowings as UserFollowType[], pagination };
   };
 
   const exportToExcel = async () => {
-    if (followers.length === 0) {
-      toast.error("No followers to export");
+    if (followings.length === 0) {
+      toast.error("No followings to export");
       return;
     }
 
     setIsExporting(true);
     try {
       const firstPage = await fetchPage(1, 100);
-      let allFollowers = [...firstPage.followers];
+      let allFollowings = [...firstPage.followings];
       const totalPages = firstPage.pagination?.totalPages ?? 1;
 
       if (totalPages > 1) {
@@ -75,41 +76,48 @@ const ExporUserFollowerButton = ({
           ),
         );
         remainingPages.forEach((pageData) => {
-          allFollowers = [...allFollowers, ...pageData.followers];
+          allFollowings = [...allFollowings, ...pageData.followings];
         });
       }
 
-      if (allFollowers.length === 0) {
-        toast.error("No followers to export");
+      if (allFollowings.length === 0) {
+        toast.error("No following to export");
         return;
       }
 
       const dateStr = new Date().toISOString().slice(0, 10);
-      const exportData = allFollowers.map((follower) => ({
-        "User ID": userId || "N/A",
-        "Follower ID": follower.follower_user_id,
-        Username: follower.follower_user_username,
-        Email: follower.follower_user_email || "N/A",
-        "Joined At": follower.follower_user_registration_date
-          ? formatUserRegistrationDate(follower.follower_user_registration_date)
+      const exportData = allFollowings.map((following) => ({
+        "Following User ID": following.following_user_id,
+        Username: following.following_user_username,
+        "Full Name":
+          `${following.following_user_first_name || ""} ${following.following_user_last_name || ""}`.trim() ||
+          "N/A",
+        Email: following.following_user_email || "N/A",
+        Registered: following.following_user_registration_date
+          ? formatUserRegistrationDate(
+              following.following_user_registration_date,
+            )
           : "N/A",
-        "Followed At": follower.followed_at
-          ? formatDate(follower.followed_at)
+        "Last Login": following.following_user_last_login_at
+          ? formatDate(following.following_user_last_login_at)
+          : "Never",
+        "Followed At": following.followed_at
+          ? formatDate(following.followed_at)
           : "N/A",
       }));
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "User Followers");
+      XLSX.utils.book_append_sheet(wb, ws, "User Followings");
 
-      const fileName = `User_${username}_Followers_${dateStr}.xlsx`;
+      const fileName = `User_${username}_Followings_${dateStr}.xlsx`;
       XLSX.writeFile(wb, fileName);
       toast.success(
-        `Successfully exported ${allFollowers.length} followers for User #${username}`,
+        `Successfully exported ${allFollowings.length} followings for User #${username}`,
       );
     } catch (error) {
       console.error(error);
-      toast.error("Failed to export user followers. Please try again.");
+      toast.error("Failed to export user following list. Please try again.");
     } finally {
       setIsExporting(false);
     }
@@ -131,4 +139,4 @@ const ExporUserFollowerButton = ({
   );
 };
 
-export default ExporUserFollowerButton;
+export default ExportUserFollowingButton;

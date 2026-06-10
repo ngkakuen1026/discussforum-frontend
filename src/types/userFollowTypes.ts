@@ -3,10 +3,17 @@ import type { GenderType } from "./userTypes";
 export interface UserFollowType {
     following_user_id: number;
     following_user_username: string;
+    following_user_first_name: string | null;
+    following_user_last_name: string | null;
     following_user_profile_image: string;
+    following_user_bio: string | null;
+    following_user_email: string;
+    following_user_phone: string;
+    following_user_gender: GenderType;
     following_user_is_admin: boolean;
+    following_user_last_login_at: string;
     following_user_registration_date: string;
-    following_user_gender: "Male" | "Female" | "Prefer Not to Say";
+    followed_at: string;
 }
 
 export interface UserFollowerType {

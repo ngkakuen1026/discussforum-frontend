@@ -20,7 +20,12 @@ const DeleteUserPostPopup = ({ post, onClose }: DeleteUserPostPopupProps) => {
     },
     onSuccess: () => {
       toast.success(`Post ${post.title} has been deleted`);
-      queryClient.invalidateQueries({ queryKey: ["admin-user-posts"] });
+      queryClient.invalidateQueries({
+        queryKey: ["admin-user-posts"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["public-user-posts"],
+      });
       onClose();
     },
     onError: () => {

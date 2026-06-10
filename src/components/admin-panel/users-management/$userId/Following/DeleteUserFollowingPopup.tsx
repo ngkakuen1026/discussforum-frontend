@@ -1,6 +1,6 @@
 import { UserMinus, X } from "lucide-react";
 import ClickOutside from "../../../../../hooks/useClickOutside";
-import type { UserFollowerType } from "../../../../../types/userFollowTypes";
+import type { UserFollowType } from "../../../../../types/userFollowTypes";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import authAxios from "../../../../../services/authAxios";
 import { adminAPI } from "../../../../../services/http-api";
@@ -10,47 +10,45 @@ import {
   getUsernameColor,
 } from "../../../../../utils/userUtils";
 
-interface DeleteUserFollowerPopupProps {
-  follower: UserFollowerType;
+interface DeleteUserFollowingPopupProps {
+  following: UserFollowType;
   userId: string;
   username: string;
   onClose: () => void;
 }
 
-const DeleteUserFollowerPopup = ({
-  follower,
+const DeleteUserFollowingPopup = ({
+  following,
   userId,
   username,
   onClose,
-}: DeleteUserFollowerPopupProps) => {
+}: DeleteUserFollowingPopupProps) => {
   const queryClient = useQueryClient();
   // Delete User Mutation
-  const deleteUserFollowerMutation = useMutation({
+  const deleteUserFollowingMutation = useMutation({
     mutationFn: async () => {
       await authAxios.delete(
-        `${adminAPI.url}/user-following/${userId}/remove/followers/${follower.follower_user_id}`,
+        `${adminAPI.url}/user-following/${userId}/remove/followings/${following.following_user_id}`,
       );
     },
-    onSuccess: () => {
+    onSuccess: async () => {
       toast.success(
-        `Follower ${follower.follower_user_username} has been removed from ${username} followers list`,
+        `Following ${following.following_user_username} has been removed from ${username} following list`,
       );
-      queryClient.invalidateQueries({
-        queryKey: ["admin-user-followers"],
-      });
-      queryClient.invalidateQueries({
-        queryKey: ["public-user-followers",],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["admin-user-followings"] }),
+        queryClient.invalidateQueries({ queryKey: ["public-user-followings"] }),
+      ]);
       onClose();
     },
     onError: () => {
-      toast.error("Failed to remove follower");
+      toast.error("Failed to remove following");
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    deleteUserFollowerMutation.mutate();
+    deleteUserFollowingMutation.mutate();
   };
 
   return (
@@ -75,11 +73,11 @@ const DeleteUserFollowerPopup = ({
           {/* Form */}
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             <p className="text-sm text-gray-400 leading-relaxed">
-              This will remove follower{" "}
+              This will remove following{" "}
               <span
-                className={`${getUsernameColor({ author_is_admin: follower.follower_user_is_admin, author_gender: follower.follower_user_gender })} font-semibold`}
+                className={`${getUsernameColor({ author_is_admin: following.following_user_is_admin, author_gender: following.following_user_gender })} font-semibold`}
               >
-                {follower.follower_user_username}
+                {following.following_user_username}
               </span>{" "}
               from {username}'s followers list. Are you sure you want to
               proceed?
@@ -87,7 +85,7 @@ const DeleteUserFollowerPopup = ({
             <div className="flex justify-center">
               <img
                 src={getUserAvatar({
-                  author_profile_image: follower.follower_user_profile_image,
+                  author_profile_image: following.following_user_profile_image,
                 })}
                 alt="user avatar"
                 className="w-24 h-24 rounded-full object-cover"
@@ -95,17 +93,17 @@ const DeleteUserFollowerPopup = ({
             </div>
             <div>
               <p className="font-semibold">
-                User ID: {follower.follower_user_id}
+                User ID: {following.following_user_id}
               </p>
               <p className={`font-semibold`}>
                 Username:{" "}
                 <span
                   className={getUsernameColor({
-                    author_is_admin: follower.follower_user_is_admin,
-                    author_gender: follower.follower_user_gender,
+                    author_is_admin: following.following_user_is_admin,
+                    author_gender: following.following_user_gender,
                   })}
                 >
-                  {follower.follower_user_username}
+                  {following.following_user_username}
                 </span>
               </p>
             </div>
@@ -114,7 +112,7 @@ const DeleteUserFollowerPopup = ({
               <button
                 type="button"
                 onClick={onClose}
-                disabled={deleteUserFollowerMutation.isPending}
+                disabled={deleteUserFollowingMutation.isPending}
                 className="cursor-pointer border-2 border-white/30 hover:border-white/50 text-white font-bold py-2 px-6 rounded-2xl transition-all hover:bg-white/10 backdrop-blur-xl"
               >
                 Cancel
@@ -122,10 +120,10 @@ const DeleteUserFollowerPopup = ({
 
               <button
                 type="submit"
-                disabled={deleteUserFollowerMutation.isPending}
+                disabled={deleteUserFollowingMutation.isPending}
                 className="cursor-pointer bg-linear-to-br from-red-700 to-red-500 hover:from-red-600 hover:to-red-400 text-white font-bold py-2 px-6 rounded-2xl transition-all transform hover:scale-105 active:scale-95 shadow-xl disabled:opacity-70 disabled:cursor-not-allowed"
               >
-                {deleteUserFollowerMutation.isPending ? (
+                {deleteUserFollowingMutation.isPending ? (
                   <>
                     <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     Deleting...
@@ -142,4 +140,4 @@ const DeleteUserFollowerPopup = ({
   );
 };
 
-export default DeleteUserFollowerPopup;
+export default DeleteUserFollowingPopup;

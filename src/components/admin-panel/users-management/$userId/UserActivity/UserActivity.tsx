@@ -35,7 +35,7 @@ const UserActivity = () => {
   });
 
   const { data: publicUserPosts = [] } = useQuery<PostType[]>({
-    queryKey: ["public-user-posts", user?.id],
+    queryKey: ["admin-user-posts", user?.id],
     queryFn: async () => {
       const res = await authAxios.get(
         `${postsAPI.url}/all-posts/user/${userId}`,
@@ -48,7 +48,7 @@ const UserActivity = () => {
   const { data: publicUserCommentCountData = [] } = useQuery<
     { comment_count: string }[]
   >({
-    queryKey: ["public-user-comments", user?.id],
+    queryKey: ["admin-user-comments", user?.id],
     queryFn: async () => {
       const res = await authAxios.get(
         `${commentsAPI.url}/all-comments/user/${userId}`,
@@ -75,7 +75,7 @@ const UserActivity = () => {
   const totalVotes = voteStats?.grandTotal ?? 0;
 
   const { data: PublicUserFollowers = [] } = useQuery<UserFollowType[]>({
-    queryKey: ["public-user-followers", user?.id],
+    queryKey: ["admin-user-followers", user?.id],
     queryFn: async () => {
       const res = await authAxios.get(
         `${userFollowingAPI.url}/followers/${user?.id}`,
@@ -86,7 +86,7 @@ const UserActivity = () => {
   });
 
   const { data: PublicUserFollowingUsers = [] } = useQuery<UserFollowType[]>({
-    queryKey: ["public-user-followings", user?.id],
+    queryKey: ["admin-user-followings", user?.id],
     queryFn: async () => {
       const res = await authAxios.get(
         `${userFollowingAPI.url}/following/${user?.id}`,
@@ -98,7 +98,7 @@ const UserActivity = () => {
 
   const { data: blockedUserData = { totalBlockedBy: 0, totalBlocked: 0 } } =
     useQuery({
-      queryKey: ["public-user-blocked", user?.id],
+      queryKey: ["admin-user-blocked", user?.id],
       queryFn: async () => {
         const res = await authAxios.get(
           `${adminAPI.url}/user-blocked/user-blocked-list/${user?.id}`,
