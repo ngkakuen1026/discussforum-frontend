@@ -44,8 +44,9 @@ export const UserBanProvider = ({
         reason: reason || "Banned by admin",
       });
     },
-    onSuccess: (_, { userId }) => {
-      queryClient.invalidateQueries({ queryKey: ["ban-status", userId] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ban-status"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-all-users"] });
       toast.success("User has been banned successfully");
     },
     onError: () => toast.error("Failed to ban user"),
@@ -56,8 +57,9 @@ export const UserBanProvider = ({
     mutationFn: async (userId: number) => {
       await authAxios.delete(`${adminAPI.url}/users/user/${userId}/unban`);
     },
-    onSuccess: (_, userId) => {
-      queryClient.invalidateQueries({ queryKey: ["ban-status", userId] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["ban-status"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-all-users"] });
       toast.success("User has been unbanned");
     },
     onError: () => toast.error("Failed to unban user"),

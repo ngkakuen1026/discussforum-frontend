@@ -25,6 +25,13 @@ export interface UserType {
     is_banned?: boolean;
 };
 
+export interface ExtendedUserType extends UserType {
+    ban_reason?: string;
+    banned_until?: string;
+}
+
+export type UserFilterType = "all" | "normal" | "suspended" | "new" | "admin" | "member";
+
 export type GenderType = "Male" | "Female" | "Prefer Not to Say";
 
 export interface UserRegistrationType {

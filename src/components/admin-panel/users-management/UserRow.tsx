@@ -7,9 +7,9 @@ import {
   formatUserLastLoginDate,
   formatUserRegistrationDate,
 } from "../../../utils/dateUtils";
-import type { UserType } from "../../../types/userTypes";
+import type { ExtendedUserType } from "../../../types/userTypes";
 
-const UserRow = ({ user }: { user: UserType }) => {
+const UserRow = ({ user }: { user: ExtendedUserType }) => {
   const { data: banInfo, isLoading } = useUserBanStatus(user.id);
 
   return (

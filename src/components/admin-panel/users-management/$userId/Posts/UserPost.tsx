@@ -90,7 +90,7 @@ const UserPost = () => {
     enabled: !!userId,
   });
 
-  const clearFilters = () => {
+  const clearAllFilters = () => {
     setSearch("");
     setSort("");
     setPostId("");
@@ -145,7 +145,7 @@ const UserPost = () => {
           setEndDate={setEndDate}
           minVotes={minVotes}
           setMinVotes={setMinVotes}
-          clearFilters={clearFilters}
+          clearAllFilters={clearAllFilters}
           itemsPerPage={itemsPerPage}
           setItemsPerPage={setItemsPerPage}
           setCurrentPage={setCurrentPage}

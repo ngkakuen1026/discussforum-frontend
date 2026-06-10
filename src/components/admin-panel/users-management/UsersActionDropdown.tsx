@@ -30,7 +30,8 @@ const UsersActionDropdown = ({ user }: UsersActionDropdownProps) => {
   const userId = user.id;
   useEffect(() => {
     if (isOpen) {
-      queryClient.invalidateQueries({ queryKey: ["ban-status"] });
+      queryClient.invalidateQueries({ queryKey: ["ban-status", userId] });
+      queryClient.invalidateQueries({ queryKey: ["admin-all-users"] });
     }
   }, [isOpen, userId, queryClient]);
 

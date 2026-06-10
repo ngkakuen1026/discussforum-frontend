@@ -4,84 +4,68 @@ import { Download } from "lucide-react";
 import { toast } from "sonner";
 import authAxios from "../../../../../services/authAxios";
 import { adminAPI } from "../../../../../services/http-api";
-import type { ExtendedPostType } from "../../../../../types/postTypes";
+import type { UserFollowerType } from "../../../../../types/userFollowTypes";
+import { formatDate, formatUserRegistrationDate } from "../../../../../utils/dateUtils";
 
-interface ExportUserPostsButtonProps {
-  posts: ExtendedPostType[];
+interface ExportUserFollowersButtonProps {
+  followers: UserFollowerType[];
   username?: string;
   userId: string;
   search: string;
-  postId: string;
-  categoryId: string;
   startDate: string;
   endDate: string;
-  minVotes: string;
   sort: string;
 }
 
-export default function ExportUserPostsButton({
-  posts = [],
+const ExporUserFollowerButton = ({
+  followers,
   username = "UnknownUser",
   userId,
   search,
-  postId,
-  categoryId,
   startDate,
   endDate,
-  minVotes,
   sort,
-}: ExportUserPostsButtonProps) {
+}: ExportUserFollowersButtonProps) => {
   const [isExporting, setIsExporting] = useState(false);
 
   const buildSearchParams = () => {
     const params = new URLSearchParams();
     if (search) params.append("query", search);
-    if (postId) params.append("post_id", postId);
-    if (categoryId) params.append("category_id", categoryId);
     if (startDate) params.append("start_date", startDate);
     if (endDate) params.append("end_date", endDate);
-    if (minVotes) params.append("min_votes", minVotes);
-    if (userId) params.append("author_id", userId);
     if (sort) params.append("sort", sort);
+    if (userId) params.append("author_id", userId);
     return params;
   };
 
   const fetchPage = async (page: number, limit = 100) => {
-    const isAdvanced =
-      !!search ||
-      !!postId ||
-      !!categoryId ||
-      !!startDate ||
-      !!endDate ||
-      !!minVotes ||
-      !!sort;
-
+    const isAdvanced = !!search || !!startDate || !!endDate || !!sort;
     const params = buildSearchParams();
     params.set("page", page.toString());
     params.set("limit", limit.toString());
 
     const url = isAdvanced
-      ? `${adminAPI.url}/posts/search-posts?${params.toString()}`
-      : `${adminAPI.url}/posts/user/${userId}?${params.toString()}`;
+      ? `${adminAPI.url}/user-following/followers/${userId}/search?${params.toString()}`
+      : `${adminAPI.url}/user-following/followers/${userId}?${params.toString()}`;
 
     const response = await authAxios.get(url);
     const data = response.data;
-    const pagePosts = data?.posts ?? data?.publicUserPosts ?? [];
+    const pageFollowers = data?.userFollowerList ?? [];
     const pagination = data?.pagination ?? null;
 
-    return { posts: pagePosts as ExtendedPostType[], pagination };
+    return { followers: pageFollowers as UserFollowerType[], pagination };
   };
 
   const exportToExcel = async () => {
-    if (posts.length === 0) {
-      toast.error("No posts to export");
+    if (followers.length === 0) {
+      toast.error("No followers to export");
       return;
     }
 
     setIsExporting(true);
     try {
       const firstPage = await fetchPage(1, 100);
-      let allPosts = [...firstPage.posts];
+      let allFollowers = [...firstPage.followers];
       const totalPages = firstPage.pagination?.totalPages ?? 1;
 
       if (totalPages > 1) {
@@ -90,46 +74,42 @@ export default function ExportUserPostsButton({
             fetchPage(index + 2, 100),
           ),
         );
-
         remainingPages.forEach((pageData) => {
-          allPosts = [...allPosts, ...pageData.posts];
+          allFollowers = [...allFollowers, ...pageData.followers];
         });
       }
 
-      if (allPosts.length === 0) {
-        toast.error("No posts to export");
+      if (allFollowers.length === 0) {
+        toast.error("No followers to export");
         return;
       }
 
       const dateStr = new Date().toISOString().slice(0, 10);
-      const exportData = allPosts.map((post) => ({
-        "Post ID": post.id,
-        Author: post.author_username || username,
-        Title: post.title,
-        Category: post.category_name || "Uncategorized",
-        "Created At": post.created_at
-          ? new Date(post.created_at).toLocaleDateString("en-US")
+      const exportData = allFollowers.map((follower) => ({
+        "User ID": userId || "N/A",
+        "Follower ID": follower.follower_user_id,
+        Username: follower.follower_user_username,
+        Email: follower.follower_user_email || "N/A",
+        "Joined At": follower.follower_user_registration_date
+          ? formatUserRegistrationDate(follower.follower_user_registration_date)
           : "N/A",
-        Upvotes: post.upvote_count || 0,
-        Downvotes: post.downvote_count || 0,
-        Comments: post.comment_count || 0,
-        "Pageviews at export time": post.views || 0,
-        Shares: post.share_count || 0,
-        Reports: post.report_count || 0,
+        "Followed At": follower.followed_at
+          ? formatDate(follower.followed_at)
+          : "N/A",
       }));
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "User Posts");
+      XLSX.utils.book_append_sheet(wb, ws, "User Followers");
 
-      const fileName = `User_${username}_Posts_${dateStr}.xlsx`;
+      const fileName = `User_${username}_Followers_${dateStr}.xlsx`;
       XLSX.writeFile(wb, fileName);
       toast.success(
-        `Successfully exported ${allPosts.length} posts for User #${username}`,
+        `Successfully exported ${allFollowers.length} followers for User #${username}`,
       );
     } catch (error) {
       console.error(error);
-      toast.error("Failed to export user posts. Please try again.");
+      toast.error("Failed to export user followers. Please try again.");
     } finally {
       setIsExporting(false);
     }
@@ -149,4 +129,6 @@ export default function ExportUserPostsButton({
       {isExporting ? "Exporting..." : "Export"}
     </button>
   );
-}
+};
+
+export default ExporUserFollowerButton;

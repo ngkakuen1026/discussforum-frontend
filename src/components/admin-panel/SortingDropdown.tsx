@@ -22,7 +22,7 @@ const SortingDropdown = ({
   value,
   onChange,
   className = "",
-  width = "w-72",
+  width = "w-84",
 }: SortingDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
 

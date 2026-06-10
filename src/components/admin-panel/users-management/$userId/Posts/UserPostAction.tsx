@@ -37,7 +37,7 @@ interface UserPostActionProps {
   setMinVotes: (value: string) => void;
   sort: string;
   setSort: (value: string) => void;
-  clearFilters: () => void;
+  clearAllFilters: () => void;
   setCurrentPage: (page: number) => void;
   itemsPerPage: number;
   setItemsPerPage: (value: number) => void;
@@ -63,7 +63,7 @@ const UserPostAction = ({
   minVotes,
   setMinVotes,
   setCurrentPage,
-  clearFilters,
+  clearAllFilters,
   itemsPerPage,
   setItemsPerPage,
   pagination,
@@ -74,14 +74,12 @@ const UserPostAction = ({
     setCurrentPage(1);
   };
 
-  console.log("Categories in Action Component:", categories);
-
   return (
     <div className="mb-8">
       <form onSubmit={handleSearch} className="mb-6">
         <div className="flex items-center mb-6 justify-between">
           <h2 className="text-3xl font-bold adminHeading">
-            Posts by User #{userId} {username}
+            {username}’s Posts (User #{userId})
             {pagination && (
               <span className="ml-3 text-xl text-gray-400 font-normal">
                 ({pagination.total} posts)
@@ -89,7 +87,18 @@ const UserPostAction = ({
             )}
           </h2>
 
-          <ExportUserPostsButton posts={posts} username={username} />
+          <ExportUserPostsButton
+            posts={posts}
+            username={username}
+            userId={userId}
+            search={search}
+            postId={postId}
+            categoryId={categoryId}
+            startDate={startDate}
+            endDate={endDate}
+            minVotes={minVotes}
+            sort={sort}
+          />
         </div>
 
         <div className="flex items-center justify-end gap-4">
@@ -134,7 +143,7 @@ const UserPostAction = ({
           {/* Clear Filters Button */}
           <button
             type="button"
-            onClick={clearFilters}
+            onClick={clearAllFilters}
             className="px-8 py-3.5 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition font-medium whitespace-nowrap cursor-pointer"
           >
             Clear Filters
