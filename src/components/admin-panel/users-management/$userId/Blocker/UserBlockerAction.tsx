@@ -1,14 +1,14 @@
 import { type FormEvent } from "react";
 import TablePagination from "../../TablePagination";
-import type { UserFollowerType } from "../../../../../types/userFollowTypes";
-import UserFollowersSortingDropdown from "./UserFollowerSortingDropdown";
 import ItemsPerPageDropdown from "../../ItemsPerPageDropdown";
 import ReactDatePicker from "../Posts/DatePircker";
 import { formatDateToString } from "../../../../../utils/dateUtils";
-import ExporUserFollowerButton from "./ExporUserFollowerButton";
+import type { UserBlockerType } from "../../../../../types/userBlcokedTypes";
+import UserBlockerSortingDropdown from "./UserBlockerSortingDropdown";
+import ExportUserBlockerButton from "./ExportUserBlockerButton";
 
-interface UserFollowerActionProps {
-  userFollowers: UserFollowerType[];
+interface UserBlockerActionProps {
+  userBlockers: UserBlockerType[];
   userId: string;
   username: string;
   search: string;
@@ -29,10 +29,10 @@ interface UserFollowerActionProps {
   setLastLoginStartDate: (value: string) => void;
   lastLoginEndDate: string;
   setLastLoginEndDate: (value: string) => void;
-  followedStartDate: string;
-  setFollowedStartDate: (value: string) => void;
-  followedEndDate: string;
-  setFollowedEndDate: (value: string) => void;
+  blockedStartDate: string;
+  setBlockedStartDate: (value: string) => void;
+  blockedEndDate: string;
+  setBlockedEndDate: (value: string) => void;
   sort: string;
   setSort: (value: string) => void;
   clearAllFilters: () => void;
@@ -41,8 +41,8 @@ interface UserFollowerActionProps {
   setItemsPerPage: (value: number) => void;
 }
 
-const UserFollowerAction = ({
-  userFollowers,
+const UserBlockerAction = ({
+  userBlockers,
   userId,
   username,
   search,
@@ -57,16 +57,16 @@ const UserFollowerAction = ({
   setLastLoginStartDate,
   lastLoginEndDate,
   setLastLoginEndDate,
-  followedStartDate,
-  setFollowedStartDate,
-  followedEndDate,
-  setFollowedEndDate,
+  blockedStartDate,
+  setBlockedStartDate,
+  blockedEndDate,
+  setBlockedEndDate,
   setCurrentPage,
   clearAllFilters,
   itemsPerPage,
   setItemsPerPage,
   pagination,
-}: UserFollowerActionProps) => {
+}: UserBlockerActionProps) => {
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     setCurrentPage(1);
@@ -77,17 +77,17 @@ const UserFollowerAction = ({
       <form onSubmit={handleSearch} className="mb-6">
         <div className="flex items-center mb-6 justify-between">
           <h2 className="text-3xl font-bold adminHeading">
-            {username}'s Followers (User #{userId})
+            {username}'s Blockers (User #{userId})
             {pagination && (
               <span className="ml-3 text-xl text-gray-400 font-normal">
                 ({pagination.total}{" "}
-                {pagination.total > 1 ? "followers" : "follower"})
+                {pagination.total > 1 ? "blockers" : "blocker"})
               </span>
             )}
           </h2>
 
-          <ExporUserFollowerButton
-            followers={userFollowers}
+          <ExportUserBlockerButton
+            blockers={userBlockers}
             userId={userId}
             username={username}
             search={search}
@@ -95,8 +95,8 @@ const UserFollowerAction = ({
             registrationEndDate={registrationEndDate}
             lastLoginStartDate={lastLoginStartDate}
             lastLoginEndDate={lastLoginEndDate}
-            followedStartDate={followedStartDate}
-            followedEndDate={followedEndDate}
+            blockedStartDate={blockedStartDate}
+            blockedEndDate={blockedEndDate}
             sort={sort}
           />
         </div>
@@ -105,7 +105,7 @@ const UserFollowerAction = ({
           <label className="text-lg text-gray-200 whitespace-nowrap">
             Sort:
           </label>
-          <UserFollowersSortingDropdown
+          <UserBlockerSortingDropdown
             value={sort}
             onChange={(newSortValue) => {
               setSort(newSortValue);
@@ -237,12 +237,12 @@ const UserFollowerAction = ({
               Followed From
             </label>
             <ReactDatePicker
-              selected={followedStartDate ? new Date(followedStartDate) : null}
+              selected={blockedStartDate ? new Date(blockedStartDate) : null}
               onChange={(date) =>
-                setFollowedStartDate(date ? formatDateToString(date) : "")
+                setBlockedStartDate(date ? formatDateToString(date) : "")
               }
               placeholderText="From Date"
-              maxDate={followedEndDate ? new Date(followedEndDate) : new Date()}
+              maxDate={blockedEndDate ? new Date(blockedEndDate) : new Date()}
             />
           </div>
 
@@ -252,15 +252,15 @@ const UserFollowerAction = ({
               Followed To
             </label>
             <ReactDatePicker
-              key={followedStartDate}
-              selected={followedEndDate ? new Date(followedEndDate) : null}
+              key={blockedStartDate}
+              selected={blockedEndDate ? new Date(blockedEndDate) : null}
               onChange={(date) =>
-                setFollowedEndDate(date ? formatDateToString(date) : "")
+                setBlockedEndDate(date ? formatDateToString(date) : "")
               }
               placeholderText="To Date"
               maxDate={new Date()}
               minDate={
-                followedStartDate ? new Date(followedStartDate) : undefined
+                blockedStartDate ? new Date(blockedStartDate) : undefined
               }
             />
           </div>
@@ -279,4 +279,4 @@ const UserFollowerAction = ({
   );
 };
 
-export default UserFollowerAction;
+export default UserBlockerAction;

@@ -4,14 +4,11 @@ import { Download } from "lucide-react";
 import { toast } from "sonner";
 import authAxios from "../../../../../services/authAxios";
 import { adminAPI } from "../../../../../services/http-api";
-import type { UserFollowerType } from "../../../../../types/userFollowTypes";
-import {
-  formatDate,
-  formatUserRegistrationDate,
-} from "../../../../../utils/dateUtils";
+import type { UserBlockerType } from "../../../../../types/userBlcokedTypes";
+import { formatDate, formatUserRegistrationDate } from "../../../../../utils/dateUtils";
 
-interface ExportUserFollowersButtonProps {
-  followers: UserFollowerType[];
+interface ExportUserBlockerButtonProps {
+  blockers: UserBlockerType[];
   username?: string;
   userId: string;
   search: string;
@@ -19,13 +16,13 @@ interface ExportUserFollowersButtonProps {
   registrationEndDate: string;
   lastLoginStartDate: string;
   lastLoginEndDate: string;
-  followedStartDate: string;
-  followedEndDate: string;
+  blockedStartDate: string;
+  blockedEndDate: string;
   sort: string;
 }
 
-const ExporUserFollowerButton = ({
-  followers,
+const ExportUserBlockerButton = ({
+  blockers,
   username = "UnknownUser",
   userId,
   search,
@@ -33,10 +30,10 @@ const ExporUserFollowerButton = ({
   registrationEndDate,
   lastLoginStartDate,
   lastLoginEndDate,
-  followedStartDate,
-  followedEndDate,
+  blockedStartDate,
+  blockedEndDate,
   sort,
-}: ExportUserFollowersButtonProps) => {
+}: ExportUserBlockerButtonProps) => {
   const [isExporting, setIsExporting] = useState(false);
 
   const buildSearchParams = () => {
@@ -50,9 +47,8 @@ const ExporUserFollowerButton = ({
       params.append("last_login_start_date", lastLoginStartDate);
     if (lastLoginEndDate)
       params.append("last_login_end_date", lastLoginEndDate);
-    if (followedStartDate)
-      params.append("followed_start_date", followedStartDate);
-    if (followedEndDate) params.append("followed_end_date", followedEndDate);
+    if (blockedStartDate) params.append("blocked_start_date", blockedStartDate);
+    if (blockedEndDate) params.append("blocked_end_date", blockedEndDate);
     if (userId) params.append("author_id", userId.toString());
     if (sort) params.append("sort", sort);
     return params;
@@ -63,26 +59,26 @@ const ExporUserFollowerButton = ({
     params.set("page", page.toString());
     params.set("limit", limit.toString());
 
-    const url = `${adminAPI.url}/user-following/followers/${userId}/search?${params.toString()}`;
+    const url = `${adminAPI.url}/user-blocked/user-blocked-list/${userId}/search?${params.toString()}`;
 
     const response = await authAxios.get(url);
     const data = response.data;
-    const pageFollowers = data?.userFollowerList ?? [];
+    const pageBlockers = data?.userBlockerList ?? [];
     const pagination = data?.pagination ?? null;
 
-    return { followers: pageFollowers as UserFollowerType[], pagination };
+    return { blockers: pageBlockers as UserBlockerType[], pagination };
   };
 
   const exportToExcel = async () => {
-    if (followers.length === 0) {
-      toast.error("No followers to export");
+    if (blockers.length === 0) {
+      toast.error("No blockers to export");
       return;
     }
 
     setIsExporting(true);
     try {
       const firstPage = await fetchPage(1, 100);
-      let allFollowers = [...firstPage.followers];
+      let allBlockers = [...firstPage.blockers];
       const totalPages = firstPage.pagination?.totalPages ?? 1;
 
       if (totalPages > 1) {
@@ -92,41 +88,41 @@ const ExporUserFollowerButton = ({
           ),
         );
         remainingPages.forEach((pageData) => {
-          allFollowers = [...allFollowers, ...pageData.followers];
+          allBlockers = [...allBlockers, ...pageData.blockers];
         });
       }
 
-      if (allFollowers.length === 0) {
-        toast.error("No followers to export");
+      if (allBlockers.length === 0) {
+        toast.error("No blockers to export");
         return;
       }
 
       const dateStr = new Date().toISOString().slice(0, 10);
-      const exportData = allFollowers.map((follower) => ({
+      const exportData = allBlockers.map((blocker) => ({
         "User ID": userId || "N/A",
-        "Follower ID": follower.follower_user_id,
-        Username: follower.follower_user_username,
-        Email: follower.follower_user_email || "N/A",
-        "Joined At": follower.follower_user_registration_date
-          ? formatUserRegistrationDate(follower.follower_user_registration_date)
+        "Blocker ID": blocker.blocker_user_id,
+        Username: blocker.blocker_user_username,
+        Email: blocker.blocker_user_email || "N/A",
+        "Joined At": blocker.blocker_user_registration_date
+          ? formatUserRegistrationDate(blocker.blocker_user_registration_date)
           : "N/A",
-        "Followed At": follower.followed_at
-          ? formatDate(follower.followed_at)
+        "Blocked At": blocker.blocked_at
+          ? formatDate(blocker.blocked_at)
           : "N/A",
       }));
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "User Followers");
+      XLSX.utils.book_append_sheet(wb, ws, "User Blockers");
 
-      const fileName = `User_${username}_Followers_${dateStr}.xlsx`;
+      const fileName = `User_${username}_Blockers_${dateStr}.xlsx`;
       XLSX.writeFile(wb, fileName);
       toast.success(
-        `Successfully exported ${allFollowers.length} followers for User #${username}`,
+        `Successfully exported ${allBlockers.length} blockers for User #${username}`,
       );
     } catch (error) {
       console.error(error);
-      toast.error("Failed to export user followers. Please try again.");
+      toast.error("Failed to export user blockers. Please try again.");
     } finally {
       setIsExporting(false);
     }
@@ -148,4 +144,4 @@ const ExporUserFollowerButton = ({
   );
 };
 
-export default ExporUserFollowerButton;
+export default ExportUserBlockerButton;

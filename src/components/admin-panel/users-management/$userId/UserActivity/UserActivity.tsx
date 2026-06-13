@@ -96,18 +96,19 @@ const UserActivity = () => {
     staleTime: 5 * 60 * 1000,
   });
 
-  const { data: blockedUserData = { totalBlockedBy: 0, totalBlocked: 0 } } =
-    useQuery({
-      queryKey: ["admin-user-blocked", user?.id],
-      queryFn: async () => {
-        const res = await authAxios.get(
-          `${adminAPI.url}/user-blocked/user-blocked-list/${user?.id}`,
-        );
-        return res.data.blockedUserData;
-      },
-      enabled: !!user?.id,
-      staleTime: 5 * 60 * 1000,
-    });
+  const { data: blockerUserData } = useQuery({
+    queryKey: ["admin-user-blockers", user?.id],
+    queryFn: async () => {
+      const res = await authAxios.get(
+        `${adminAPI.url}/user-blocked/user-blocked-list/${user?.id}/search`,
+      );
+      return res.data;
+    },
+    enabled: !!user?.id,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const userBlockerCount = blockerUserData?.userBlockerCount || 0;
 
   return (
     <div>
@@ -232,7 +233,7 @@ const UserActivity = () => {
                 Blocker
               </p>
               <p className="font-bold text-white mt-2 text-3xl group-hover:text-5xl transition-all duration-150">
-                {blockedUserData.totalBlockedBy}
+                {userBlockerCount}
               </p>
             </div>
             <CircleOff
@@ -253,9 +254,7 @@ const UserActivity = () => {
               <p className="text-gray-400 group-hover:text-white group-hover:text-lg transition-all duration-150">
                 Blocked
               </p>
-              <p className="font-bold text-white mt-2 text-3xl group-hover:text-5xl transition-all duration-150">
-                {blockedUserData.totalBlocked}
-              </p>
+              <p className="font-bold text-white mt-2 text-3xl group-hover:text-5xl transition-all duration-150"></p>
             </div>
             <UserPlus
               size={36}
