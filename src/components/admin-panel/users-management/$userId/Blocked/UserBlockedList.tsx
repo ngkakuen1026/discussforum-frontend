@@ -1,32 +1,32 @@
 import { CircleQuestionMark, ListCollapse } from "lucide-react";
-import UserBlockerRow from "./UserBlockerRow";
-import type { UserBlockerType } from "../../../../../types/userBlcokedTypes";
+import UserBlockedRow from "./UserBlockedRow";
+import type { UserBlockedType } from "../../../../../types/userBlcokedTypes";
 
-interface UserBlockerListProps {
-  userBlockers: UserBlockerType[];
+interface UserBlockedListProps {
+  userBlockeds: UserBlockedType[];
   isLoading: boolean;
   userId: string;
   username: string;
 }
 
-const UserBlockerList = ({
-  userBlockers,
+const UserBlockedList = ({
+  userBlockeds,
   isLoading,
   userId,
   username,
-}: UserBlockerListProps) => {
-  console.log(userBlockers);
+}: UserBlockedListProps) => {
+  console.log(userBlockeds);
 
   if (isLoading)
     return (
       <div className="text-center py-8 text-gray-400">
-        Loading User Blockers...
+        Loading User Blockeds...
       </div>
     );
 
-  if (userBlockers.length === 0)
+  if (userBlockeds.length === 0)
     return (
-      <div className="text-center py-8 text-gray-400">No Blockers found.</div>
+      <div className="text-center py-8 text-gray-400">No Blockeds found.</div>
     );
 
   return (
@@ -86,10 +86,10 @@ const UserBlockerList = ({
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-800">
-          {userBlockers.map((userBlocker: UserBlockerType) => (
-            <UserBlockerRow
-              key={userBlocker.blocker_user_id}
-              blocker={userBlocker}
+          {userBlockeds.map((userBlocked: UserBlockedType) => (
+            <UserBlockedRow
+              key={userBlocked.blocked_user_id}
+              blocked={userBlocked}
               userId={userId}
               username={username}
             />
@@ -100,4 +100,4 @@ const UserBlockerList = ({
   );
 };
 
-export default UserBlockerList;
+export default UserBlockedList;

@@ -45,7 +45,7 @@ const BlockPopup = ({
     onError: (error) => {
       toast.error("Failed to block user.");
       if (isAxiosError(error)) {
-        console.error(`User follow error: ${error}`);
+        console.error(`User block error: ${error}`);
       }
     },
   });

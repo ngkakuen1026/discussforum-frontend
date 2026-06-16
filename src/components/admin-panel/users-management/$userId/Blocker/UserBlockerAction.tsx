@@ -77,11 +77,10 @@ const UserBlockerAction = ({
       <form onSubmit={handleSearch} className="mb-6">
         <div className="flex items-center mb-6 justify-between">
           <h2 className="text-3xl font-bold adminHeading">
-            {username}'s Blockers (User #{userId})
+            Blocked by Users (User #{userId})
             {pagination && (
               <span className="ml-3 text-xl text-gray-400 font-normal">
-                ({pagination.total}{" "}
-                {pagination.total > 1 ? "blockers" : "blocker"})
+                ({pagination.total} {pagination.total > 1 ? "users" : "user"})
               </span>
             )}
           </h2>
@@ -234,7 +233,7 @@ const UserBlockerAction = ({
           {/* Last Login From Date */}
           <div className="md:col-span-2">
             <label className="block text-sm text-gray-400 mb-1.5">
-              Followed From
+              Blockeded From
             </label>
             <ReactDatePicker
               selected={blockedStartDate ? new Date(blockedStartDate) : null}
@@ -249,7 +248,7 @@ const UserBlockerAction = ({
           {/* Last Login To Date */}
           <div className="md:col-span-2">
             <label className="block text-sm text-gray-400 mb-1.5">
-              Followed To
+              Blockeded To
             </label>
             <ReactDatePicker
               key={blockedStartDate}
@@ -273,7 +272,7 @@ const UserBlockerAction = ({
         totalItems={pagination?.total || 0}
         onPageChange={(page) => setCurrentPage(page)}
         itemsPerPage={itemsPerPage}
-        itemsName="followers"
+        itemsName="users"
       />
     </div>
   );

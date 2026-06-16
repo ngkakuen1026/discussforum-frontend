@@ -100,6 +100,18 @@ const UserActivity = () => {
     queryKey: ["admin-user-blockers", user?.id],
     queryFn: async () => {
       const res = await authAxios.get(
+        `${adminAPI.url}/user-blocked/user-blocker-list/${user?.id}/search`,
+      );
+      return res.data;
+    },
+    enabled: !!user?.id,
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const { data: blockedUserData } = useQuery({
+    queryKey: ["admin-user-blockeds", user?.id],
+    queryFn: async () => {
+      const res = await authAxios.get(
         `${adminAPI.url}/user-blocked/user-blocked-list/${user?.id}/search`,
       );
       return res.data;
@@ -109,6 +121,7 @@ const UserActivity = () => {
   });
 
   const userBlockerCount = blockerUserData?.userBlockerCount || 0;
+  const userBlockedCount = blockedUserData?.userBlockedCount || 0;
 
   return (
     <div>
@@ -254,7 +267,9 @@ const UserActivity = () => {
               <p className="text-gray-400 group-hover:text-white group-hover:text-lg transition-all duration-150">
                 Blocked
               </p>
-              <p className="font-bold text-white mt-2 text-3xl group-hover:text-5xl transition-all duration-150"></p>
+              <p className="font-bold text-white mt-2 text-3xl group-hover:text-5xl transition-all duration-150">
+                {userBlockedCount}
+              </p>
             </div>
             <UserPlus
               size={36}

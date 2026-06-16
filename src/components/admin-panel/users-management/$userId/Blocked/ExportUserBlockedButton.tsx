@@ -4,11 +4,14 @@ import { Download } from "lucide-react";
 import { toast } from "sonner";
 import authAxios from "../../../../../services/authAxios";
 import { adminAPI } from "../../../../../services/http-api";
-import type { UserBlockerType } from "../../../../../types/userBlcokedTypes";
-import { formatDate, formatUserRegistrationDate } from "../../../../../utils/dateUtils";
+import type { UserBlockedType } from "../../../../../types/userBlcokedTypes";
+import {
+  formatDate,
+  formatUserRegistrationDate,
+} from "../../../../../utils/dateUtils";
 
-interface ExportUserBlockerButtonProps {
-  blockers: UserBlockerType[];
+interface ExportUserBlockedButtonProps {
+  blockeds: UserBlockedType[];
   username?: string;
   userId: string;
   search: string;
@@ -21,8 +24,8 @@ interface ExportUserBlockerButtonProps {
   sort: string;
 }
 
-const ExportUserBlockerButton = ({
-  blockers,
+const ExportUserBlockedButton = ({
+  blockeds,
   username = "UnknownUser",
   userId,
   search,
@@ -33,7 +36,7 @@ const ExportUserBlockerButton = ({
   blockedStartDate,
   blockedEndDate,
   sort,
-}: ExportUserBlockerButtonProps) => {
+}: ExportUserBlockedButtonProps) => {
   const [isExporting, setIsExporting] = useState(false);
 
   const buildSearchParams = () => {
@@ -59,26 +62,26 @@ const ExportUserBlockerButton = ({
     params.set("page", page.toString());
     params.set("limit", limit.toString());
 
-    const url = `${adminAPI.url}/user-blocked/user-blocker-list/${userId}/search?${params.toString()}`;
+    const url = `${adminAPI.url}/user-blocked/user-blocked-list/${userId}/search?${params.toString()}`;
 
     const response = await authAxios.get(url);
     const data = response.data;
-    const pageBlockers = data?.userBlockerList ?? [];
+    const pageBlockeds = data?.userBlockedList ?? [];
     const pagination = data?.pagination ?? null;
 
-    return { blockers: pageBlockers as UserBlockerType[], pagination };
+    return { blockeds: pageBlockeds as UserBlockedType[], pagination };
   };
 
   const exportToExcel = async () => {
-    if (blockers.length === 0) {
-      toast.error("No blockers to export");
+    if (blockeds.length === 0) {
+      toast.error("No blockeds to export");
       return;
     }
 
     setIsExporting(true);
     try {
       const firstPage = await fetchPage(1, 100);
-      let allBlockers = [...firstPage.blockers];
+      let allBlockeds = [...firstPage.blockeds];
       const totalPages = firstPage.pagination?.totalPages ?? 1;
 
       if (totalPages > 1) {
@@ -88,41 +91,41 @@ const ExportUserBlockerButton = ({
           ),
         );
         remainingPages.forEach((pageData) => {
-          allBlockers = [...allBlockers, ...pageData.blockers];
+          allBlockeds = [...allBlockeds, ...pageData.blockeds];
         });
       }
 
-      if (allBlockers.length === 0) {
-        toast.error("No blockers to export");
+      if (allBlockeds.length === 0) {
+        toast.error("No blockeds to export");
         return;
       }
 
       const dateStr = new Date().toISOString().slice(0, 10);
-      const exportData = allBlockers.map((blocker) => ({
+      const exportData = allBlockeds.map((blocked) => ({
         "User ID": userId || "N/A",
-        "Blocker ID": blocker.blocker_user_id,
-        Username: blocker.blocker_user_username,
-        Email: blocker.blocker_user_email || "N/A",
-        "Joined At": blocker.blocker_user_registration_date
-          ? formatUserRegistrationDate(blocker.blocker_user_registration_date)
+        "Blocked ID": blocked.blocked_user_id,
+        Username: blocked.blocked_user_username,
+        Email: blocked.blocked_user_email || "N/A",
+        "Joined At": blocked.blocked_user_registration_date
+          ? formatUserRegistrationDate(blocked.blocked_user_registration_date)
           : "N/A",
-        "Blocked At": blocker.blocked_at
-          ? formatDate(blocker.blocked_at)
+        "Blocked At": blocked.blocked_at
+          ? formatDate(blocked.blocked_at)
           : "N/A",
       }));
 
       const ws = XLSX.utils.json_to_sheet(exportData);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "User Blockers");
+      XLSX.utils.book_append_sheet(wb, ws, "User Blockeds");
 
-      const fileName = `User_${username}_Blockers_${dateStr}.xlsx`;
+      const fileName = `User_${username}_Blockeds_${dateStr}.xlsx`;
       XLSX.writeFile(wb, fileName);
       toast.success(
-        `Successfully exported ${allBlockers.length} blockers for User #${username}`,
+        `Successfully exported ${allBlockeds.length} blockeds for User #${username}`,
       );
     } catch (error) {
       console.error(error);
-      toast.error("Failed to export user blockers. Please try again.");
+      toast.error("Failed to export user blockeds. Please try again.");
     } finally {
       setIsExporting(false);
     }
@@ -144,4 +147,4 @@ const ExportUserBlockerButton = ({
   );
 };
 
-export default ExportUserBlockerButton;
+export default ExportUserBlockedButton;

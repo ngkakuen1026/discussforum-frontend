@@ -56,7 +56,7 @@ const UserBlocker = () => {
       params.append("limit", itemsPerPage.toString());
       if (sort) params.append("sort", sort);
       const res = await authAxios.get(
-        `${adminAPI.url}/user-blocked/user-blocked-list/${userId}/search?${params.toString()}`,
+        `${adminAPI.url}/user-blocked/user-blocker-list/${userId}/search?${params.toString()}`,
       );
       return res.data;
     },
@@ -110,7 +110,7 @@ const UserBlocker = () => {
         >
           Users Detail
         </Link>{" "}
-        &gt; User Blockers
+        &gt; Blocked by Users
       </AdminPanelBreadCrumb>
       <div className="p-8 mt-8 border border-gray-800 rounded-2xl">
         <UserBlockerAction

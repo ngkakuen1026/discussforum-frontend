@@ -1,14 +1,14 @@
-import type { FormEvent } from "react";
-import type { UserFollowType } from "../../../../../types/userFollowTypes";
-import UserFollowingSortingDropdown from "./UserFollowingSortingDropdown";
+import { type FormEvent } from "react";
+import TablePagination from "../../TablePagination";
 import ItemsPerPageDropdown from "../../ItemsPerPageDropdown";
 import ReactDatePicker from "../Posts/DatePircker";
 import { formatDateToString } from "../../../../../utils/dateUtils";
-import TablePagination from "../../TablePagination";
-import ExportUserFollowingButton from "./ExportUserFollowingButton";
+import type { UserBlockedType } from "../../../../../types/userBlcokedTypes";
+import ExportUserBlockedButton from "./ExportUserBlockedButton";
+import UserBlockedSortingDropdown from "./UserBlockedSortingDropdown";
 
-interface UserFollowingActionProps {
-  userFollowings: UserFollowType[];
+interface userBlockedActionProps {
+  userBlockeds: UserBlockedType[];
   userId: string;
   username: string;
   search: string;
@@ -29,10 +29,10 @@ interface UserFollowingActionProps {
   setLastLoginStartDate: (value: string) => void;
   lastLoginEndDate: string;
   setLastLoginEndDate: (value: string) => void;
-  followedStartDate: string;
-  setFollowedStartDate: (value: string) => void;
-  followedEndDate: string;
-  setFollowedEndDate: (value: string) => void;
+  blockedStartDate: string;
+  setBlockedStartDate: (value: string) => void;
+  blockedEndDate: string;
+  setBlockedEndDate: (value: string) => void;
   sort: string;
   setSort: (value: string) => void;
   clearAllFilters: () => void;
@@ -41,8 +41,8 @@ interface UserFollowingActionProps {
   setItemsPerPage: (value: number) => void;
 }
 
-const UserFollowingAction = ({
-  userFollowings,
+const userBlockedAction = ({
+  userBlockeds,
   userId,
   username,
   search,
@@ -57,16 +57,16 @@ const UserFollowingAction = ({
   setLastLoginStartDate,
   lastLoginEndDate,
   setLastLoginEndDate,
-  followedStartDate,
-  setFollowedStartDate,
-  followedEndDate,
-  setFollowedEndDate,
+  blockedStartDate,
+  setBlockedStartDate,
+  blockedEndDate,
+  setBlockedEndDate,
   setCurrentPage,
   clearAllFilters,
   itemsPerPage,
   setItemsPerPage,
   pagination,
-}: UserFollowingActionProps) => {
+}: userBlockedActionProps) => {
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     setCurrentPage(1);
@@ -77,22 +77,26 @@ const UserFollowingAction = ({
       <form onSubmit={handleSearch} className="mb-6">
         <div className="flex items-center mb-6 justify-between">
           <h2 className="text-3xl font-bold adminHeading">
-            {username}'s Followings (User #{userId})
+            {username}'s Blocked Users (User #{userId})
             {pagination && (
               <span className="ml-3 text-xl text-gray-400 font-normal">
                 ({pagination.total}{" "}
-                {pagination.total > 1 ? "followings" : "following"})
+                {pagination.total > 1 ? "blocked users" : "blocked user"})
               </span>
             )}
           </h2>
 
-          <ExportUserFollowingButton
-            followings={userFollowings}
+          <ExportUserBlockedButton
+            blockeds={userBlockeds}
             userId={userId}
             username={username}
             search={search}
             registrationStartDate={registrationStartDate}
             registrationEndDate={registrationEndDate}
+            lastLoginStartDate={lastLoginStartDate}
+            lastLoginEndDate={lastLoginEndDate}
+            blockedStartDate={blockedStartDate}
+            blockedEndDate={blockedEndDate}
             sort={sort}
           />
         </div>
@@ -101,7 +105,7 @@ const UserFollowingAction = ({
           <label className="text-lg text-gray-200 whitespace-nowrap">
             Sort:
           </label>
-          <UserFollowingSortingDropdown
+          <UserBlockedSortingDropdown
             value={sort}
             onChange={(newSortValue) => {
               setSort(newSortValue);
@@ -230,33 +234,33 @@ const UserFollowingAction = ({
           {/* Last Login From Date */}
           <div className="md:col-span-2">
             <label className="block text-sm text-gray-400 mb-1.5">
-              Followed From
+              Blockeded From
             </label>
             <ReactDatePicker
-              selected={followedStartDate ? new Date(followedStartDate) : null}
+              selected={blockedStartDate ? new Date(blockedStartDate) : null}
               onChange={(date) =>
-                setFollowedStartDate(date ? formatDateToString(date) : "")
+                setBlockedStartDate(date ? formatDateToString(date) : "")
               }
               placeholderText="From Date"
-              maxDate={followedEndDate ? new Date(followedEndDate) : new Date()}
+              maxDate={blockedEndDate ? new Date(blockedEndDate) : new Date()}
             />
           </div>
 
           {/* Last Login To Date */}
           <div className="md:col-span-2">
             <label className="block text-sm text-gray-400 mb-1.5">
-              Followed To
+              Blockeded To
             </label>
             <ReactDatePicker
-              key={followedStartDate}
-              selected={followedEndDate ? new Date(followedEndDate) : null}
+              key={blockedStartDate}
+              selected={blockedEndDate ? new Date(blockedEndDate) : null}
               onChange={(date) =>
-                setFollowedEndDate(date ? formatDateToString(date) : "")
+                setBlockedEndDate(date ? formatDateToString(date) : "")
               }
               placeholderText="To Date"
               maxDate={new Date()}
               minDate={
-                followedStartDate ? new Date(followedStartDate) : undefined
+                blockedStartDate ? new Date(blockedStartDate) : undefined
               }
             />
           </div>
@@ -269,10 +273,10 @@ const UserFollowingAction = ({
         totalItems={pagination?.total || 0}
         onPageChange={(page) => setCurrentPage(page)}
         itemsPerPage={itemsPerPage}
-        itemsName="followings"
+        itemsName="blocked users"
       />
     </div>
   );
 };
 
-export default UserFollowingAction;
+export default userBlockedAction;
